@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">UniJET</string>
+    <string name="title_home">MyUniJET</string>
+    <string name="title_contacts">Persone</string>
+    <string name="title_">Notifications</string>
+</resources>
