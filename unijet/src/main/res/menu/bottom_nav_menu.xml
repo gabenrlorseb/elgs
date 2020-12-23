@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:id="@+id/people_tab"
+        android:icon="@drawable/ic_book_alt"
+        android:title="@string/people_tab_name" />
 
     <item
-        android:id="@+id/Search"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Search" />
+        android:id="@+id/projects_tab"
+        android:icon="@drawable/ic_cubes"
+        android:title="@string/projects_tab_name" />
 
     <item
         android:id="@+id/placeholder"
         android:title="" />
 
     <item
-        android:id="@+id/Profile"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Profile" />
+        android:id="@+id/groups_tab"
+        android:icon="@drawable/ic_people"
+        android:title="@string/groups_tab_name" />
 
     <item
         android:id="@+id/Settings"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Settings" />
+        android:icon="@drawable/ic_rocket_alt_2"
+        android:title="@string/myunijet_tab_name" />
 
 </menu>

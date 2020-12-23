@@ -6,4 +6,14 @@
         <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 
+    <style name="top_bar_theme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="popupTheme">?titleTextColor</item>
+        <item name="tint">?titleTextColor</item>
+    </style>
+
+    <style name="TitleBarTextAppearance" parent="android:TextAppearance">
+        <item name="textColor">?colorOnPrimary</item>
+    </style>
+
 </resources>

@@ -3,4 +3,8 @@
     <string name="title_home">MyUniJET</string>
     <string name="title_contacts">Persone</string>
     <string name="title_">Notifications</string>
+    <string name="people_tab_name">People</string>
+    <string name="projects_tab_name">Projects</string>
+    <string name="groups_tab_name">Groups</string>
+    <string name="myunijet_tab_name">MyUniJET</string>
 </resources>
