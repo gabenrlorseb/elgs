@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="corsi">
+    <item>Architettura</item>
+    <item>Basi di Dati</item>
+    <item>Programmazione</item>
+    <item>Programmazione 2</item>
+</string-array>
+</resources>
