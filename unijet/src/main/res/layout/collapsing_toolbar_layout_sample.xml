@@ -17,7 +17,7 @@
             android:fitsSystemWindows="true"
             app:title="Placeholder Title"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginBottom="65"
+            app:expandedTitleMarginBottom="65dp"
             app:expandedTitleMarginStart="20dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <ImageView
