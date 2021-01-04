@@ -68,27 +68,27 @@ public class SplashActivity extends AppCompatActivity {
         SplashScreenItem firstItem = new SplashScreenItem();
         firstItem.setTitle("Welcome to Unijet");
         firstItem.setDescription("The place where all your University Projects come to life");
-        firstItem.setImage(R.drawable.ic_arrow_right); //TODO: impostare le immagini
+        firstItem.setImage(R.drawable.ic_splash_illustration_one); //TODO: impostare le immagini
 
         SplashScreenItem secondItem = new SplashScreenItem();
         secondItem.setTitle("Create your groups");
         secondItem.setDescription("Create groups with people you care about");
-        secondItem.setImage(R.drawable.ic_arrow_right);
+        secondItem.setImage(R.drawable.ic_splash_illustration_two);
 
         SplashScreenItem thirdItem = new SplashScreenItem();
         thirdItem.setTitle("Give a boost to your projects");
         thirdItem.setDescription("Share documents and important stuff with other projects member");
-        thirdItem.setImage(R.drawable.ic_arrow_right);
+        thirdItem.setImage(R.drawable.ic_splash_illustration_three);
 
         SplashScreenItem fourthItem = new SplashScreenItem();
         fourthItem.setTitle("Check studying material");
         fourthItem.setDescription("Download all the materials needed to take your exams");
-        fourthItem.setImage(R.drawable.ic_arrow_right);
+        fourthItem.setImage(R.drawable.ic_splash_illustration_four);
 
         SplashScreenItem fifthItem = new SplashScreenItem();
         fifthItem.setTitle("Ready to send?");
         fifthItem.setDescription("Pack all your projects files and send them to the professor");
-        fifthItem.setImage(R.drawable.ic_arrow_right);
+        fifthItem.setImage(R.drawable.ic_splash_illustration_five);
 
         splashScreenItemsList.add(firstItem);
         splashScreenItemsList.add(secondItem);
