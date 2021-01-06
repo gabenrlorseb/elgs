@@ -160,17 +160,43 @@
 
         android:layout_marginBottom="350dp"
         android:entries="@array/departments"
-        app:layout_constraintBottom_toBottomOf="@id/confirm_button"
+        app:layout_constraintBottom_toBottomOf="@id/text_sede"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_departments"
+        app:layout_constraintVertical_bias="0" />
+
+    <TextView
+        android:id="@+id/text_sede"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="350dp"
+        android:text="Seleziona Sede"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_departement"
+        app:layout_constraintVertical_bias="0" />
+
+    <Spinner
+        android:id="@+id/select_sede"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+        android:layout_marginBottom="350dp"
+        android:entries="@array/sedi"
+        app:layout_constraintBottom_toBottomOf="@id/confirm_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_sede"
         app:layout_constraintVertical_bias="0" />
 
     <Button
         android:id="@+id/confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="84dp"
         android:text="Registrati"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_departement" />
@@ -186,7 +212,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_button"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
