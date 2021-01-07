@@ -31,14 +31,13 @@
         app:layout_constraintVertical_bias="0.15" />
 
     <EditText
-        android:id="@+id/set_name"
+        android:id="@+id/set_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textPassword"
-        android:password="false"
         app:layout_constraintBottom_toBottomOf="@id/text_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_email"
@@ -50,11 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
-        android:text="Inserisci pasword"
-
+        android:text="Inserisci password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_name"
+        app:layout_constraintTop_toBottomOf="@id/set_email"
         app:layout_constraintVertical_bias="0.1" />
 
     <EditText
@@ -89,7 +87,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="23dp"
         android:layout_marginBottom="350dp"
-        android:text="Non hai un account? Registarti"
+        android:text="Non hai un account? Registrati"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_button"

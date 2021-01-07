@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.15" />
 
     <EditText
-        android:id="@+id/set_name"
+        android:id="@+id/set_email_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -48,11 +48,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
-        android:text="Inserisci pasword"
+        android:text="Inserisci password"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_name"
+        app:layout_constraintTop_toBottomOf="@id/set_email_sign_in"
         app:layout_constraintVertical_bias="0.1" />
 
     <EditText
@@ -94,7 +94,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/confirm_button"
+        android:id="@+id/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
