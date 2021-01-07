@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "536675169862",
+    "firebase_url": "https://myunijet-default-rtdb.firebaseio.com",
+    "project_id": "myunijet",
+    "storage_bucket": "myunijet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536675169862:android:f01508ca4b1afb202fbc47",
+        "android_client_info": {
+          "package_name": "com.legs.unijet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536675169862-5lmk42gjdt0a98j0sl4m9slvrrstu2uq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWFsX5VsU2rqvsni9YDJQWI4EhBY1fquo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536675169862-5lmk42gjdt0a98j0sl4m9slvrrstu2uq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
