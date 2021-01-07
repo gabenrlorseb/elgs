@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.sign_in);
 
-        inputEmail = findViewById (R.id.set_email);
+        inputEmail = findViewById (R.id.set_email_sign_in);
         inputPassword = findViewById (R.id.set_password);
         inputConfirmPassword = findViewById (R.id.set_confirm_password);
         auth=FirebaseAuth.getInstance () ;

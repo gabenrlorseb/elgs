@@ -11,19 +11,24 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".splashactivity.SplashActivity"
-            android:label="@string/app_name">
+
+        android:label="@string/app_name">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+    </activity>
+        <activity android:name=".BaseActivity"/>
+
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".RegProfActivity" />
-        <activity android:name=".RegStudentActivity" />
+    <activity android:name=".RegProfActivity" />
+    <activity android:name=".RegStudentActivity" />
 
 
 
-    </application>
 
-</manifest>
+</application>
+
+    </manifest>
