@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="sign_in_values">
+    <string-array name="genders">
         <item>Maschio</item>
         <item>Femmina</item>
         <item>Preferisco non rispondere</item>
