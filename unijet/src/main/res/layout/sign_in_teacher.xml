@@ -20,7 +20,7 @@
 
 
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/text_name_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -32,18 +32,18 @@
         app:layout_constraintVertical_bias="0.15" />
 
     <EditText
-        android:id="@+id/set_name"
+        android:id="@+id/set_name_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Nome"
-        app:layout_constraintBottom_toBottomOf="@id/text_surname"
+        app:layout_constraintBottom_toBottomOf="@id/text_surname_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_name"
+        app:layout_constraintTop_toBottomOf="@id/text_name_teacher"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_surname"
+        android:id="@+id/text_surname_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -51,23 +51,23 @@
         android:text="Inserisci Cognome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_name"
+        app:layout_constraintTop_toBottomOf="@id/set_name_teacher"
         app:layout_constraintVertical_bias="0.1" />
 
     <EditText
-        android:id="@+id/set_surname"
+        android:id="@+id/set_surname_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
         android:text="Cognome"
-        app:layout_constraintBottom_toBottomOf="@id/text_matricola"
+        app:layout_constraintBottom_toBottomOf="@id/text_matricola_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_surname"
+        app:layout_constraintTop_toBottomOf="@id/text_surname_teacher"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_birth_day"
+        android:id="@+id/text_birth_day_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -75,23 +75,23 @@
         android:text="Inserisci data di nascita"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_surname"
+        app:layout_constraintTop_toBottomOf="@id/set_surname_teacher"
         app:layout_constraintVertical_bias="0.1" />
 
     <EditText
-        android:id="@+id/set_birth_day"
+        android:id="@+id/set_birth_day_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
         android:text="Data di nascita"
-        app:layout_constraintBottom_toBottomOf="@id/text_matricola"
+        app:layout_constraintBottom_toBottomOf="@id/text_matricola_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_birth_day"
+        app:layout_constraintTop_toBottomOf="@id/text_birth_day_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <TextView
-        android:id="@+id/text_matricola"
+        android:id="@+id/text_matricola_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -99,23 +99,23 @@
         android:text="Inserisci matricola"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_birth_day"
+        app:layout_constraintTop_toBottomOf="@id/set_birth_day_teacher"
         app:layout_constraintVertical_bias="0.5" />
 
     <EditText
-        android:id="@+id/set_matricola"
+        android:id="@+id/set_matricola_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
         android:text="Matricola"
-        app:layout_constraintBottom_toBottomOf="@id/text_gender"
+        app:layout_constraintBottom_toBottomOf="@id/text_gender_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_matricola"
+        app:layout_constraintTop_toBottomOf="@id/text_matricola_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <TextView
-        android:id="@+id/text_gender"
+        android:id="@+id/text_gender_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -124,23 +124,23 @@
         android:text="Seleziona Sesso"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_matricola"
+        app:layout_constraintTop_toBottomOf="@id/set_matricola_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <Spinner
-        android:id="@+id/select_gender"
+        android:id="@+id/select_gender_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
         android:entries="@array/genders"
-        app:layout_constraintBottom_toBottomOf="@id/text_departments"
+        app:layout_constraintBottom_toBottomOf="@id/text_departments_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_gender"
+        app:layout_constraintTop_toBottomOf="@id/text_gender_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <TextView
-        android:id="@+id/text_departments"
+        android:id="@+id/text_departments_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -149,24 +149,24 @@
         android:text="Seleziona Dipartimento"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/select_gender"
+        app:layout_constraintTop_toBottomOf="@id/select_gender_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <Spinner
-        android:id="@+id/select_departement"
+        android:id="@+id/select_departement_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
 
         android:layout_marginBottom="350dp"
         android:entries="@array/departments"
-        app:layout_constraintBottom_toBottomOf="@id/text_sede"
+        app:layout_constraintBottom_toBottomOf="@id/text_sede_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_departments"
+        app:layout_constraintTop_toBottomOf="@id/text_departments_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <TextView
-        android:id="@+id/text_sede"
+        android:id="@+id/text_sede_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -175,34 +175,34 @@
         android:text="Seleziona Sede"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/select_departement"
+        app:layout_constraintTop_toBottomOf="@id/select_departement_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <Spinner
-        android:id="@+id/select_sede"
+        android:id="@+id/select_sede_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
 
         android:layout_marginBottom="350dp"
         android:entries="@array/sedi"
-        app:layout_constraintBottom_toBottomOf="@id/confirm_button"
+        app:layout_constraintBottom_toBottomOf="@id/confirm_button_teacher"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_sede"
+        app:layout_constraintTop_toBottomOf="@id/text_sede_teacher"
         app:layout_constraintVertical_bias="0" />
 
     <Button
-        android:id="@+id/confirm_button"
+        android:id="@+id/confirm_button_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="84dp"
         android:text="Registrati"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/select_departement" />
+        app:layout_constraintTop_toBottomOf="@id/select_departement_teacher" />
 
     <TextView
-        android:id="@+id/text_help"
+        android:id="@+id/text_help_teacher"
         android:layout_width="217dp"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
@@ -211,7 +211,7 @@
         android:text="Hai gia un account? Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/confirm_button"
+        app:layout_constraintTop_toBottomOf="@id/confirm_button_teacher"
         app:layout_constraintVertical_bias="0.0" />
 
 
