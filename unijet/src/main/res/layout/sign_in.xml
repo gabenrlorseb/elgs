@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         app:titleTextAppearance="@style/TitleBarTextAppearance"
         app:titleTextColor="?colorOnPrimary"
-        app:title="Crea Gruppo"
+        app:title="Registrazione"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
@@ -19,71 +19,90 @@
 
 
     <TextView
-        android:id="@+id/text_name_group"
+        android:id="@+id/text_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
-        android:text="Inserisci nome gruppo"
+        android:text="Inserisci e-mail"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.067" />
+        app:layout_constraintVertical_bias="0.15" />
 
     <EditText
-        android:id="@+id/set_name_group"
+        android:id="@+id/set_email_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ems="10"
-        android:hint="Nome Gruppo"
-        app:layout_constraintBottom_toBottomOf="@id/text_member_1"
+        android:hint="E-mail"
+        app:layout_constraintBottom_toBottomOf="@id/text_password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_name_group"
+        app:layout_constraintTop_toBottomOf="@id/text_email"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_member_1"
+        android:id="@+id/text_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="350dp"
-        android:text="Inserisci Membri"
+        android:text="Inserisci password"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_name_group"
-        app:layout_constraintVertical_bias="0.067" />
+        app:layout_constraintTop_toBottomOf="@id/set_email_sign_in"
+        app:layout_constraintVertical_bias="0.1" />
 
     <EditText
-        android:id="@+id/set_member_1"
+        android:id="@+id/set_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:ems="10"
-        android:hint="Membri"
-        app:layout_constraintBottom_toBottomOf="@id/members"
+        android:layout_marginBottom="350dp"
+        android:hint="*******"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="@id/text_confirm_password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_member_1"
+        app:layout_constraintTop_toBottomOf="@id/text_password"
         app:layout_constraintVertical_bias="0.0" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/members"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        app:layout_constraintTop_toBottomOf="@+id/set_member_1"
-        tools:layout_editor_absoluteX="125dp" />
-
-    <Button
-        android:id="@+id/confirm_button"
+    <TextView
+        android:id="@+id/text_confirm_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="192dp"
-        android:text="Conferma"
+        android:layout_marginBottom="350dp"
+        android:text="Conferma password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/members"
-        app:layout_constraintVertical_bias="0.505" />
+        app:layout_constraintTop_toBottomOf="@id/set_password"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <EditText
+        android:id="@+id/set_confirm_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="350dp"
+        android:hint="*******"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_confirm_password"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Successivo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/set_confirm_password" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

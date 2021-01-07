@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ems="10"
-        android:text="Nome Progetto"
+        android:hint="Nome Progetto"
         app:layout_constraintBottom_toBottomOf="@id/text_course"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_name_project"
