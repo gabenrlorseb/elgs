@@ -27,9 +27,6 @@ public class RegProfActivity extends RegisterActivity {
         Button btnRegister;
 
 
-        Intent intent;
-        Bundle bundle;
-        String emailRef;
 
 
         private FirebaseAuth firebaseAuth;
@@ -37,7 +34,7 @@ public class RegProfActivity extends RegisterActivity {
 
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate (savedInstanceState);
-            setContentView (R.layout.sign_in_student);
+            setContentView (R.layout.sign_in_teacher);
 
             inputName = findViewById (R.id.set_name_teacher);
             inputSurname = findViewById (R.id.set_surname_teacher);
@@ -60,10 +57,7 @@ public class RegProfActivity extends RegisterActivity {
             });
             firebaseAuth = FirebaseAuth.getInstance ();
 
-            intent = getIntent ();
-            bundle = intent.getExtras ();
-            emailRef = bundle.getString ("email");
-            Log.d ("TAG", "onCreate: " + bundle.getString ("email"));
+
 
 
             Calendar calendar= Calendar.getInstance ();
@@ -91,7 +85,7 @@ public class RegProfActivity extends RegisterActivity {
 
             auth = FirebaseAuth.getInstance ();
             LoadingBar = new ProgressDialog (RegProfActivity.this);
-            btnRegister = findViewById (R.id.confirm_button_student);
+            btnRegister = findViewById (R.id.confirm_button_teacher);
             btnRegister.setOnClickListener (new View.OnClickListener () {
                 @Override
                 public void onClick(View v) {
