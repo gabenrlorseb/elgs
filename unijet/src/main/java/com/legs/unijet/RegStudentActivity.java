@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegStudentActivity  extends RegisterActivity {
@@ -28,8 +29,6 @@ public class RegStudentActivity  extends RegisterActivity {
 
 
     Intent intent;
-    Bundle bundle;
-    String emailRef;
 
 
     private FirebaseAuth firebaseAuth;
@@ -47,23 +46,21 @@ public class RegStudentActivity  extends RegisterActivity {
         inputMatricola=findViewById (R.id.set_matricola_student);
         inputDateBorn=findViewById (R.id.set_birth_day_student);
         TextView btn=findViewById(R.id.text_help_student);
+
+
+
         btn.setOnClickListener(new View.OnClickListener() {
 
 
 
             @Override
             public void onClick(View v) {
-                checkCrededentials();
                 startActivity(new Intent (RegStudentActivity.this,BaseActivity.class));
 
             }
         });
         firebaseAuth = FirebaseAuth.getInstance ();
 
-        intent = getIntent ();
-        bundle = intent.getExtras ();
-        emailRef = bundle.getString ("email");
-        Log.d ("TAG", "onCreate: " + bundle.getString ("email"));
 
 
         Calendar calendar= Calendar.getInstance ();
@@ -89,6 +86,12 @@ public class RegStudentActivity  extends RegisterActivity {
 
 
 
+      //  StringBuilder date = new StringBuilder ();
+
+       // date.append (day.toString());
+
+
+
         auth = FirebaseAuth.getInstance ();
         LoadingBar = new ProgressDialog (RegStudentActivity.this);
         btnRegister = findViewById (R.id.confirm_button_student);
@@ -104,7 +107,7 @@ public class RegStudentActivity  extends RegisterActivity {
         btnRegister.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-
+                checkCrededentials ();
                 startActivity (new Intent (RegStudentActivity.this, BaseActivity.class));
             }
         });
@@ -136,12 +139,17 @@ public class RegStudentActivity  extends RegisterActivity {
         } else if (ateneo.isEmpty ()) {
             showError4 (inputAteneo, "Your name of ateneo is not valid");
         }  else {
-
             FirebaseDatabase db=FirebaseDatabase.getInstance ();
             DatabaseReference mDatabase=db.getReference ("students");
+
             UserStudent student= new UserStudent(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
-            mDatabase.setValue (student);
-            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+            if(student == null) {
+                Log.d ("TAG", "checkCrededentials: nullo");
+            } else {
+                Log.d ("TAG", "checkCrededentials: "+student.getName ());
+            }
+             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+            mDatabase.child(student.getName()).setValue (student);
             LoadingBar.setTitle ("Registration");
             LoadingBar.setMessage ("please wait check your credentials");
             LoadingBar.setCanceledOnTouchOutside (false);
