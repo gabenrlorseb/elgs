@@ -141,14 +141,16 @@ public class RegStudentActivity  extends RegisterActivity {
             FirebaseDatabase db=FirebaseDatabase.getInstance ();
             DatabaseReference mDatabase=db.getReference ("students");
 
-            UserStudent student= new UserStudent(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
+            User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
             if(student == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
                 Log.d ("TAG", "checkCrededentials: "+student.getName ());
             }
              Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
-            mDatabase.child(student.getName()).setValue (student);
+
+
+            mDatabase.child(String.valueOf (student.sb ())).setValue (student);
             LoadingBar.setTitle ("Registration");
             LoadingBar.setMessage ("please wait check your credentials");
             LoadingBar.setCanceledOnTouchOutside (false);
