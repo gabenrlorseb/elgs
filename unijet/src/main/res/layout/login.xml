@@ -2,95 +2,106 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/login_screen_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        app:titleTextAppearance="@style/TitleBarTextAppearance"
-        app:titleTextColor="?colorOnPrimary"
-        app:title="Login"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        android:theme="@style/top_bar_theme"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
 
     <TextView
-        android:id="@+id/text_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Inserisci e-mail"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:text="Ready to boost your project?"
+        app:layout_constraintBottom_toTopOf="@id/email_logn_field"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="19dp"/>
+
+    <TextView
+        android:id="@+id/email_logn_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:text="@string/login_enter_mail_hint"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/set_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginHorizontal="16dp"
         android:ems="10"
         android:hint="E-mail"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@id/text_password"
+        android:textColorHint="@android:color/darker_gray"
+        android:inputType="textEmailAddress"
+        android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_email"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/email_logn_field"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/text_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Inserisci password"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_email"
-        app:layout_constraintVertical_bias="0.1" />
+        android:text="Enter Password"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@id/email_logn_field"
+        app:layout_constraintTop_toBottomOf="@id/set_email" />
 
     <EditText
         android:id="@+id/set_password"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginHorizontal="16dp"
         android:hint="*******"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_password"
-        app:layout_constraintVertical_bias="0.0" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/text_password" />
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
+        android:layout_marginHorizontal="80dp"
         android:text="Login"
+        android:backgroundTint="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_password" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/text_help"
-        android:layout_width="217dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="23dp"
-        android:layout_marginBottom="350dp"
-        android:text="Non hai un account? Registrati"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:text="Don't have an account yet?"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/confirm_button"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintTop_toBottomOf="@id/confirm_button" />
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="80dp"
+        android:text="Register"
+        android:backgroundTint="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_help" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
