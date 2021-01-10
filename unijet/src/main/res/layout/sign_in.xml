@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:id="@+id/text_email"
+        android:id="@+id/email_logn_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,7 +39,7 @@
         android:hint="E-mail"
         app:layout_constraintBottom_toBottomOf="@id/text_password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_email"
+        app:layout_constraintTop_toBottomOf="@id/email_logn_field"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
