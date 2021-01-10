@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="my_unijet_settings_items">
-        <item name="Settings"/>
-        <item name="Notifications"/>
-    </string-array>
-</resources>
