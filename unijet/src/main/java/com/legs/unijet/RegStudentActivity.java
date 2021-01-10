@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegStudentActivity  extends RegisterActivity {
@@ -36,7 +35,7 @@ public class RegStudentActivity  extends RegisterActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.sign_in_student);
+        setContentView (R.layout.sign_up_student);
 
         inputName = findViewById (R.id.set_name_student);
         inputSurname = findViewById (R.id.set_surname_student);

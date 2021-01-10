@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.sign_in);
+        setContentView (R.layout.sign_up);
 
         inputEmail = findViewById (R.id.set_email_sign_in);
         inputPassword = findViewById (R.id.set_password);
