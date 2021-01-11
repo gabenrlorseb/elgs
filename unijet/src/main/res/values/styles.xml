@@ -16,4 +16,11 @@
         <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
+    <style name="Common_Section_Title">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
 </resources>
