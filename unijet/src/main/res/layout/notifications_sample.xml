@@ -69,17 +69,9 @@
             android:src="@drawable/ic_cubes"
             card_view:layout_constraintHeight_max="300dp"
             card_view:layout_constraintStart_toStartOf="@id/author_icon_placeholder"
-            card_view:layout_constraintTop_toBottomOf="@id/post_text" />
+            card_view:layout_constraintTop_toBottomOf="@id/author_name" />
 
-        <TextView
-            android:id="@+id/post_text"
-            android:layout_marginTop="7dp"
-            android:layout_marginHorizontal="11dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintStart_toStartOf="@id/author_icon_placeholder"
-            card_view:layout_constraintTop_toBottomOf="@id/author_icon_placeholder"
-            android:text="prova prova"/>
+
 
 
         <TextView
@@ -92,19 +84,19 @@
             android:textSize="@dimen/common_default_subtitle_text_size"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/post_text" />
+            card_view:layout_constraintTop_toBottomOf="@id/author_name" />
 
         <TextView
             android:id="@+id/date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="132dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="100dp"
             android:text="xx minuti fa"
             android:textSize="@dimen/common_default_subtitle_text_size"
             android:textStyle="bold"
-            card_view:layout_constraintStart_toStartOf="@id/post_text"
-            card_view:layout_constraintTop_toTopOf="@id/post_text" />
+            card_view:layout_constraintStart_toStartOf="@id/post_image"
+            card_view:layout_constraintTop_toTopOf="@id/author_name" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
