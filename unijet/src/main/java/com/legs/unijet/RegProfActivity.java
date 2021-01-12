@@ -34,7 +34,7 @@ public class RegProfActivity extends RegisterActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.sign_in_teacher);
+        setContentView (R.layout.sign_up_teacher);
 
         inputName = findViewById (R.id.set_name_teacher);
         inputSurname = findViewById (R.id.set_surname_teacher);

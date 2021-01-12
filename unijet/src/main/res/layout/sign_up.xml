@@ -23,72 +23,65 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginTop="25dp"
         android:text="Inserisci e-mail"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.15" />
+         />
 
     <EditText
         android:id="@+id/set_email_sign_in"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:ems="10"
+        android:layout_marginHorizontal="16dp"
         android:hint="E-mail"
-        app:layout_constraintBottom_toBottomOf="@id/text_password"
+        app:layout_constraintBottom_toTopOf="@id/text_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/email_logn_field"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
     <TextView
         android:id="@+id/text_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginTop="25dp"
         android:text="Inserisci password"
-
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_email_sign_in"
-        app:layout_constraintVertical_bias="0.1" />
+         />
 
     <EditText
         android:id="@+id/set_password"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginHorizontal="16dp"
         android:hint="*******"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@id/text_confirm_password"
+        app:layout_constraintBottom_toTopOf="@id/text_confirm_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_password"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
     <TextView
         android:id="@+id/text_confirm_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginTop="25dp"
         android:text="Conferma password"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_password"
-        app:layout_constraintVertical_bias="0.1" />
+        />
 
     <EditText
         android:id="@+id/set_confirm_password"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginHorizontal="16dp"
         android:hint="*******"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/next_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_confirm_password"
         app:layout_constraintVertical_bias="0.0" />
@@ -98,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="25dp"
         android:text="Successivo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_confirm_password" />
