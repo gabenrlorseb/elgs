@@ -5,22 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
+    
+    <ImageView
+        android:id="@+id/projects_search_button"
+        android:layout_width="25dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/common_end_margin_top_icon"
+        app:layout_constraintTop_toTopOf="@id/section_title"
+        app:layout_constraintBottom_toBottomOf="@id/section_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/colorPrimaryDark"
+        android:src="@drawable/ic_search_2"/>
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        app:titleTextAppearance="@style/TitleBarTextAppearance"
-        app:titleTextColor="?colorOnPrimary"
-        app:title="placeholder text"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        android:theme="@style/top_bar_theme"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/section_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/projects_section_title"
+        style="@style/Common_Section_Title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/section_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
