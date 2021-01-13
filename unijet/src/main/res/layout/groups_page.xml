@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="@id/section_title"
         app:layout_constraintBottom_toBottomOf="@id/section_title"
         app:layout_constraintEnd_toEndOf="parent"
-        android:tint="@color/colorPrimaryDark"
+        app:tint="@color/colorPrimaryDark"
         android:src="@drawable/ic_search_2"/>
 
     <TextView
