@@ -21,14 +21,14 @@ import java.util.Calendar;
 
 public class RegStudentActivity  extends RegisterActivity {
 
-    private EditText inputName, inputSurname,inputMatricola, inputDateBorn;
+    private EditText inputName, inputSurname,inputMatricola, inputDateBorn,inputEmail;
     private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
 
 
     Intent intent;
-
+DatabaseReference db;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog LoadingBar;
@@ -138,8 +138,7 @@ public class RegStudentActivity  extends RegisterActivity {
         } else if (ateneo.isEmpty ()) {
             showError4 (inputAteneo, "Your name of ateneo is not valid");
         }  else {
-            FirebaseDatabase db=FirebaseDatabase.getInstance ();
-            DatabaseReference mDatabase=db.getReference ("students");
+          db=FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
 
             User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
             if(student == null) {
@@ -150,7 +149,7 @@ public class RegStudentActivity  extends RegisterActivity {
              Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
 
-            mDatabase.child(String.valueOf (student.sb ())).setValue (student);
+            db.setValue (student);
             LoadingBar.setTitle ("Registration");
             LoadingBar.setMessage ("please wait check your credentials");
             LoadingBar.setCanceledOnTouchOutside (false);
