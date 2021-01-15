@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="genders">
-        <item>Maschio</item>
-        <item>Femmina</item>
-        <item>Preferisco non rispondere</item>
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+        <item>@string/gender_no</item>
     </string-array>
 
     <string-array name="departments">
-        <item>Agraria</item>
-        <item>Fisica</item>
-        <item>Informatica</item>
-        <item>Matematica</item>
+        <item>@string/department_chemstry</item>
+        <item>@string/department_computer_science</item>
+        <item>@string/department_math</item>
+        <item>@string/department_physics</item>
     </string-array>
 
     <string-array name="sedi">
-        <item>Bari</item>
-        <item>Foggia</item>
-        <item>Lecce</item>
-        <item>Taranto</item>
+        <item>@string/campus_bari</item>
+        <item>@string/campus_foggia</item>
+        <item>@string/campus_lecce</item>
+        <item>@string/campus_taranto</item>
     </string-array>
 </resources>

@@ -64,30 +64,29 @@ public class SplashActivity extends AppCompatActivity {
     private void setupSplashScreenItems(){
         List<SplashScreenItem> splashScreenItemsList = new ArrayList<>();
 
-        //TODO: PASSARE DA HARDCODED A STRINGHE
         SplashScreenItem firstItem = new SplashScreenItem();
-        firstItem.setTitle("Welcome to Unijet");
-        firstItem.setDescription("The place where all your University Projects come to life");
+        firstItem.setTitle(getString(R.string.welcome_unijet));
+        firstItem.setDescription(getString(R.string.welcome_slogan));
         firstItem.setImage(R.drawable.ic_splash_illustration_one); //TODO: impostare le immagini
 
         SplashScreenItem secondItem = new SplashScreenItem();
-        secondItem.setTitle("Create your groups");
-        secondItem.setDescription("Create groups with people you care about");
+        secondItem.setTitle(getString(R.string.create_groups));
+        secondItem.setDescription(getString(R.string.create_groups_description));
         secondItem.setImage(R.drawable.ic_splash_illustration_two);
 
         SplashScreenItem thirdItem = new SplashScreenItem();
-        thirdItem.setTitle("Give a boost to your projects");
-        thirdItem.setDescription("Share documents and important stuff with other projects member");
+        thirdItem.setTitle(getString(R.string.boost_projects));
+        thirdItem.setDescription(getString(R.string.boost_projects_description));
         thirdItem.setImage(R.drawable.ic_splash_illustration_three);
 
         SplashScreenItem fourthItem = new SplashScreenItem();
-        fourthItem.setTitle("Check studying material");
-        fourthItem.setDescription("Download all the materials needed to take your exams");
+        fourthItem.setTitle(getString(R.string.check_material));
+        fourthItem.setDescription(getString(R.string.check_material_description));
         fourthItem.setImage(R.drawable.ic_splash_illustration_four);
 
         SplashScreenItem fifthItem = new SplashScreenItem();
-        fifthItem.setTitle("Ready to send?");
-        fifthItem.setDescription("Pack all your projects files and send them to the professor");
+        fifthItem.setTitle(getString(R.string.ready_send));
+        fifthItem.setDescription(getString(R.string.ready_send_description));
         fifthItem.setImage(R.drawable.ic_splash_illustration_five);
 
         splashScreenItemsList.add(firstItem);
@@ -131,9 +130,9 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
         if (index == splashScreenAdapter.getItemCount() - 1){
-            splashScreenButton.setText("START"); //TODO Passare da hardcoded a stringhe
+            splashScreenButton.setText(getString(R.string.START));
         } else {
-            splashScreenButton.setText("NEXT");
+            splashScreenButton.setText(getString(R.string.NEXTT));
         }
     }
 }

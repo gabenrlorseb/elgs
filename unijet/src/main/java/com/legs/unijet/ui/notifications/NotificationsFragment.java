@@ -1,5 +1,5 @@
 package com.legs.unijet.ui.notifications;
-
+/*
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,3 +32,4 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 }
+*/
