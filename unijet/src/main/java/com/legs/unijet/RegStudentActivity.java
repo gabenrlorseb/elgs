@@ -128,15 +128,15 @@ DatabaseReference db;
         String gender=inputGender.getSelectedItem ().toString ();
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
-            showError (inputName, "Your name is not valid");
+            showError (inputName, getString(R.string.error_name));
         }  else if (surname.isEmpty () || !surname.contains ("")) {
-            showError (inputSurname, "Your surname is not valid");
+            showError (inputSurname, getString(R.string.error_surname));
         } else if (dipartimento.isEmpty ()) {
-            showError2 (inputDepartment, "Your name of dipartimento is not valid");
+            showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
-            showError3 (inputDepartment, "Your selection is not valid");
+            showError3 (inputGender, getString(R.string.error_gender));
         } else if (ateneo.isEmpty ()) {
-            showError4 (inputAteneo, "Your name of ateneo is not valid");
+            showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
           db=FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
 
@@ -168,19 +168,17 @@ DatabaseReference db;
 
     private void showError2(Spinner input, String s) {
         TextView errorText = (TextView) inputDepartment.getSelectedView ();
-        errorText.setError ("Name of ");
+        errorText.setError (getString(R.string.show_error_2));
         //errorText.setTextColor(Color.RED);
-
     }
     private void showError3(Spinner input, String s) {
         TextView errorText = (TextView) inputGender.getSelectedView ();
-        errorText.setError ("Error not valid");
+        errorText.setError (getString(R.string.show_error_3));
         //errorText.setTextColor(Color.RED);
-
     }
     private void showError4(Spinner input, String s) {
         TextView errorText = (TextView) inputAteneo.getSelectedView ();
-        errorText.setError ("Error not valid");
+        errorText.setError (getString(R.string.show_error_3));
         //errorText.setTextColor(Color.RED);
 
     }

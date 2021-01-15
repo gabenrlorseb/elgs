@@ -24,7 +24,6 @@ public class RegProfActivity extends RegisterActivity {
     private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
-    DatabaseReference db;
 
 
     Intent intent;
@@ -125,18 +124,18 @@ public class RegProfActivity extends RegisterActivity {
         String gender=inputGender.getSelectedItem ().toString ();
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
-            showError (inputName, "Your name is not valid");
+            showError (inputName, getString(R.string.error_name));
         }  else if (surname.isEmpty () || !surname.contains ("")) {
-            showError (inputSurname, "Your surname is not valid");
+            showError (inputSurname, getString(R.string.error_surname));
         } else if (dipartimento.isEmpty ()) {
-            showError2 (inputDepartment, "Your name of dipartimento is not valid");
+            showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
-            showError3 (inputDepartment, "Your selection is not valid");
+            showError3 (inputGender, getString(R.string.error_gender));
         } else if (ateneo.isEmpty ()) {
-            showError4 (inputAteneo, "Your name of ateneo is not valid");
+            showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
-            db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
-
+            FirebaseDatabase db=FirebaseDatabase.getInstance ();
+            DatabaseReference mDatabase=db.getReference ("teachers");
 
             User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
             if(teacher == null) {
@@ -146,10 +145,10 @@ public class RegProfActivity extends RegisterActivity {
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
-            db.setValue (teacher);
 
-            LoadingBar.setTitle ("Registration");
-            LoadingBar.setMessage ("please wait check your credentials");
+            mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
+            LoadingBar.setTitle (getString(R.string.registration));
+            LoadingBar.setMessage (getString(R.string.check_credentials));
             LoadingBar.setCanceledOnTouchOutside (false);
 
 
@@ -166,17 +165,17 @@ public class RegProfActivity extends RegisterActivity {
 
     private void showError2(Spinner input, String s) {
         TextView errorText = (TextView) inputDepartment.getSelectedView ();
-        errorText.setError ("Name of ");
-
+        errorText.setError (getString(R.string.show_error_2));
+        //errorText.setTextColor(Color.RED);
     }
     private void showError3(Spinner input, String s) {
         TextView errorText = (TextView) inputGender.getSelectedView ();
-        errorText.setError ("Error not valid");
-
+        errorText.setError (getString(R.string.show_error_3));
+        //errorText.setTextColor(Color.RED);
     }
     private void showError4(Spinner input, String s) {
         TextView errorText = (TextView) inputAteneo.getSelectedView ();
-        errorText.setError ("Error not valid");
+        errorText.setError (getString(R.string.show_error_3));
         //errorText.setTextColor(Color.RED);
 
     }

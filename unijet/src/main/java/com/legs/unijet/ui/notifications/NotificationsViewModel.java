@@ -1,5 +1,5 @@
 package com.legs.unijet.ui.notifications;
-
+/*
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -17,3 +17,4 @@ public class NotificationsViewModel extends ViewModel {
         return mText;
     }
 }
+ */

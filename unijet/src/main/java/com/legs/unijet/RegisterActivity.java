@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.sign_up);
 
-        inputEmail = findViewById (R.id.set_email_sign_in);
+        inputEmail = findViewById (R.id.set_email);
         inputPassword = findViewById (R.id.set_password);
         inputConfirmPassword = findViewById (R.id.set_confirm_password);
         auth=FirebaseAuth.getInstance () ;
@@ -72,11 +72,11 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d ("", "checkCrededentials: contains uniba = " + !email.contains ("@uniba.it"));
 
         if (email.isEmpty () && (!email.contains ("@studenti.uniba.it") || !email.contains ("@uniba.it"))) {
-            showError (inputEmail, "Your email is not valid");
+            showError (inputEmail, getString(R.string.error_email));
         } else if (password.isEmpty () || password.length () < 7) {
-            showError (inputPassword, "Your password  must be 7 characters");
+            showError (inputPassword, getString(R.string.error_password));
         } else if (confirmPassword.isEmpty () || !confirmPassword.equals (password)) {
-            showError (inputConfirmPassword, "Your password not match!");
+            showError (inputConfirmPassword, getString(R.string.error_confirm_password));
         } else {
             /*LoadingBar.setTitle ("Registration");
             LoadingBar.setMessage ("please wait check your credentials");
