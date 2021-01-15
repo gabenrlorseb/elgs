@@ -24,6 +24,7 @@ public class RegProfActivity extends RegisterActivity {
     private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
+    DatabaseReference db;
 
 
     Intent intent;
@@ -134,8 +135,8 @@ public class RegProfActivity extends RegisterActivity {
         } else if (ateneo.isEmpty ()) {
             showError4 (inputAteneo, "Your name of ateneo is not valid");
         }  else {
-            FirebaseDatabase db=FirebaseDatabase.getInstance ();
-            DatabaseReference mDatabase=db.getReference ("teachers");
+            db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+
 
             User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
             if(teacher == null) {
@@ -145,8 +146,8 @@ public class RegProfActivity extends RegisterActivity {
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
+            db.setValue (teacher);
 
-            mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
             LoadingBar.setTitle ("Registration");
             LoadingBar.setMessage ("please wait check your credentials");
             LoadingBar.setCanceledOnTouchOutside (false);
