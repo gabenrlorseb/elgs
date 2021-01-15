@@ -33,7 +33,7 @@
             android:id="@+id/author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Placeholder Text"
+            android:text="@string/placeholder_text"
             android:textSize="@dimen/common_default_title_text_size" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:id="@+id/post_time_elapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="XXX min"
+            android:text="@string/xxx_min"
             android:textSize="@dimen/common_default_subtitle_text_size" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:id="@+id/project_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="XXX min"
+            android:text="@string/xxx_min"
             android:textSize="@dimen/common_default_subtitle_text_size" />
 
         <ImageView
@@ -135,7 +135,7 @@
         <EditText
             android:id="@+id/comment_compose_box"
             android:elevation="3dp"
-            android:hint="Scrivi un commento..."
+            android:hint="@string/write_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

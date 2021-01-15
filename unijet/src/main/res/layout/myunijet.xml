@@ -9,7 +9,7 @@
         android:id="@+id/section_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MyUniJET"
+        android:text="@string/myunijet_tab_name"
         style="@style/Common_Section_Title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         android:id="@+id/text_name_surname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name Surname"
+        android:text="@string/name_surname"
         android:layout_margin="15dp"
         android:textStyle="bold"
         android:textSize="18sp"
@@ -58,7 +58,7 @@
         android:id="@+id/email_logn_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome.Cognome@email.it"
+        android:text="@string/name_surname_email_com"
         app:layout_constraintStart_toStartOf="@id/text_name_surname"
         app:layout_constraintTop_toBottomOf="@+id/text_name_surname" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="8dp"
-                android:text="Edit Your Profile"
+                android:text="@string/edit_your_profile"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_ui_edit"
                 app:iconSize="18dp"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="8dp"
-                android:text="Logout"
+                android:text="@string/logout"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_logout"
                 app:iconSize="18dp"
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20dp"
-                android:text="Settings"/>
+                android:text="@string/settings"/>
 
         </LinearLayout>
 
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20dp"
-                android:text="Notifications"/>
+                android:text="@string/notifications"/>
 
         </LinearLayout>
 
