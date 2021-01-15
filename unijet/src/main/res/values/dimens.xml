@@ -5,5 +5,6 @@
     <dimen name="common_default_title_text_size">20sp</dimen>
     <dimen name="common_default_subtitle_text_size">15sp</dimen>
     <dimen name="common_default_collapsed_toolbar_text_size">30sp</dimen>
+    <dimen name="common_end_margin_top_icon">25dp</dimen>
 
 </resources>

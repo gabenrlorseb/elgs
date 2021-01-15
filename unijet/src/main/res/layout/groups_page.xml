@@ -7,7 +7,7 @@
     tools:context=".ui.dashboard.DashboardFragment">
     
     <ImageView
-        android:id="@+id/projects_search_button"
+        android:id="@+id/courses_search_button"
         android:layout_width="25dp"
         android:layout_height="0dp"
         android:layout_marginEnd="@dimen/common_end_margin_top_icon"
@@ -17,17 +17,15 @@
         app:tint="@color/colorPrimaryDark"
         android:src="@drawable/ic_search_2"/>
 
-
     <TextView
         android:id="@+id/section_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/projects_section_title"
+        android:text="@string/groups_tab_name"
         style="@style/Common_Section_Title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
-
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintTop_toBottomOf="@+id/section_title"
