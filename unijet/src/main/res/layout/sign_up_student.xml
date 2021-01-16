@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         app:titleTextAppearance="@style/TitleBarTextAppearance"
         app:titleTextColor="?colorOnPrimary"
-        app:title="Registrazione Studente"
+        app:title="@string/student_registration"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
@@ -24,195 +24,171 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Inserisci nome"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.15" />
+         />
 
     <EditText
         android:id="@+id/set_name_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:hint="Nome"
-        app:layout_constraintBottom_toBottomOf="@id/text_surname_student"
+        android:layout_marginHorizontal="16dp"
+        android:hint="@string/name"
+        app:layout_constraintBottom_toTopOf="@id/text_surname_student"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_name_student"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/text_name_student" />
 
     <TextView
         android:id="@+id/text_surname_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Inserisci Cognome"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/surname"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_name_student"
-        app:layout_constraintVertical_bias="0.1" />
+       />
 
     <EditText
         android:id="@+id/set_surname_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:hint="Cognome"
-        app:layout_constraintBottom_toBottomOf="@id/text_matricola_student"
+        android:layout_marginHorizontal="16dp"
+        android:hint="@string/surname"
+        app:layout_constraintBottom_toTopOf="@id/text_birth_day_student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_surname_student"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
     <TextView
         android:id="@+id/text_birth_day_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Inserisci data di nascita"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/date_of_birth"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_surname_student"
-        app:layout_constraintVertical_bias="0.1" />
+         />
 
     <EditText
         android:id="@+id/set_birth_day_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:hint="Data di nascita"
-        app:layout_constraintBottom_toBottomOf="@id/text_matricola_student"
+        android:layout_marginHorizontal="16dp"
+        android:hint="@string/date_of_birth"
+        app:layout_constraintBottom_toTopOf="@id/text_matricola_student"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_birth_day_student"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintTop_toBottomOf="@id/text_birth_day_student" />
 
     <TextView
         android:id="@+id/text_matricola_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Inserisci matricola"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/student_id"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_birth_day_student"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@id/set_birth_day_student" />
 
     <EditText
         android:id="@+id/set_matricola_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:hint="Matricola"
-        app:layout_constraintBottom_toBottomOf="@id/text_gender_student"
+        android:layout_marginHorizontal="16dp"
+        android:hint="@string/student_id"
+        app:layout_constraintBottom_toTopOf="@id/text_gender_student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_matricola_student"
-        app:layout_constraintVertical_bias="0" />
+         />
 
     <TextView
         android:id="@+id/text_gender_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
-        android:text="Seleziona Sesso"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/gender"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_matricola_student"
-        app:layout_constraintVertical_bias="0" />
+        />
 
     <Spinner
         android:id="@+id/select_gender_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginHorizontal="16dp"
         android:entries="@array/genders"
-        app:layout_constraintBottom_toBottomOf="@id/text_departments_student"
+        app:layout_constraintBottom_toTopOf="@id/text_departments_student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_gender_student"
-        app:layout_constraintVertical_bias="0" />
+         />
 
     <TextView
         android:id="@+id/text_departments_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginBottom="350dp"
-        android:text="Seleziona Dipartimento"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/department"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_gender_student"
-        app:layout_constraintVertical_bias="0" />
+         />
 
     <Spinner
         android:id="@+id/select_departement_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginBottom="350dp"
+        android:layout_marginHorizontal="16dp"
         android:entries="@array/departments"
-        app:layout_constraintBottom_toBottomOf="@id/text_sede_student"
+        app:layout_constraintBottom_toTopOf="@id/text_sede_student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_departments_student"
-        app:layout_constraintVertical_bias="0" />
+         />
 
     <TextView
         android:id="@+id/text_sede_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginBottom="350dp"
-        android:text="Seleziona Sede"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/universitary_campus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_departement_student"
-        app:layout_constraintVertical_bias="0" />
+         />
 
     <Spinner
         android:id="@+id/select_sede_student"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginBottom="350dp"
+        android:layout_marginHorizontal="16dp"
         android:entries="@array/sedi"
-        app:layout_constraintBottom_toBottomOf="@id/confirm_button_student"
+        app:layout_constraintBottom_toTopOf="@id/confirm_button_student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_sede_student"
-        app:layout_constraintVertical_bias="0" />
+         />
 
     <Button
         android:id="@+id/confirm_button_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="84dp"
-        android:text="Registrati"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/register_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/select_departement_student" />
+        app:layout_constraintTop_toBottomOf="@id/select_sede_student" />
 
     <TextView
         android:id="@+id/text_help_student"
-        android:layout_width="217dp"
-        android:layout_height="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginBottom="350dp"
-        android:text="Hai gia un account? Login"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="@string/text_have_account"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/confirm_button_student"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/confirm_button_student" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

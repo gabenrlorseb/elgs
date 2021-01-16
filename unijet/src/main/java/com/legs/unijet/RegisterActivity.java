@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 public class RegisterActivity extends AppCompatActivity {
     TextView btn;
 
-    private EditText inputPassword, inputEmail, inputConfirmPassword;
+     EditText inputPassword, inputEmail, inputConfirmPassword;
     Button btnNext;
     FirebaseAuth auth;
     private ProgressDialog LoadingBar;
@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.sign_up);
 
-        inputEmail = findViewById (R.id.set_email_sign_in);
+        inputEmail = findViewById (R.id.set_email);
         inputPassword = findViewById (R.id.set_password);
         inputConfirmPassword = findViewById (R.id.set_confirm_password);
         auth=FirebaseAuth.getInstance () ;
@@ -121,6 +121,4 @@ public class RegisterActivity extends AppCompatActivity {
         input.requestFocus ();
 
     }
-
 }
-

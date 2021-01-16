@@ -1,4 +1,5 @@
 package com.legs.unijet;
+
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+
 public class RegProfActivity extends RegisterActivity {
 
 
@@ -136,9 +138,11 @@ public class RegProfActivity extends RegisterActivity {
             showError4 (inputAteneo, "Your name of ateneo is not valid");
         }  else {
             db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras ();
+            String email = bundle.getString ("email");
 
-
-            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
+            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
             if(teacher == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
