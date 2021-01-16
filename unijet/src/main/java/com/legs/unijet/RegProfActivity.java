@@ -12,12 +12,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-public class RegProfActivity extends RegisterActivity {
+public class RegProfActivity extends AppCompatActivity {
 
 
     private EditText inputName, inputSurname,inputMatricola, inputDateBorn;
@@ -25,6 +27,7 @@ public class RegProfActivity extends RegisterActivity {
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
     DatabaseReference db;
+    FirebaseAuth auth;
 
 
     Intent intent;

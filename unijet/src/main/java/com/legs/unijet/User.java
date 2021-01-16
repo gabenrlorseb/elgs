@@ -8,6 +8,7 @@ public class User   {
  String sb;
 
 
+
     public User(String name, String surname, String matricola, String dipartimento, String ateneo, String gender, String dateBorn) {
         sb();
         this.name = name;
@@ -18,6 +19,9 @@ public class User   {
         this.gender = gender;
         this.dateBorn = dateBorn;
 
+    }
+
+    public User(String name, String surname, String matricola, String dipartimento, String ateneo, String gender, String dateBorn, String email) {
     }
 
     public String getMatricola() { return matricola; }
