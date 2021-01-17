@@ -87,7 +87,7 @@ public class BaseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful ()) {
                             Toast.makeText (BaseActivity.this, "Login  effetuato con sucesso", Toast.LENGTH_SHORT).show ();
-                            startActivity (new Intent (getApplicationContext (), Profile.class));
+                            startActivity (new Intent (getApplicationContext (), MainActivity.class));
                         } else {
                             Log.d ("TAG", "onComplete: failed");
                             Toast.makeText (BaseActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();

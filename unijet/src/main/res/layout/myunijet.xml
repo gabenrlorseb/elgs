@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:text="@string/name_surname_email_com"
         app:layout_constraintStart_toStartOf="@id/text_name_surname"
-        app:layout_constraintTop_toBottomOf="@+id/text_name_surname" />
+        app:layout_constraintTop_toBottomOf="@id/text_name_surname" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/profile_edit_button"
