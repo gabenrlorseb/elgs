@@ -24,8 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.view.View;
 
 public class Profile extends AppCompatActivity {
-    Button logout_button,settings_button,notifications_button;
-
+    Button logout_button,notifications_button;
+TextView setting;
 
     FirebaseUser user;
     String userId;
@@ -39,7 +39,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.myunijet);
         logout_button = findViewById (R.id.logout_button);
-
+        setting=findViewById (R.id.setting);
         user = FirebaseAuth.getInstance().getCurrentUser ();
         userId=user.getUid ();
         String email=user.getEmail();
@@ -51,17 +51,17 @@ public class Profile extends AppCompatActivity {
         }
         final TextView text_name_surname= (TextView)findViewById (R.id.text_name_surname);
         final TextView email_logn_field=(TextView) findViewById (R.id.email_logn_field);
-        reference.child(userId).addListenerForSingleValueEvent (new ValueEventListener () {
+        reference.child (userId).addListenerForSingleValueEvent (new ValueEventListener () {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue (User.class);
                 if (userProfile != null) {
                     String name = userProfile.name;
-                    String email = user.getEmail();
+                    String email = user.getEmail ();
 
                     String surname = userProfile.surname;
-                    String nameFull= name+"  "+surname;
+                    String nameFull = name + "  " + surname;
                     text_name_surname.setText (nameFull.toUpperCase ());
                     email_logn_field.setText (email);
                 }
@@ -74,8 +74,6 @@ public class Profile extends AppCompatActivity {
         });
 
 
-
-
         logout_button.setOnClickListener (new android.view.View.OnClickListener () {
             @Override
             public void onClick(android.view.View v) {
@@ -86,7 +84,15 @@ public class Profile extends AppCompatActivity {
 
             }
         });
+        setting.setOnClickListener (new android.view.View.OnClickListener () {
+            @Override
+            public void onClick(android.view.View v) {
+                startActivity (new Intent (getApplicationContext (), CreateGroup.class));
 
+
+
+            }
+        });
 
 
 

@@ -1,6 +1,5 @@
 package com.legs.unijet;
 
-
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,104 +21,107 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class RegStudentActivity  extends AppCompatActivity {
+public class RegStudentActivity  extends RegisterActivity {
 
-     EditText inputName, inputSurname,inputMatricola, inputDateBorn,inputEmail;
-     Spinner inputDepartment,inputGender, inputAteneo;
+    private EditText inputName, inputSurname,inputMatricola, inputDateBorn,inputEmail;
+    private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
 
+    FirebaseAuth auth;
 
     Intent intent;
     DatabaseReference db;
-    FirebaseAuth auth;
 
-     FirebaseAuth firebaseAuth;
-     ProgressDialog LoadingBar;
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog LoadingBar;
 
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate (savedInstanceState);
-            setContentView (R.layout.sign_up_teacher);
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.sign_up_student);
 
-            inputName = findViewById (R.id.set_name_teacher);
-            inputSurname = findViewById (R.id.set_surname_teacher);
-            inputDepartment = findViewById (R.id.select_departement_teacher);
-            inputAteneo = findViewById (R.id.select_sede_teacher);
-            inputGender=findViewById(R.id.select_gender_teacher);
-            inputMatricola=findViewById (R.id.set_matricola_teacher);
-            inputDateBorn=findViewById (R.id.set_birth_day_teacher);
-            TextView btn=findViewById(R.id.text_help_teacher);
-
-
-
-            btn.setOnClickListener(new View.OnClickListener() {
+        inputName = findViewById (R.id.set_name_student);
+        inputSurname = findViewById (R.id.set_surname_student);
+        inputDepartment = findViewById (R.id.select_departement_student);
+        inputAteneo = findViewById (R.id.select_sede_student);
+        inputGender=findViewById(R.id.select_gender_student);
+        inputMatricola=findViewById (R.id.set_matricola_student);
+        inputDateBorn=findViewById (R.id.set_birth_day_student);
+        TextView btn=findViewById(R.id.text_help_student);
 
 
 
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent (RegStudentActivity.this, BaseActivity.class));
-
-                }
-            });
-            firebaseAuth = FirebaseAuth.getInstance ();
+        btn.setOnClickListener(new View.OnClickListener() {
 
 
 
-            Calendar calendar= Calendar.getInstance ();
-            final int day=calendar.get (Calendar.DAY_OF_MONTH);
-            final int month= calendar.get (Calendar.MONTH);
-            final int year= calendar.get (Calendar.YEAR);
-            inputDateBorn.setOnClickListener (new View.OnClickListener () {
-                @Override
-                public void onClick(View v) {
-                    DatePickerDialog datePickerDialog= new DatePickerDialog (RegStudentActivity.this, new DatePickerDialog.OnDateSetListener () {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int month, int day) {
-                            month=month+1;
-                            String date= day+"/"+ month+"/"+year;
-                            inputDateBorn.setText(date);
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent (RegStudentActivity.this,BaseActivity.class));
 
-                        }
-                    },day,month,year);
-                    datePickerDialog.show();
-                }
-            });
+            }
+        });
+        firebaseAuth = FirebaseAuth.getInstance ();
 
 
 
+        Calendar calendar= Calendar.getInstance ();
+        final int day=calendar.get (Calendar.DAY_OF_MONTH);
+        final int month= calendar.get (Calendar.MONTH);
+        final int year= calendar.get (Calendar.YEAR);
+        inputDateBorn.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog= new DatePickerDialog (
+                        RegStudentActivity.this, new DatePickerDialog.OnDateSetListener () {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        month=month+1;
+                        String date= day+"/"+ month+"/"+year;
+                        inputDateBorn.setText(date);
+
+                    }
+                },day,month,year);
+                datePickerDialog.show();
+            }
+        });
 
 
 
-            auth = FirebaseAuth.getInstance ();
-            LoadingBar = new ProgressDialog (RegStudentActivity.this);
-            btnRegister = findViewById (R.id.confirm_button_teacher);
-            btnRegister.setOnClickListener (new View.OnClickListener () {
-                @Override
-                public void onClick(View v) {
-                    checkCrededentials ();
-                }
-            });
+        //  StringBuilder date = new StringBuilder ();
+
+        // date.append (day.toString());
 
 
 
-            btnRegister.setOnClickListener (new View.OnClickListener () {
-                @Override
-                public void onClick(View v) {
-                    checkCrededentials ();
-                    startActivity (new Intent (RegStudentActivity.this, BaseActivity.class));
-                }
-            });
+        auth = FirebaseAuth.getInstance ();
+        LoadingBar = new ProgressDialog (RegStudentActivity.this);
+        btnRegister = findViewById (R.id.confirm_button_student);
+        btnRegister.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                checkCrededentials ();
+            }
+        });
+
+
+
+        btnRegister.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                checkCrededentials ();
+                startActivity (new Intent (RegStudentActivity.this, BaseActivity.class));
+            }
+        });
 
 
 
 
 
-        }
+    }
 
 
-
-        void checkCrededentials() {
+    void checkCrededentials() {
 
         String name = inputName.getText ().toString ();
         String surname = inputSurname.getText ().toString ();
@@ -144,6 +146,7 @@ public class RegStudentActivity  extends AppCompatActivity {
             Bundle bundle = intent.getExtras ();
             String email = bundle.getString ("email");
             User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
+
             if(student == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
