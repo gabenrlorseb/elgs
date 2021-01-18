@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:text="@string/name_surname_email_com"
         app:layout_constraintStart_toStartOf="@id/text_name_surname"
-        app:layout_constraintTop_toBottomOf="@id/text_name_surname" />
+        app:layout_constraintTop_toBottomOf="@+id/text_name_surname" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/profile_edit_button"
@@ -125,13 +125,12 @@
                 android:tint="?android:attr/textColorPrimary"/>
 
             <TextView
-                android:id="@+id/setting"
+                android:layout_marginStart="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="7dp"
-                android:text="@string/settings"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:text="@string/settings"/>
 
         </LinearLayout>
 
