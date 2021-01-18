@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         loadFragment(new Profile());
+        navigation.setSelectedItemId(R.id.myunijet_tab);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
