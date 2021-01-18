@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,7 @@ import com.google.firebase.database.core.view.View;
 
 public class Profile extends Fragment {
     Button logout_button,notifications_button;
-    TextView setting;
+    LinearLayout setting;
 
     FirebaseUser user;
     String userId;
@@ -43,7 +44,7 @@ public class Profile extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.myunijet, container, false);
 
         logout_button = view.findViewById (R.id.logout_button);
-        setting=view.findViewById (R.id.setting);
+        setting=view.findViewById (R.id.settings_button);
         user = FirebaseAuth.getInstance().getCurrentUser ();
         userId=user.getUid ();
         String email=user.getEmail();
@@ -85,6 +86,7 @@ public class Profile extends Fragment {
                 //TODO: DA RIFARE
             }
         });
+
         setting.setOnClickListener (new android.view.View.OnClickListener () {
             @Override
             public void onClick(android.view.View v) {
