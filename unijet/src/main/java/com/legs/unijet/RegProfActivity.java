@@ -12,12 +12,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-public class RegProfActivity extends RegisterActivity {
+
+public class RegProfActivity extends AppCompatActivity {
 
 
     private EditText inputName, inputSurname,inputMatricola, inputDateBorn;
@@ -25,6 +28,7 @@ public class RegProfActivity extends RegisterActivity {
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
     DatabaseReference db;
+    FirebaseAuth auth;
 
 
     Intent intent;
@@ -125,20 +129,21 @@ public class RegProfActivity extends RegisterActivity {
         String gender=inputGender.getSelectedItem ().toString ();
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
-            showError (inputName, "Your name is not valid");
+            showError (inputName, getString(R.string.error_name));
         }  else if (surname.isEmpty () || !surname.contains ("")) {
-            showError (inputSurname, "Your surname is not valid");
+            showError (inputSurname, getString(R.string.error_surname));
         } else if (dipartimento.isEmpty ()) {
-            showError2 (inputDepartment, "Your name of dipartimento is not valid");
+            showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
-            showError3 (inputDepartment, "Your selection is not valid");
+            showError3 (inputGender, getString(R.string.error_gender));
         } else if (ateneo.isEmpty ()) {
-            showError4 (inputAteneo, "Your name of ateneo is not valid");
+            showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
             db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
-
-
-            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras ();
+            String email = bundle.getString ("email");
+            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
             if(teacher == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
@@ -148,8 +153,9 @@ public class RegProfActivity extends RegisterActivity {
 
             db.setValue (teacher);
 
-            LoadingBar.setTitle ("Registration");
-            LoadingBar.setMessage ("please wait check your credentials");
+            mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
+            LoadingBar.setTitle (getString(R.string.registration));
+            LoadingBar.setMessage (getString(R.string.check_credentials));
             LoadingBar.setCanceledOnTouchOutside (false);
 
 
@@ -166,17 +172,17 @@ public class RegProfActivity extends RegisterActivity {
 
     private void showError2(Spinner input, String s) {
         TextView errorText = (TextView) inputDepartment.getSelectedView ();
-        errorText.setError ("Name of ");
-
+        errorText.setError (getString(R.string.show_error_2));
+        //errorText.setTextColor(Color.RED);
     }
     private void showError3(Spinner input, String s) {
         TextView errorText = (TextView) inputGender.getSelectedView ();
-        errorText.setError ("Error not valid");
-
+        errorText.setError (getString(R.string.show_error_3));
+        //errorText.setTextColor(Color.RED);
     }
     private void showError4(Spinner input, String s) {
         TextView errorText = (TextView) inputAteneo.getSelectedView ();
-        errorText.setError ("Error not valid");
+        errorText.setError (getString(R.string.show_error_3));
         //errorText.setTextColor(Color.RED);
 
     }

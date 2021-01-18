@@ -7,8 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
+        android:background="#00000000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -21,9 +28,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/bottom_navbar_drawable"
             android:elevation="5dp"
-            app:itemRippleColor="@color/colorPrimaryDark"
+            app:itemTextColor="@color/bottom_nav_item_color"
+            app:itemIconTint="@color/bottom_nav_item_color"
+            app:itemRippleColor="#C5BDD6"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav_menu" />
 

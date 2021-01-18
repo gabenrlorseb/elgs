@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,9 +28,10 @@ public class RegStudentActivity  extends RegisterActivity {
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
 
+    FirebaseAuth auth;
 
     Intent intent;
-DatabaseReference db;
+    DatabaseReference db;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog LoadingBar;
@@ -85,9 +88,9 @@ DatabaseReference db;
 
 
 
-      //  StringBuilder date = new StringBuilder ();
+        //  StringBuilder date = new StringBuilder ();
 
-       // date.append (day.toString());
+        // date.append (day.toString());
 
 
 
@@ -128,25 +131,28 @@ DatabaseReference db;
         String gender=inputGender.getSelectedItem ().toString ();
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
-            showError (inputName, "Your name is not valid");
+            showError (inputName, getString(R.string.error_name));
         }  else if (surname.isEmpty () || !surname.contains ("")) {
-            showError (inputSurname, "Your surname is not valid");
+            showError (inputSurname, getString(R.string.error_surname));
         } else if (dipartimento.isEmpty ()) {
-            showError2 (inputDepartment, "Your name of dipartimento is not valid");
+            showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
-            showError3 (inputDepartment, "Your selection is not valid");
+            showError3 (inputGender, getString(R.string.error_gender));
         } else if (ateneo.isEmpty ()) {
-            showError4 (inputAteneo, "Your name of ateneo is not valid");
+            showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
-          db=FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            db= FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras ();
+            String email = bundle.getString ("email");
+            User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
 
-            User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
             if(student == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
                 Log.d ("TAG", "checkCrededentials: "+student.getName ());
             }
-             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
 
             db.setValue (student);
@@ -168,19 +174,17 @@ DatabaseReference db;
 
     private void showError2(Spinner input, String s) {
         TextView errorText = (TextView) inputDepartment.getSelectedView ();
-        errorText.setError ("Name of ");
+        errorText.setError (getString(R.string.show_error_2));
         //errorText.setTextColor(Color.RED);
-
     }
     private void showError3(Spinner input, String s) {
         TextView errorText = (TextView) inputGender.getSelectedView ();
-        errorText.setError ("Error not valid");
+        errorText.setError (getString(R.string.show_error_3));
         //errorText.setTextColor(Color.RED);
-
     }
     private void showError4(Spinner input, String s) {
         TextView errorText = (TextView) inputAteneo.getSelectedView ();
-        errorText.setError ("Error not valid");
+        errorText.setError (getString(R.string.show_error_3));
         //errorText.setTextColor(Color.RED);
 
     }

@@ -49,8 +49,8 @@ public class BaseActivity extends AppCompatActivity {
         inputPassword = findViewById (R.id.set_password);
         btnLogin = findViewById (R.id.confirm_button);
         register_button=findViewById (R.id.register_button);
-      //  forgotTextLink=findViewById (R.id.forgotPassword);
-       // progressBar=findViewById (R.id.progressBar);
+        //  forgotTextLink=findViewById (R.id.forgotPassword);
+        // progressBar=findViewById (R.id.progressBar);
 
 
 
@@ -87,19 +87,16 @@ public class BaseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful ()) {
                             Toast.makeText (BaseActivity.this, "Login  effetuato con sucesso", Toast.LENGTH_SHORT).show ();
-                            if(email.contains("@studenti.uniba.it")) {
-                                startActivity (new Intent (getApplicationContext (), ProfileStudent.class));
-                            }else if(email.contains("@uniba.it")){
-                                startActivity (new Intent (getApplicationContext (), ProfileTeacher.class));
-                            }
-                            } else {
+                            startActivity (new Intent (getApplicationContext (), MainActivity.class));
+                        } else {
                             Log.d ("TAG", "onComplete: failed");
                             Toast.makeText (BaseActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
 
+
                         }
 
-            }
-        });
+                    }
+                });
 
             }
         });
@@ -110,7 +107,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     void checkCrededentials() {
-         final String email = inputEmail.getText ().toString ();
+        final String email = inputEmail.getText ().toString ();
         String password = inputPassword.getText ().toString ();
         Log.d ("", "checkCrededentials: email = " + email);
         Log.d ("", "checkCrededentials: email empty = " + email.isEmpty ());

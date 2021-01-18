@@ -10,25 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".splashactivity.SplashActivity"
+                android:name=".splashactivity.SplashActivity"
 
-        android:label="@string/app_name">
+                android:label="@string/app_name">
 
-            <intent-filter>
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                     </intent-filter>
     </activity>
-        <activity android:name=".BaseActivity"/>
+                <activity android:name=".BaseActivity"/>
+                <activity android:name=".RegisterActivity" />
+                <activity android:name=".RegStudentActivity" />
+                <activity android:name=".RegProfActivity" />
+                <activity android:name=".MainActivity"
+                    android:exported="true"/>
+                <activity android:name=".CreateGroup" />
 
-        <activity android:name=".RegisterActivity" />
-    <activity android:name=".RegProfActivity" />
-    <activity android:name=".RegStudentActivity" />
 
 
 
-
-</application>
+    </application>
 
     </manifest>
