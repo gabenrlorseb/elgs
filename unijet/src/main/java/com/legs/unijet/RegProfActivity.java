@@ -12,18 +12,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-public class RegProfActivity extends RegisterActivity {
+
+public class RegProfActivity extends AppCompatActivity {
 
 
     private EditText inputName, inputSurname,inputMatricola, inputDateBorn;
     private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
+    DatabaseReference db;
+    FirebaseAuth auth;
 
 
     Intent intent;
@@ -134,10 +139,11 @@ public class RegProfActivity extends RegisterActivity {
         } else if (ateneo.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
-            FirebaseDatabase db=FirebaseDatabase.getInstance ();
-            DatabaseReference mDatabase=db.getReference ("teachers");
-
-            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
+            db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras ();
+            String email = bundle.getString ("email");
+            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
             if(teacher == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
@@ -145,6 +151,7 @@ public class RegProfActivity extends RegisterActivity {
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
+            db.setValue (teacher);
 
             //mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
             LoadingBar.setTitle (getString(R.string.registration));
