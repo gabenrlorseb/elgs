@@ -20,11 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
     </activity>
-        <activity android:name=".BaseActivity"/>
-
-        <activity android:name=".RegisterActivity" />
-    <activity android:name=".RegProfActivity" />
-    <activity android:name=".RegStudentActivity" />
+                <activity android:name=".BaseActivity"/>
+                <activity android:name=".RegisterActivity" />
+                <activity android:name=".RegStudentActivity" />
+                <activity android:name=".RegProfActivity" />
+                <activity android:name=".MainActivity"
+                    android:exported="true"/>
+                <activity android:name=".createGroupActivity.CreateGroupStart" />
 
 
 

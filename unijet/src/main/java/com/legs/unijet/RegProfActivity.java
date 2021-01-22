@@ -146,7 +146,7 @@ public class RegProfActivity extends RegisterActivity {
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
 
-            mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
+            //mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
             LoadingBar.setTitle (getString(R.string.registration));
             LoadingBar.setMessage (getString(R.string.check_credentials));
             LoadingBar.setCanceledOnTouchOutside (false);
