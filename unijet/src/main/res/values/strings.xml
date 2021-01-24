@@ -88,5 +88,13 @@
     <string name="check_credentials">please wait check your credentials</string>
     <string name="show_error_2">Name of </string>
     <string name="show_error_3">Error not valid </string>
+    <string name="create_group_subtitle">Create a new group and start sharing</string>
+    <string name="create_group_title">Group</string>
+    <string name="create_project_title">Project</string>
+    <string name="create_project_subtitle">Create a new project for your course</string>
+    <string name="post_option_title">Post</string>
+    <string name="post_option_subtitle">Post an update on a group or project</string>
+    <string name="upload_title">Upload</string>
+    <string name="upload_subtitle">Upload a document, file or image</string>
 
 </resources>

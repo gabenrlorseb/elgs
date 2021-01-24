@@ -10,14 +10,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="19dp"
+        android:text="@string/title_login"
         android:textColor="@android:color/white"
         android:textSize="24sp"
-        android:text="@string/title_login"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/email_logn_field"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="9dp"
-        android:layout_marginBottom="19dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/email_logn_field"
