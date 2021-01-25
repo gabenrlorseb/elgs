@@ -1,15 +1,18 @@
 package com.legs.unijet.createGroupActivity;
 
+import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.widget.SearchView;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,30 +29,60 @@ import java.util.ArrayList;
 
 public class CreateGroupStart extends AppCompatActivity {
 
-    FirebaseUser user;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
-    ArrayList<userSample> names=new ArrayList<>();
+    private ArrayList<userSample> names;
 
     RecyclerView mRecyclerView;
-    MemberAdapter mAdapter;
+    private MemberAdapter mAdapter;
 
+    EditText searchEditText;
 
 
     @Override
     protected void onCreate (Bundle savedInstance) {
+
         super.onCreate(savedInstance);
          setContentView(R.layout.create_group_search_section);
-
-        user = FirebaseAuth.getInstance ().getCurrentUser ();
-        assert user != null;
-
         populateList();
+
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        Menu menu=toolbar.getMenu();
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        searchEditText = findViewById(R.id.search_edit_text);
+
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                searchEditText.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+
+
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {}
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                mAdapter.getFilter().filter(s);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
 
     }
 
     private void populateList() {
-        names.clear ();
+        names = new ArrayList<>();
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -82,32 +115,7 @@ public class CreateGroupStart extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
 
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Log.i("well", newText);
-                mAdapter.getFilter().filter(newText);
-                return false;
-            }
-
-        });
-        return  super.onPrepareOptionsMenu(menu);
-    }
 
 }

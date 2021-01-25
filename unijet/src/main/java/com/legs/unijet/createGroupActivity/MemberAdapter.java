@@ -39,6 +39,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
         fullSampleList = new ArrayList<>(exampleList);
     }
 
+
+    @Override
+    public int getItemCount() {
+        return sampleList.size();
+    }
+
     @Override
     public Filter getFilter() {
         return mFilter;
@@ -53,11 +59,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (userSample item : fullSampleList) {
-                    if (item.getText2().toLowerCase().contains(filterPattern)) {
+                    if (item.getText1().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
             }
+
             FilterResults results = new FilterResults();
             results.values = filteredList;
             return results;
@@ -88,11 +95,5 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
         holder.mTextView2.setText(currentItem.getText2());
     }
 
-
-
-    @Override
-    public int getItemCount() {
-        return sampleList.size();
-    }
 
 }
