@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<plurals name ="x_minutes_ago">
+<item quantity="one">%d minute ago</item>
+    <item quantity="other" >%d minutes ago</item>
+</plurals>
+
+    <plurals name ="x_hours_ago">
+        <item quantity="one">%d hour ago</item>
+        <item quantity="other" >%d hours ago</item>
+    </plurals>
+
+    <plurals name ="x_days_ago">
+        <item quantity="one">%d day ago</item>
+        <item quantity="other" >%d days ago</item>
+    </plurals>
+
+    <plurals name ="x_months_ago">
+        <item quantity="one">%d month ago</item>
+        <item quantity="other" >%d months ago</item>
+    </plurals>
+
+    <plurals name ="x_years_ago">
+        <item quantity="one">%d year ago</item>
+        <item quantity="other" >%d years ago</item>
+    </plurals>
+
+
+
+</resources>
