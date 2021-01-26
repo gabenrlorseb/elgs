@@ -78,4 +78,16 @@
     <string name="course_creation">Creazione Corso</string>
     <string name="group_creation">Creazione Gruppo</string>
     <string name="project_creation">Creazione Progetto</string>
+    <string name="second_ago">%d secondo fa</string>
+    <string name="seconds_ago">%d secondi fa</string>
+    <string name="minute_ago">%d minuto fa</string>
+    <string name="minutes_ago">%d minuti fa</string>
+    <string name="hour_ago">%d ora fa</string>
+    <string name="hours_ago">%d ore fa</string>
+    <string name="day_ago">%d giorno fa</string>
+    <string name="days_ago">%d giorni fa</string>
+    <string name="month_ago">%d mese fa</string>
+    <string name="months_ago">%d mesi fa</string>
+    <string name="year_ago">%d anno fa</string>
+    <string name="years_ago">%d anni fa</string>
 </resources>
