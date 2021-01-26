@@ -88,5 +88,8 @@
     <string name="check_credentials">please wait check your credentials</string>
     <string name="show_error_2">Name of </string>
     <string name="show_error_3">Error not valid </string>
+    <string name="course_name">Course Name</string>
+    <string name="academic_year">Academic Year</string>
+    <string name="create_course">Create Course</string>
 
 </resources>
