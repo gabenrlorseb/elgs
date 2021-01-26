@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CreateGroupStart extends AppCompatActivity {
@@ -78,8 +79,16 @@ public class CreateGroupStart extends AppCompatActivity {
             }
         });
 
+        //ArrayList<String> namesToBeAdded = getNamesToBeAdded();
+
 
     }
+
+    /* private ArrayList<String> getNamesToBeAdded() {
+        ArrayList<String> uuidList;
+
+        return uuidList;
+    }*/
 
     private void populateList() {
         names = new ArrayList<>();
@@ -93,7 +102,7 @@ public class CreateGroupStart extends AppCompatActivity {
                                 " " +
                                 childSnapshot.child("surname").getValue(String.class);
                         String mail = childSnapshot.child ("email").getValue (String.class);
-                        names.add (new userSample(R.drawable.ic_people, namesString, mail));
+                        names.add (new userSample(R.drawable.ic_people, namesString, mail, false));
                     }
                 }
                 buildRecyclerView();

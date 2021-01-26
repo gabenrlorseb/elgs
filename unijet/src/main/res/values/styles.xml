@@ -23,13 +23,13 @@
 
     <style name="TextAppearance.SelectedNavBarItem" parent="android:TextAppearance">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:padding">3dp</item>
     </style>
 
     <style name="TextAppearance.UnselectedNavBarItem" parent="android:TextAppearance">
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:padding">5dp</item>
     </style>
 
