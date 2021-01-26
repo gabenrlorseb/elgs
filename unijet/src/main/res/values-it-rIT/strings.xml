@@ -75,4 +75,7 @@
     <string name="course_name">Nome Corso</string>
     <string name="academic_year">Anno accademico</string>
     <string name="create_course">Crea Corso</string>
+    <string name="course_creation">Creazione Corso</string>
+    <string name="group_creation">Creazione Gruppo</string>
+    <string name="project_creation">Creazione Progetto</string>
 </resources>
