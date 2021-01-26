@@ -34,9 +34,11 @@
     <string name="campus_foggia" translatable="false">Foggia</string>
     <string name="campus_lecce" translatable="false">Lecce</string>
     <string name="campus_taranto" translatable="false">Taranto</string>
+    <string name="group_creation">Group Creation</string>
     <string name="create_group">Create Group</string>
     <string name="group_name">Group Name</string>
     <string name="member">Member 1</string>
+    <string name="project_creation">Project Creation</string>
     <string name="create_project">Create Project</string>
     <string name="project_name">Project Name</string>
     <string name="course">Course</string>
@@ -88,5 +90,9 @@
     <string name="check_credentials">please wait check your credentials</string>
     <string name="show_error_2">Name of </string>
     <string name="show_error_3">Error not valid </string>
+    <string name="course_creation">Course Creation</string>
+    <string name="course_name">Course Name</string>
+    <string name="academic_year">Academic Year</string>
+    <string name="create_course">Create Course</string>
 
 </resources>

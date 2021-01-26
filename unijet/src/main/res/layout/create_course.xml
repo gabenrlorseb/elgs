@@ -10,46 +10,46 @@
         android:id="@+id/toolbar"
         app:titleTextAppearance="@style/TitleBarTextAppearance"
         app:titleTextColor="?colorOnPrimary"
-        app:title="@string/project_creation"
+        app:title="@string/course_creation"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:theme="@style/top_bar_theme"
         app:layout_constraintTop_toTopOf="parent"
- />
+        />
 
 
     <TextView
-        android:id="@+id/text_name_project"
+        android:id="@+id/text_name_course"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
-        android:text="@string/project_name"
+        android:text="@string/course_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         />
 
     <EditText
-        android:id="@+id/set_name_project"
+        android:id="@+id/set_name_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:hint="@string/project_name"
-        app:layout_constraintBottom_toTopOf="@id/text_course"
+        android:hint="@string/course_name"
+        app:layout_constraintBottom_toTopOf="@id/text_department"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_name_project"
+        app:layout_constraintTop_toBottomOf="@id/text_name_course"
         />
 
     <TextView
-        android:id="@+id/text_course"
+        android:id="@+id/text_department"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
-        android:text="@string/course"
+        android:text="@string/department"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_name_project"
+        app:layout_constraintTop_toBottomOf="@id/set_name_course"
         />
 
     <Spinner
@@ -57,19 +57,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:entries="@array/corsi"
-        app:layout_constraintBottom_toTopOf="@id/text_group"
+        android:entries="@array/departments"
+        app:layout_constraintBottom_toTopOf="@id/text_academic_year"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_course"
+        app:layout_constraintTop_toBottomOf="@id/text_department"
         />
 
     <TextView
-        android:id="@+id/text_group"
+        android:id="@+id/text_academic_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
-        android:text="@string/group"
+        android:text="@string/academic_year"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_corso"
         />
@@ -79,10 +79,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:entries="@array/gruppi"
+        android:entries="@array/academic_years"
         app:layout_constraintBottom_toTopOf="@id/confirm_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_group"
+        app:layout_constraintTop_toBottomOf="@id/text_academic_year"
         />
 
     <Button
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
-        android:text="@string/create_project"
+        android:text="@string/create_course"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_group"
         />
