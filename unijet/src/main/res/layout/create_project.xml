@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         app:titleTextAppearance="@style/TitleBarTextAppearance"
         app:titleTextColor="?colorOnPrimary"
-        app:title="@string/create_project"
+        app:title="@string/project_creation"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
