@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,14 +23,15 @@ import java.util.Calendar;
 
 public class RegStudentActivity  extends RegisterActivity {
 
-    private EditText inputName, inputSurname,inputMatricola, inputDateBorn;
+    private EditText inputName, inputSurname,inputMatricola, inputDateBorn,inputEmail;
     private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
 
+    FirebaseAuth auth;
 
     Intent intent;
-
+    DatabaseReference db;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog LoadingBar;
@@ -85,9 +88,9 @@ public class RegStudentActivity  extends RegisterActivity {
 
 
 
-      //  StringBuilder date = new StringBuilder ();
+        //  StringBuilder date = new StringBuilder ();
 
-       // date.append (day.toString());
+        // date.append (day.toString());
 
 
 
@@ -138,19 +141,21 @@ public class RegStudentActivity  extends RegisterActivity {
         } else if (ateneo.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
-            FirebaseDatabase db=FirebaseDatabase.getInstance ();
-            DatabaseReference mDatabase=db.getReference ("students");
+            db= FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras ();
+            String email = bundle.getString ("email");
+            User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
 
-            User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn);
             if(student == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
                 Log.d ("TAG", "checkCrededentials: "+student.getName ());
             }
-             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
 
-            mDatabase.child(String.valueOf (student.sb ())).setValue (student);
+            db.setValue (student);
             LoadingBar.setTitle ("Registration");
             LoadingBar.setMessage ("please wait check your credentials");
             LoadingBar.setCanceledOnTouchOutside (false);

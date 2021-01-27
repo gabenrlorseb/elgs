@@ -1,15 +1,29 @@
 package com.legs.unijet;
 
-import java.security.SecureRandom;
 import java.util.Objects;
 
 public class User   {
-    String name,surname,matricola,dipartimento,ateneo,gender,dateBorn;
- String sb;
+    String name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email;
+
+    //User sb;
 
 
-    public User(String name, String surname, String matricola, String dipartimento, String ateneo, String gender, String dateBorn) {
-        sb();
+    //User sb;
+
+
+    public User() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User(String name, String surname, String matricola, String dipartimento, String ateneo, String gender, String dateBorn, String email) {
+        // sb();
         this.name = name;
         this.surname = surname;
         this.matricola = matricola;
@@ -17,8 +31,12 @@ public class User   {
         this.ateneo = ateneo;
         this.gender = gender;
         this.dateBorn = dateBorn;
+        this.email=email;
+
 
     }
+
+
 
     public String getMatricola() { return matricola; }
 
@@ -36,6 +54,9 @@ public class User   {
 
     public void setAteneo(String ateneo) { this.ateneo = ateneo; }
 
+
+
+
     public String getGender() { return gender; }
 
     public void setGender(String gender) { this.gender = gender; }
@@ -44,8 +65,8 @@ public class User   {
 
     public void setDateBorn(String dateBorn) { this.dateBorn = dateBorn; }
 
-     @Override
-   public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass () != o.getClass ()) return false;
         User that = (User) o;
@@ -56,20 +77,8 @@ public class User   {
     public int hashCode() {
         return Objects.hash (matricola);
     }
-    public StringBuilder sb(){
-        String lower = "abcdefghijklmnopqrstuvwxyz";
-        String upper = lower.toUpperCase();
-        String numeri = "0123456789";
-        String perRandom = upper + lower + numeri;
-        int lunghezzaRandom = 5;
 
-        SecureRandom sr = new SecureRandom();
-        StringBuilder sb = new StringBuilder(lunghezzaRandom);
-        for (int i = 0; i < lunghezzaRandom; i++) {
-            int randomInt = sr.nextInt(perRandom.length());
-            char randomChar = perRandom.charAt(randomInt);
-            sb.append(randomChar);
-        }
-        return sb;
-    }
+
+
+
 }
