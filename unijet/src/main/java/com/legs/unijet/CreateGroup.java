@@ -46,7 +46,6 @@ public class CreateGroup extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.create_group);
 
-        setmember=findViewById (R.id.set_member_1);
         user = FirebaseAuth.getInstance ().getCurrentUser ();
         userId=user.getUid ();
              showDataSpinner();

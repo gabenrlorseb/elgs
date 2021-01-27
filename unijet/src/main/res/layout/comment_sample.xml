@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/author_icon_placeholder"
+            android:id="@+id/member_icon_placeholder"
             card_view:layout_constraintTop_toTopOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             android:layout_margin="7dp"
@@ -20,26 +20,26 @@
             android:layout_width="28dp"
             android:layout_height="28dp">
             <ImageView
-                android:id="@+id/author_icon"
+                android:id="@+id/member_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
         </androidx.cardview.widget.CardView>
 
         <TextView
-            card_view:layout_constraintTop_toTopOf="@id/author_icon_placeholder"
-            card_view:layout_constraintBottom_toBottomOf="@id/author_icon_placeholder"
-            card_view:layout_constraintStart_toEndOf="@id/author_icon_placeholder"
+            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
+            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
+            card_view:layout_constraintStart_toEndOf="@id/member_icon_placeholder"
             android:layout_marginStart="15dp"
-            android:id="@+id/author_name"
+            android:id="@+id/member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/placeholder_text"
             android:textSize="@dimen/common_default_title_text_size" />
 
         <TextView
-            card_view:layout_constraintTop_toTopOf="@id/author_icon_placeholder"
-            card_view:layout_constraintBottom_toBottomOf="@id/author_icon_placeholder"
+            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
+            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
             card_view:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             android:id="@+id/post_time_elapsed"
@@ -49,8 +49,8 @@
             android:textSize="@dimen/common_default_subtitle_text_size" />
 
         <TextView
-            card_view:layout_constraintTop_toTopOf="@id/author_icon_placeholder"
-            card_view:layout_constraintBottom_toBottomOf="@id/author_icon_placeholder"
+            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
+            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
             card_view:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             android:id="@+id/project_subtitle"
@@ -60,13 +60,13 @@
             android:textSize="@dimen/common_default_subtitle_text_size" />
 
         <TextView
-            android:id="@+id/post_text"
+            android:id="@+id/member_mail"
             android:layout_marginTop="7dp"
             android:layout_marginHorizontal="11dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:layout_constraintStart_toStartOf="@id/author_icon_placeholder"
-            card_view:layout_constraintTop_toBottomOf="@id/author_icon_placeholder"
+            card_view:layout_constraintStart_toStartOf="@id/member_icon_placeholder"
+            card_view:layout_constraintTop_toBottomOf="@id/member_icon_placeholder"
             android:text="prova prova"/>
 
         <TextView
@@ -77,7 +77,7 @@
             android:textSize="@dimen/common_default_subtitle_text_size"
             android:textStyle="bold"
             android:layout_margin="14dp"
-            card_view:layout_constraintTop_toBottomOf="@id/post_text"
+            card_view:layout_constraintTop_toBottomOf="@id/member_mail"
             card_view:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
