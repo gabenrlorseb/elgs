@@ -17,7 +17,7 @@ import java.util.List;
 public class CreateGroupLEGACY extends AppCompatActivity {
 
 
-    List<userSample> members=new ArrayList<> ();
+    List<UserSample> members=new ArrayList<> ();
     ArrayList<String> addNames=new ArrayList<> ();
 
     Button confirmButton = findViewById (R.id.confirm_button);

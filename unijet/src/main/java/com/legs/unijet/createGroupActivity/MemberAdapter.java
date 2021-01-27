@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -16,30 +17,29 @@ import com.legs.unijet.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<userSample> sampleList;
-    private ArrayList<userSample> fullSampleList;
+    private ArrayList<UserSample> sampleList;
+    private ArrayList<UserSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
-        public CheckBox mChkecbox1;
+        public CheckBox mCheckBox1;
 
         public ExampleViewHolder(View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.member_icon);
             mTextView1 = itemView.findViewById(R.id.member_name);
             mTextView2 = itemView.findViewById(R.id.member_mail);
-            mChkecbox1 = itemView.findViewById(R.id.member_checkbox);
+            mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
         }
     }
 
-    public MemberAdapter(ArrayList<userSample> exampleList) {
+    public MemberAdapter(ArrayList<UserSample> exampleList) {
         this.sampleList = exampleList;
         fullSampleList = new ArrayList<>(exampleList);
     }
@@ -58,16 +58,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
     private Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<userSample> filteredList = new ArrayList<>();
+            List<UserSample> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(fullSampleList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (userSample item : fullSampleList) {
+                for (UserSample item : fullSampleList) {
                     if (item.getText1().toLowerCase().contains(filterPattern)) {
-                        if (item.getChecked()) {
-                            item.setChecked(true);
-                        }
                         filteredList.add(item);
                     }
                 }
@@ -96,21 +93,24 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
 
     @Override
     public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
-        final userSample currentItem = sampleList.get(position);
+        final UserSample currentItem = sampleList.get(position);
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
+        holder.mCheckBox1.setChecked(currentItem.getChecked());
 
-        if (holder.mChkecbox1.isChecked()) {
-            swapItem(holder.getAdapterPosition(), 0);
-        }
+        holder.mCheckBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                swapItem(holder.getAdapterPosition(), 0);
+            }
+        });
 
-        holder.mChkecbox1.setOnClickListener(new View.OnClickListener() {
+        holder.mCheckBox1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.mChkecbox1.isChecked()) {
-                    swapItem(holder.getAdapterPosition(), 0);
-                }
+                holder.mCheckBox1.setChecked(true);
+                currentItem.setChecked(true);
             }
         });
 

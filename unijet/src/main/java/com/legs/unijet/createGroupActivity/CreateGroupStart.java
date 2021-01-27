@@ -1,11 +1,9 @@
 package com.legs.unijet.createGroupActivity;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -25,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CreateGroupStart extends AppCompatActivity {
@@ -33,7 +30,7 @@ public class CreateGroupStart extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
-    private ArrayList<userSample> names;
+    private ArrayList<UserSample> names;
 
     RecyclerView mRecyclerView;
     private MemberAdapter mAdapter;
@@ -91,7 +88,7 @@ public class CreateGroupStart extends AppCompatActivity {
     }*/
 
     private void populateList() {
-        names = new ArrayList<>();
+        names = new ArrayList<UserSample>();
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -102,7 +99,7 @@ public class CreateGroupStart extends AppCompatActivity {
                                 " " +
                                 childSnapshot.child("surname").getValue(String.class);
                         String mail = childSnapshot.child ("email").getValue (String.class);
-                        names.add (new userSample(R.drawable.ic_people, namesString, mail, false));
+                        names.add (new UserSample(R.drawable.ic_people, namesString, mail, false));
                     }
                 }
                 buildRecyclerView();

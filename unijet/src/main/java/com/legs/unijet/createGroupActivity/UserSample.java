@@ -1,23 +1,18 @@
 package com.legs.unijet.createGroupActivity;
 
-import android.widget.CheckBox;
-
-public class userSample {
+public class UserSample {
     private int mImageResource;
     private String mText1;
     private String mText2;
-    private Boolean isSelected;
+    private Boolean isChecked;
 
-    public userSample(int imageResource, String text1, String text2, Boolean selected) {
+
+    public UserSample(int imageResource, String text1, String text2, Boolean checkbox) {
         mImageResource = imageResource;
         mText1 = text1;
         mText2 = text2;
-        isSelected = selected;
+        isChecked = checkbox;
     }
-
-    public boolean getChecked() { return isSelected; }
-
-    public void setChecked(Boolean bool) { isSelected = bool; }
 
     public int getImageResource() {
         return mImageResource;
@@ -29,5 +24,14 @@ public class userSample {
 
     public String getText2() {
         return mText2;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean status) {
+        isChecked = status;
+
     }
 }
