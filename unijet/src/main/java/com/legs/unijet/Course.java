@@ -1,5 +1,7 @@
 package com.legs.unijet;
 
+import java.security.SecureRandom;
+
 public class Course {
     String name, department, academicYear;
 
@@ -19,4 +21,21 @@ public class Course {
 
     public String getAcademicYear() { return academicYear; }
     public void setAcademicYear (String academicYear) { this.academicYear = academicYear; }
+
+    public StringBuilder sb(){
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String upper = lower.toUpperCase();
+        String numeri = "0123456789";
+        String perRandom = upper + lower + numeri;
+        int lunghezzaRandom = 5;
+
+        SecureRandom sr = new SecureRandom();
+        StringBuilder sb = new StringBuilder(lunghezzaRandom);
+        for (int i = 0; i < lunghezzaRandom; i++) {
+            int randomInt = sr.nextInt(perRandom.length());
+            char randomChar = perRandom.charAt(randomInt);
+            sb.append(randomChar);
+        }
+        return sb;
+    }
 }

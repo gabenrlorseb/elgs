@@ -99,7 +99,7 @@ public class CreateCourse extends AppCompatActivity {
                 Log.d ("TAG", "checkCrededentials: "+course.getName ());
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
-
+            mDatabase.child(String.valueOf (course.sb ())).setValue (course);
 
 
             LoadingBar.setTitle (getString(R.string.registration));
