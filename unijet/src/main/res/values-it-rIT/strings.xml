@@ -72,4 +72,12 @@
     <string name="show_error_2">Nome di</string>
     <string name="show_error_3">Errore non valido</string>
     <string name="check_credentials">Per favore aspetta. Controlla i tuoi dati</string>
+    <string name="create_group_subtitle">Crea un nuovo gruppo e inizia a condividere</string>
+    <string name="create_group_title">Gruppo</string>
+    <string name="create_project_title">Progetto</string>
+    <string name="create_project_subtitle">Crea un nuovo progetto per il tuo corso</string>
+    <string name="post_option_subtitle">Pubblica un aggiornamento nel gruppo o nel progetto</string>
+    <string name="post_option_title">Pubblica</string>
+    <string name="upload_title">Caricamento</string>
+    <string name="upload_subtitle">Carica un documento, un file o un immagine</string>
 </resources>
