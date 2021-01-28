@@ -1,6 +1,8 @@
 package com.legs.unijet.createGroupActivity;
 
-public class UserSample {
+import java.io.Serializable;
+
+public class UserSample implements Serializable {
     private int mImageResource;
     private String mText1;
     private String mText2;

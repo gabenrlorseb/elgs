@@ -35,31 +35,20 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:hint="@string/group_name"
-        app:layout_constraintBottom_toTopOf="@id/text_member_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_name_group"
          />
 
-    <TextView
-        android:id="@+id/text_member_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
-        android:text="@string/member"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/set_name_group"
-         />
 
     <TextView
         android:id="@+id/actually_added_members"
-        android:text="0 Members Added"
+        android:text="@string/members_added"
         android:textStyle="bold"
         android:textSize="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/text_member_1"
+        app:layout_constraintTop_toBottomOf="@id/set_name_group"
         app:layout_constraintStart_toStartOf="@id/set_name_group"/>
 
 

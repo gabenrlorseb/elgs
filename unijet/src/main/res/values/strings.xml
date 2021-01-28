@@ -119,5 +119,6 @@
     <string name="error_academic_year">Your academic year is not valid</string>
     <string name="error_name_course">Your course name is not valid</string>
     <string name="professor_id">Professor ID</string>
+    <string name="members_added">Members Added</string>
 
 </resources>
