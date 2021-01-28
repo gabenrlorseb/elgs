@@ -120,5 +120,6 @@
     <string name="error_name_course">Your course name is not valid</string>
     <string name="professor_id">Professor ID</string>
     <string name="members_added">Members Added</string>
+    <string name="group_name_error">The group name is not valid</string>
 
 </resources>

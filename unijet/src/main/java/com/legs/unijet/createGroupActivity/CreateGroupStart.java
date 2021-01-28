@@ -118,7 +118,7 @@ public class CreateGroupStart extends AppCompatActivity  {
     }
 
     private void populateList() {
-        names = new ArrayList<UserSample>();
+        names = new ArrayList<>();
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
