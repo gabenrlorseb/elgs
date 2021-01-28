@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/create_group_title"
+                android:text="@string/create_group"
                 android:fontFamily="@font/open_sans_bold" />
 
             <TextView
@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:paddingVertical="12dp"
+        android:paddingVertical="5dp"
         android:id="@+id/second_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/create_project_title"
+                android:text="@string/create_project"
                 android:fontFamily="@font/open_sans_bold" />
 
             <TextView
