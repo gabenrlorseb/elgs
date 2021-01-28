@@ -90,4 +90,17 @@
     <string name="months_ago">%d mesi fa</string>
     <string name="year_ago">%d anno fa</string>
     <string name="years_ago">%d anni fa</string>
+    <string name="create_group_subtitle">Crea un nuovo gruppo e inizia a condividere</string>
+    <string name="create_group_title">Gruppo</string>
+    <string name="create_project_title">Progetto</string>
+    <string name="create_project_subtitle">Crea un nuovo progetto per il tuo corso</string>
+    <string name="post_option_subtitle">Pubblica un aggiornamento nel gruppo o nel progetto</string>
+    <string name="post_option_title">Pubblica</string>
+    <string name="upload_title">Caricamento</string>
+    <string name="upload_subtitle">Carica un documento, un file o un immagine</string>
+    <string name="course_title">Corso</string>
+    <string name="course_subtitle">Crea un nuovo corso</string>
+    <string name="error_academic_year">L\'anno accademico inserito non è valido</string>
+    <string name="error_name_course">Il nome del corso inserito non è valido</string>
+    <string name="professor_id">Matricola</string>*/
 </resources>

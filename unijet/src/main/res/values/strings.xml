@@ -107,9 +107,17 @@
     <string name="year_ago">%d year ago</string>
     <string name="years_ago">%d years ago</string>
     <string name="create_group_subtitle">Create a new group and start sharing</string>
-    <string name="create_project_subtitle">Create a new project for your study case</string>
+    <string name="create_group_title">Group</string>
+    <string name="create_project_title">Project</string>
+    <string name="create_project_subtitle">Create a new project for your course</string>
     <string name="post_option_title">Post</string>
     <string name="post_option_subtitle">Post an update on a group or project</string>
     <string name="upload_title">Upload</string>
-    <string name="upload_subtitle">Upload a document, file or an image</string>
+    <string name="upload_subtitle">Upload a document, file or image</string>
+    <string name="course_title">Course</string>
+    <string name="course_subtitle">Create a new course</string>
+    <string name="error_academic_year">Your academic year is not valid</string>
+    <string name="error_name_course">Your course name is not valid</string>
+    <string name="professor_id">Professor ID</string>
+
 </resources>

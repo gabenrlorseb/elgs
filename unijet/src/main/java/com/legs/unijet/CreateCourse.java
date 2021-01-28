@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,14 +24,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateCourse extends AppCompatActivity {
     private EditText inputNameCourse;
-    private Spinner inputDepartment,inputAcademicYear;
+    private Spinner inputDepartment, inputAcademicYear;
     FirebaseAuth auth;
+    DatabaseReference db;
     Button btnCreation;
 
-
+    Bundle bundle;
     Intent intent;
 
     private FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    String userId;
+
 
     private ProgressDialog LoadingBar;
 
@@ -82,27 +87,29 @@ public class CreateCourse extends AppCompatActivity {
         String department = inputDepartment.getSelectedItem ().toString ();
         String academicYear = inputAcademicYear.getSelectedItem ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
-            showError (inputNameCourse, getString(R.string.error_name));
+            showError (inputNameCourse, getString(R.string.error_name_course));
         } else if (department.isEmpty ()) {
             showError2 (inputDepartment, getString(R.string.error_department));
         } else if (academicYear.isEmpty ()) {
-            showError3 (inputAcademicYear, getString(R.string.error_gender));
+            showError3 (inputAcademicYear, getString(R.string.error_academic_year));
         }
           else {
-            FirebaseDatabase db=FirebaseDatabase.getInstance ();
-            DatabaseReference mDatabase=db.getReference ("courses");
+            db = FirebaseDatabase.getInstance ().getReference ("courses").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            intent = getIntent ();
+            bundle = intent.getExtras ();
 
-            Course course = new Course(name, department, academicYear);
-            if(course == null) {
+            String email = bundle.getString ("email");
+            Course course = new Course (name, department, academicYear, email);
+            if (course == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
-                Log.d ("TAG", "checkCrededentials: "+course.getName ());
+                Log.d ("TAG", "checkCrededentials: " + course.getName ());
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
-            mDatabase.child(String.valueOf (course.sb ())).setValue (course);
+            db.setValue (course);
+         
 
-
-            LoadingBar.setTitle (getString(R.string.registration));
+            LoadingBar.setTitle (getString (R.string.course_creation));
             LoadingBar.setMessage (getString(R.string.check_credentials));
             LoadingBar.setCanceledOnTouchOutside (false);
 
