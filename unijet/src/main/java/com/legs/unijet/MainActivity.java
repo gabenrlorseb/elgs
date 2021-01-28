@@ -18,11 +18,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.createGroupActivity.CreateGroupStart;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomSheetDialog bottomSheetDialog;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
         View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_create,
                 (LinearLayout)findViewById(R.id.bottom_sheet));
 
+        View bottomSheetViewProfessor = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_create_professor,
+                (LinearLayout)findViewById(R.id.bottom_sheet));
+
         bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.setContentView(bottomSheetViewProfessor);
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -54,8 +61,16 @@ public class MainActivity extends AppCompatActivity {
         userId=user.getUid ();
         String email=user.getEmail();
 
+        if(email.contains("@studenti.uniba.it")) {
+            reference = FirebaseDatabase.getInstance ().getReference ("students");
+            setBottomButtonsStudent(bottomSheetView);
+        }
+        else{
+            reference = FirebaseDatabase.getInstance ().getReference ("teachers");
+            setBottomButtonsProfessor(bottomSheetViewProfessor);
+        }
 
-        setBottomButtons(bottomSheetView);
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -63,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(new Profile());
         navigation.setSelectedItemId(R.id.myunijet_tab);
     }
+
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -104,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void setBottomButtons (View view){
+    private void setBottomButtonsStudent (View view){
+
         LinearLayout firstButton = view.findViewById(R.id.first_button);
         firstButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +130,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent (MainActivity.this,CreateGroupStart.class));
             }
         });
+
+    }
+
+    private void setBottomButtonsProfessor(View view) {
+        LinearLayout firstButton = view.findViewById(R.id.first_button);
+        firstButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent (MainActivity.this,CreateGroupStart.class));
+            }
+        });
+
+        LinearLayout secondButton = view.findViewById(R.id.second_button);
+        secondButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent (MainActivity.this,CreateCourse.class));
+            }
+        });
+
 
     }
 
