@@ -1,18 +1,20 @@
 package com.legs.unijet;
 
 import java.security.SecureRandom;
+import java.util.Objects;
 
-public class Course {
+public class Course{
     String name, department, academicYear, email;
 
-    public Course() {
+public Course (){
 
-    }
+}
 
-    public Course(String name, String department, String academicYear, String email) {
+
+    public Course(String name, String academicYear, String department, String email) {
         this.name = name;
-        this.department = department;
         this.academicYear = academicYear;
+        this.department = department;
         this.email = email;
     }
 
@@ -48,7 +50,18 @@ public class Course {
         this.academicYear = academicYear;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return name.equals(course.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
 
 

@@ -70,7 +70,7 @@ public class CreateCourse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkCrededentials ();
-                startActivity (new Intent (CreateCourse.this, BaseActivity.class));
+                startActivity (new Intent (CreateCourse.this, MainActivity.class));
             }
         });
 
@@ -99,14 +99,15 @@ public class CreateCourse extends AppCompatActivity {
             bundle = intent.getExtras ();
 
             String email = bundle.getString ("email");
-            Course course = new Course (name, department, academicYear, email);
+            Course course = new Course (name, academicYear, department, email);
             if (course == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
                 Log.d ("TAG", "checkCrededentials: " + course.getName ());
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
-            db.setValue (course);
+            db.child(course.getAcademicYear()).child(course.getDepartment()).
+                    child(course.getName()).setValue (course);
          
 
             LoadingBar.setTitle (getString (R.string.course_creation));
