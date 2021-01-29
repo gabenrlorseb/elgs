@@ -47,12 +47,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/create_group_title"
+                    android:textColor="#000000"
                     android:fontFamily="@font/open_sans_bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/create_group_subtitle"
+                    android:textColor="#000000"
+
                     android:fontFamily="@font/open_sans" />
 
             </LinearLayout>
@@ -82,12 +85,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/course_title"
+                    android:textColor="#000000"
                     android:fontFamily="@font/open_sans_bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/course_subtitle"
+                    android:textColor="#000000"
                     android:fontFamily="@font/open_sans" />
 
             </LinearLayout>
@@ -117,11 +122,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/post_option_title"
+                    android:textColor="#000000"
                     android:fontFamily="@font/open_sans_bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="@string/post_option_subtitle"
                     android:fontFamily="@font/open_sans" />
 
@@ -153,12 +160,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/upload_title"
+                    android:textColor="#000000"
                     android:fontFamily="@font/open_sans_bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/upload_subtitle"
+                    android:textColor="#000000"
                     android:fontFamily="@font/open_sans" />
 
             </LinearLayout>
