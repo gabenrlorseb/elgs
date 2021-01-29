@@ -1,12 +1,17 @@
 package com.legs.unijet.createGroupActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,11 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.CreateGroup;
 import com.legs.unijet.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CreateGroupStart extends AppCompatActivity {
+public class CreateGroupStart extends AppCompatActivity  {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
@@ -42,12 +50,12 @@ public class CreateGroupStart extends AppCompatActivity {
     protected void onCreate (Bundle savedInstance) {
 
         super.onCreate(savedInstance);
-         setContentView(R.layout.create_group_search_section);
+        setContentView(R.layout.create_group_search_section);
         populateList();
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
-        Menu menu=toolbar.getMenu();
-        MenuItem item = menu.findItem(R.id.action_search);
+        Menu menu = toolbar.getMenu();
+        final MenuItem item = menu.findItem(R.id.action_search);
 
         searchEditText = findViewById(R.id.search_edit_text);
 
@@ -60,10 +68,10 @@ public class CreateGroupStart extends AppCompatActivity {
         });
 
 
-
         searchEditText.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
@@ -76,19 +84,45 @@ public class CreateGroupStart extends AppCompatActivity {
             }
         });
 
-        //ArrayList<String> namesToBeAdded = getNamesToBeAdded();
+        final FloatingActionButton fab = findViewById(R.id.continue_button);
+        //fab.setVisibility(View.GONE);
+        //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
+        //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
 
+        mRecyclerView = findViewById(R.id.possible_members_list);
 
-    }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAdapter.getCheckedUsers().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
+                } else {
+                    ArrayList<UserSample> addedMembersSendList;
+                    addedMembersSendList = mAdapter.getCheckedUsers();
+
+                    ArrayList<String> membersMails;
+                    membersMails = mAdapter.getCheckedMails();
+
+                    Bundle b = new Bundle();
+                    b.putSerializable("members", addedMembersSendList);
+                    b.putSerializable("mails", membersMails);
+
+                    Intent i = new Intent(CreateGroupStart.this, CreateGroup.class);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            }
+        });
 
     /* private ArrayList<String> getNamesToBeAdded() {
         ArrayList<String> uuidList;
 
         return uuidList;
     }*/
+    }
 
     private void populateList() {
-        names = new ArrayList<UserSample>();
+        names = new ArrayList<>();
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -120,8 +154,6 @@ public class CreateGroupStart extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
-
-
 
 
 }

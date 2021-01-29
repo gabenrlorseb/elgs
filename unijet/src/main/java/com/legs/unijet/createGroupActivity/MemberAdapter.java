@@ -37,6 +37,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
             mTextView2 = itemView.findViewById(R.id.member_mail);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
         }
+
+        public interface ClickInterface {
+            public void recyclerviewOnItemClick(int position);
+        }
+
     }
 
     public MemberAdapter(ArrayList<UserSample> exampleList) {
@@ -60,6 +65,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserSample> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
+                filteredList.clear();
                 filteredList.addAll(fullSampleList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
@@ -99,27 +105,35 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
         holder.mTextView2.setText(currentItem.getText2());
         holder.mCheckBox1.setChecked(currentItem.getChecked());
 
-        holder.mCheckBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                swapItem(holder.getAdapterPosition(), 0);
-            }
-        });
-
         holder.mCheckBox1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.mCheckBox1.setChecked(true);
-                currentItem.setChecked(true);
+                currentItem.setChecked(holder.mCheckBox1.isChecked());
             }
         });
 
     }
 
-
-    public void swapItem(int fromPosition,int toPosition){
-        Collections.swap(fullSampleList, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
+    public ArrayList<UserSample> getCheckedUsers() {
+        ArrayList<UserSample> addedMemberList = new ArrayList<>();
+        for (UserSample user : fullSampleList) {
+            if (user.getChecked()){
+                addedMemberList.add(user);
+            }
+        }
+        return  addedMemberList;
     }
+
+    public ArrayList<String> getCheckedMails() {
+        ArrayList<String> addedMemberList = new ArrayList<>();
+        for (UserSample user : fullSampleList) {
+            if (user.getChecked()){
+                addedMemberList.add(user.getText2());
+            }
+        }
+        return addedMemberList;
+    }
+
+
 
 }

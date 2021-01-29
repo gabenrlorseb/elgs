@@ -9,34 +9,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
         <activity
-                android:name=".splashactivity.SplashActivity"
-
-                android:label="@string/app_name">
-
-                <intent-filter>
+            android:name=".splashactivity.SplashActivity"
+            android:label="@string/app_name">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                     </intent-filter>
-    </activity>
-                <activity android:name=".BaseActivity"/>
-                <activity android:name=".RegisterActivity" />
-                <activity android:name=".RegStudentActivity" />
-                <activity android:name=".RegProfActivity" />
-                <activity android:name=".MainActivity"
-                    android:exported="true"/>
-                <activity android:name=".CreateGroup" />
-                <activity android:name=".CreateCourse" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegStudentActivity" />
+        <activity android:name=".RegProfActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity android:name=".CreateGroup" />
+        <activity android:name=".CreateCourse" />
+        <activity android:name=".createGroupActivity.CreateGroupStart"
+            android:exported="true"/>
 
-
-
-        <activity android:name=".createGroupActivity.CreateGroupStart"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-
     </application>
 
-    </manifest>
+</manifest>
