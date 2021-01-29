@@ -124,7 +124,15 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
         return  addedMemberList;
     }
 
-
+    public ArrayList<String> getCheckedMails() {
+        ArrayList<String> addedMemberList = new ArrayList<>();
+        for (UserSample user : fullSampleList) {
+            if (user.getChecked()){
+                addedMemberList.add(user.getText2());
+            }
+        }
+        return addedMemberList;
+    }
 
 
 

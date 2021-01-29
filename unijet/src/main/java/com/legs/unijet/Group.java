@@ -7,6 +7,7 @@ public class Group {
     String name;
     String department;
     String author;
+    Boolean isPrivate;
 
     ArrayList<String> recipients;
 
@@ -14,11 +15,11 @@ public class Group {
 
     }
 
-    public Group(String name, String department, String author, ArrayList<String> recipients) {
+    public Group(String name, String author, ArrayList<String> recipients, Boolean beingPrivate) {
         this.name = name;
-        this.department = department;
         this.author = author;
         this.recipients = recipients;
+        this.isPrivate = beingPrivate;
     }
 
     public String getName() {

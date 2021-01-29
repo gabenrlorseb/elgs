@@ -36,6 +36,18 @@ public class User   {
 
     }
 
+    public User(String name, String surname, String dipartimento, String ateneo, String email) {
+        // sb();
+        this.name = name;
+        this.surname = surname;
+        this.dipartimento = dipartimento;
+        this.ateneo = ateneo;
+        this.email=email;
+
+
+    }
+
+
 
 
     public String getMatricola() { return matricola; }

@@ -97,11 +97,15 @@ public class CreateGroupStart extends AppCompatActivity  {
                 if (mAdapter.getCheckedUsers().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
                 } else {
-                    ArrayList<UserSample> members;
-                    members = mAdapter.getCheckedUsers();
+                    ArrayList<UserSample> addedMembersSendList;
+                    addedMembersSendList = mAdapter.getCheckedUsers();
+
+                    ArrayList<String> membersMails;
+                    membersMails = mAdapter.getCheckedMails();
 
                     Bundle b = new Bundle();
-                    b.putSerializable("members", members);
+                    b.putSerializable("members", addedMembersSendList);
+                    b.putSerializable("mails", membersMails);
 
                     Intent i = new Intent(CreateGroupStart.this, CreateGroup.class);
                     i.putExtras(b);

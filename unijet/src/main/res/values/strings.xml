@@ -121,5 +121,6 @@
     <string name="professor_id">Professor ID</string>
     <string name="members_added">Members Added</string>
     <string name="group_name_error">The group name is not valid</string>
+    <string name="private_group_warning">When a group is private, it won\'t be listed in the group section and cannot be searched by users that are not member of the group. An invite link will be generated to add further more members</string>
 
 </resources>

@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class UserSample implements Serializable {
     private int mImageResource;
     private String mText1;
-    private String mText2;
+    private String mailText;
     private Boolean isChecked;
 
 
     public UserSample(int imageResource, String text1, String text2, Boolean checkbox) {
         mImageResource = imageResource;
         mText1 = text1;
-        mText2 = text2;
+        mailText = text2;
         isChecked = checkbox;
     }
 
@@ -25,7 +25,7 @@ public class UserSample implements Serializable {
     }
 
     public String getText2() {
-        return mText2;
+        return mailText;
     }
 
     public Boolean getChecked() {
