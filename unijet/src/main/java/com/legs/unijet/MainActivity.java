@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomSheetDialog bottomSheetDialog;
     DatabaseReference reference;
+    String email;
 
     boolean doubleBackToExitPressedOnce = false;
 
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         View bottomSheetViewProfessor = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_create_professor,
                 (LinearLayout)findViewById(R.id.bottom_sheet));
 
-        bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetDialog.setContentView(bottomSheetViewProfessor);
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -62,14 +63,16 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user;
         user = FirebaseAuth.getInstance().getCurrentUser ();
         userId=user.getUid ();
-        String email=user.getEmail();
+        email=user.getEmail();
 
         if(email.contains("@studenti.uniba.it")) {
             reference = FirebaseDatabase.getInstance ().getReference ("students");
+            bottomSheetDialog.setContentView(bottomSheetView);
             setBottomButtonsStudent(bottomSheetView);
         }
-        else{
+        else if(email.contains("@uniba.it")){
             reference = FirebaseDatabase.getInstance ().getReference ("teachers");
+            bottomSheetDialog.setContentView(bottomSheetViewProfessor);
             setBottomButtonsProfessor(bottomSheetViewProfessor);
         }
 
@@ -149,7 +152,9 @@ public class MainActivity extends AppCompatActivity {
         secondButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (MainActivity.this,CreateCourse.class));
+                Intent intent = new Intent (MainActivity.this,CreateCourse.class);
+                intent.putExtra ("email", email);
+                startActivity (intent);
             }
         });
 
