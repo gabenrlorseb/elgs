@@ -32,7 +32,7 @@ public class CreateProject extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference db;
     Button btnCreation;
-    ArrayList <String> courses;
+    ArrayList <String> courses, groups;
 
     Bundle bundle;
     Intent intent;
@@ -160,7 +160,25 @@ private void populateSpinnerCourse() {
 }
 
 private void populateSpinnerGroup (){
+    db = FirebaseDatabase.getInstance().getReference();
+    groups = new ArrayList<>();
+    db.child("groups").addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                String spinnerName = childSnapshot.child("name").getValue(String.class);
+                            groups.add(spinnerName);
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(CreateProject.this, android.R.layout.simple_spinner_item, groups);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+            inputGroup.setAdapter(arrayAdapter);
+        }
 
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    });
     }
     private void showError(EditText input, String s) {
         input.setError (s);
