@@ -19,6 +19,7 @@
             android:text="@string/placeholder_text"
             android:textSize="@dimen/common_default_title_text_size" />
 
+
         <TextView
             android:id="@+id/project_subtitle"
             android:layout_width="wrap_content"
