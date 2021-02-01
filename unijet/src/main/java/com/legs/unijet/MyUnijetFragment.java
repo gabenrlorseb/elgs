@@ -33,7 +33,7 @@ public class MyUnijetFragment extends Fragment {
     private View view;
     TextView text_name_surname, email_login_field;
 
-    String name, email, surname, nameFull;
+    String name, email, surname, nameFull, memberType;
     User userProfile;
 
 
@@ -63,8 +63,10 @@ public class MyUnijetFragment extends Fragment {
             email = user.getEmail();
             if (email.contains("@studenti.uniba.it")) {
                 reference = FirebaseDatabase.getInstance().getReference("students");
+                memberType = "student";
             } else {
                 reference = FirebaseDatabase.getInstance().getReference("teachers");
+                memberType = "professor";
             }
             text_name_surname = view.findViewById(R.id.text_name_surname);
             email_login_field = view.findViewById(R.id.email_logn_field);
@@ -111,6 +113,7 @@ public class MyUnijetFragment extends Fragment {
                 String personJsonString = Utils.getGsonParser().toJson(userProfile);
                 b.putString("PERSON_KEY", personJsonString);
                 i.putExtras(b);
+                i.putExtra("PERSON_TYPE", memberType);
                 startActivity(i);
             }
         });

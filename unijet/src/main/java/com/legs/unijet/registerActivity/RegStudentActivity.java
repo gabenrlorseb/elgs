@@ -34,7 +34,6 @@ public class RegStudentActivity  extends RegisterActivityStart {
     Intent intent;
     DatabaseReference db;
 
-    private FirebaseAuth firebaseAuth;
     private ProgressDialog LoadingBar;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +61,6 @@ public class RegStudentActivity  extends RegisterActivityStart {
 
             }
         });
-        firebaseAuth = FirebaseAuth.getInstance ();
-
-
 
         Calendar calendar= Calendar.getInstance ();
         final int day=calendar.get (Calendar.DAY_OF_MONTH);
