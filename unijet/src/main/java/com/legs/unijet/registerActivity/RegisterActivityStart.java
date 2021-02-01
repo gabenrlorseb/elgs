@@ -1,4 +1,4 @@
-package com.legs.unijet;
+package com.legs.unijet.registerActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,8 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.legs.unijet.R;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivityStart extends AppCompatActivity {
     TextView btn;
 
     private EditText inputPassword, inputEmail, inputConfirmPassword;
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         auth=FirebaseAuth.getInstance () ;
 // Write a message to the database
 
-        LoadingBar= new ProgressDialog (RegisterActivity.this);
+        LoadingBar= new ProgressDialog (RegisterActivityStart.this);
         btnNext=findViewById (R.id.next_button);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -50,11 +51,11 @@ public class RegisterActivity extends AppCompatActivity {
                 checkCrededentials();
 
 
-                //btnNext.setOnClickListener (view -> startActivity (new Intent (RegisterActivity.this, LoginActivity.class)));
+                //btnNext.setOnClickListener (view -> startActivity (new Intent (RegisterActivityStart.this, LoginActivity.class)));
             }
         });
         auth=FirebaseAuth.getInstance();
-        LoadingBar=new ProgressDialog(RegisterActivity.this);
+        LoadingBar=new ProgressDialog(RegisterActivityStart.this);
     }
 
 
@@ -92,15 +93,15 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.d ("TAG", "onComplete: success");
                         if(email.contains("@studenti.uniba.it")){
                             Log.d ("TAG", "onComplete: equals studenti uniba");
-                            Toast.makeText (RegisterActivity.this, "", Toast.LENGTH_SHORT).show ();
-                            Intent intent=new Intent (RegisterActivity.this,RegStudentActivity.class);
+                            Toast.makeText (RegisterActivityStart.this, "", Toast.LENGTH_SHORT).show ();
+                            Intent intent=new Intent (RegisterActivityStart.this,RegStudentActivity.class);
                             intent.putExtra ("email", email);
                             intent.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity (intent);
                         }else if(email.contains("@uniba.it")){
                             Log.d ("TAG", "onComplete: equals uniba.it");
-                            Toast.makeText (RegisterActivity.this, "  Successfully Registration ", Toast.LENGTH_SHORT).show ();
-                            Intent intent=new Intent (RegisterActivity.this,RegProfActivity.class);
+                            Toast.makeText (RegisterActivityStart.this, "  Successfully Registration ", Toast.LENGTH_SHORT).show ();
+                            Intent intent=new Intent (RegisterActivityStart.this,RegProfActivity.class);
                             intent.putExtra ("email",email);
                             intent.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity (intent);
@@ -108,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     else{
                         Log.d ("TAG", "onComplete: failed");
-                        Toast.makeText (RegisterActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
+                        Toast.makeText (RegisterActivityStart.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
                     }
                 }
             });

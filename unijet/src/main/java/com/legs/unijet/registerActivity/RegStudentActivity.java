@@ -1,4 +1,4 @@
-package com.legs.unijet;
+package com.legs.unijet.registerActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -13,15 +13,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.BaseActivity;
+import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.util.Calendar;
 
-public class RegStudentActivity  extends RegisterActivity {
+public class RegStudentActivity  extends RegisterActivityStart {
 
     private EditText inputName, inputSurname,inputMatricola, inputDateBorn,inputEmail;
     private Spinner inputDepartment,inputGender, inputAteneo;
@@ -57,7 +58,7 @@ public class RegStudentActivity  extends RegisterActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (RegStudentActivity.this,BaseActivity.class));
+                startActivity(new Intent (RegStudentActivity.this, BaseActivity.class));
 
             }
         });

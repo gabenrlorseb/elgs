@@ -5,6 +5,7 @@ import java.util.Objects;
 public class User   {
     String name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email;
 
+
     //User sb;
 
 
@@ -66,7 +67,7 @@ public class User   {
 
     public void setAteneo(String ateneo) { this.ateneo = ateneo; }
 
-
+    
 
 
     public String getGender() { return gender; }

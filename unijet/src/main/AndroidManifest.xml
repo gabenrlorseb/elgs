@@ -21,14 +21,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".BaseActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".RegStudentActivity" />
-        <activity android:name=".RegProfActivity" />
+        <activity android:name=".registerActivity.RegisterActivityStart" />
+        <activity android:name=".registerActivity.RegStudentActivity" />
+        <activity android:name=".registerActivity.RegProfActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity android:name=".CreateGroup" />
         <activity android:name=".CreateCourse" />
+        <activity android:name=".EditProfile" />
+
         <activity android:name=".createGroupActivity.CreateGroupStart"
             android:exported="true"/>
 
