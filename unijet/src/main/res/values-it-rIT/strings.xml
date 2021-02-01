@@ -102,5 +102,11 @@
     <string name="course_subtitle">Crea un nuovo corso</string>
     <string name="error_academic_year">L\'anno accademico inserito non è valido</string>
     <string name="error_name_course">Il nome del corso inserito non è valido</string>
-    <string name="professor_id">Matricola</string>*/
+    <string name="professor_id">Matricola</string>
+    <string name="members_added">Membri aggiunti</string>
+    <string name="group_name_error">Il nome del gruppo inserito non è valido</string>
+    <string name="private_group_warning">Se il gruppo è privato, non sarà inserito nella sezione gruppi e non potrà essere cercato dagli utenti non appartenenti al gruppo. Verrà generato un link di invito per aggiungere ulteriori membri</string>
+    <string name="error_name_project">Il nome del progetto selezionato non è valido</string>
+    <string name="error_name_group">Il nome del gruppo selezionato non è valido</string>
+    */
 </resources>
