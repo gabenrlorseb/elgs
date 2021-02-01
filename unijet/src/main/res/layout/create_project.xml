@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:entries="@array/corsi"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@id/text_group"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_course"
@@ -79,14 +79,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:entries="@array/gruppi"
-        app:layout_constraintBottom_toTopOf="@id/confirm_button"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@id/creation_button_project"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_group"
         />
 
     <Button
-        android:id="@+id/confirm_button"
+        android:id="@+id/creation_button_project"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
