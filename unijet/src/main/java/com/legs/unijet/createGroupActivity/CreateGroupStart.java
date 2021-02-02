@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class CreateGroupStart extends AppCompatActivity  {
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
     private ArrayList<UserSample> names;
+
 
     RecyclerView mRecyclerView;
     private MemberAdapter mAdapter;
