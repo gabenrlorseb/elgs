@@ -29,6 +29,7 @@
             android:exported="true" />
         <activity android:name=".CreateGroup" />
         <activity android:name=".CreateCourse" />
+        <activity android:name=".CreateProject" />
         <activity android:name=".createGroupActivity.CreateGroupStart"
             android:exported="true"/>
 
