@@ -2,7 +2,6 @@ package com.legs.unijet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.view.View;
-import com.legs.unijet.utils.Utils;
+import com.legs.unijet.utils.GsonParser;
 
 public class MyUnijetFragment extends Fragment {
     Button logout_button,notifications_button, editProfileButton;
@@ -110,7 +109,7 @@ public class MyUnijetFragment extends Fragment {
             public void onClick(android.view.View v) {
                 Intent i = new Intent(getActivity().getApplicationContext(), EditProfile.class);
                 Bundle b = new Bundle();
-                String personJsonString = Utils.getGsonParser().toJson(userProfile);
+                String personJsonString = GsonParser.getGsonParser().toJson(userProfile);
                 b.putString("PERSON_KEY", personJsonString);
                 i.putExtras(b);
                 i.putExtra("PERSON_TYPE", memberType);

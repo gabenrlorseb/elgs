@@ -3,13 +3,10 @@ package com.legs.unijet;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,22 +20,16 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.utils.Utils;
+import com.legs.unijet.utils.GsonParser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class EditProfile extends AppCompatActivity {
 
@@ -60,7 +51,7 @@ public class EditProfile extends AppCompatActivity {
 
         String personJsonString = args.getString("PERSON_KEY");
 
-        person = Utils.getGsonParser().fromJson(personJsonString, User.class);
+        person = GsonParser.getGsonParser().fromJson(personJsonString, User.class);
         userType = args.getString("PERSON_TYPE");
 
         CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
@@ -99,9 +90,9 @@ public class EditProfile extends AppCompatActivity {
 
             if (requestCode == PIC_CROP) {
                 if (data != null) {
-                    bitmap = getBitmap(selectedImageUri);
-                    updateStudentPropic(bitmap);
-
+                    Bundle extras = data.getExtras();
+                    Bitmap bp = extras.getParcelable("data");
+                    updateStudentPropic(bp);
                 }
             }
         }//end of outer if
@@ -165,12 +156,12 @@ public class EditProfile extends AppCompatActivity {
         fileRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(EditProfile.this, "Ce l'hai fatta cazzo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProfile.this, "Errore", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
 
             }
         });
