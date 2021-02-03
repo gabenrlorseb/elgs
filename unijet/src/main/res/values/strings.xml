@@ -124,4 +124,7 @@
     <string name="private_group_warning">When a group is private, it won\'t be listed in the group section and cannot be searched by users that are not member of the group. An invite link will be generated to add further more members</string>
     <string name="error_name_project">Your project name is not valid</string>
     <string name="error_name_group">Your group name is not valid</string>
+    <string name="propic_change_success">Profile Picture updated successfully</string>
+    <string name="error_profile_picture">There has been an error. You might want to check your internet connection.</string>
+    <string name="device_not_supported">It seems like your device doesn\'t support this action</string>
 </resources>

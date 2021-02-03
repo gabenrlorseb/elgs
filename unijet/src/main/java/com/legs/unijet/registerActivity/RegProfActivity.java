@@ -1,4 +1,4 @@
-package com.legs.unijet;
+package com.legs.unijet.registerActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.BaseActivity;
+import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.util.Calendar;
 
@@ -58,7 +61,7 @@ public class RegProfActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (RegProfActivity.this,BaseActivity.class));
+                startActivity(new Intent (RegProfActivity.this, BaseActivity.class));
 
             }
         });
