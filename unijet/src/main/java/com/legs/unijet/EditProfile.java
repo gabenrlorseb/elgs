@@ -2,12 +2,17 @@ package com.legs.unijet;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +27,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.utils.GsonParser;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class EditProfile extends AppCompatActivity {
 
@@ -40,6 +49,8 @@ public class EditProfile extends AppCompatActivity {
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
+    ImageView headerProPic;
+
 
     @Override
     protected void onCreate (Bundle savedInstance) {
@@ -48,6 +59,63 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.edit_profile_layout);
 
         Bundle args = getIntent().getExtras();
+
+        final ImageView propic = findViewById(R.id.header);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("students");
+        DatabaseReference userRef = ref.child(user.getUid());
+        final StorageReference fileRef = storageReference.child(userRef + ".jpg");
+
+        File cachedProPic = getBaseContext().getFilesDir();
+        final File f = new File(cachedProPic, "profile-pic.jpg");
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (fis != null) {
+            ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+            if (!netInfo.isConnected()) {
+                Log.v("AVVISO", "File has been found in cache");
+                fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Log.v("AVVISO", "Il file è stato scaricato dal database");
+                        bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+                        FileOutputStream fos;
+                        try {
+                            fos = new FileOutputStream(f);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.v("AVVISO", "File could not be fetched from database");
+                        Toast.makeText(EditProfile.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                Log.v("AVVISO", "File has been found in cache and internet is not available");
+                bitmap = BitmapFactory.decodeStream(fis);
+                propic.setImageBitmap(bitmap);
+            }
+        }
+
+
+
 
         String personJsonString = args.getString("PERSON_KEY");
 
@@ -58,9 +126,16 @@ public class EditProfile extends AppCompatActivity {
         collapsingToolbar.setTitle(person.getName() + " " + person.getSurname());
 
         TextView memberIndication = findViewById(R.id.toolbar_additional_infos);
-        memberIndication.setText(userType);
+        memberIndication.setText(userType.toUpperCase());
 
-        storageReference = FirebaseStorage.getInstance().getReference();
+
+        TextView departmentIndication = findViewById(R.id.department_indication);
+        departmentIndication.setText(person.getDipartimento());
+
+        TextView emailIndication = findViewById(R.id.email_indication);
+        TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
+        emailIndication.setText(person.getEmail());
+        toolBarShowEmail.setText(person.getEmail());
 
 
         FloatingActionButton setProPicFab = findViewById(R.id.edit_profile_picture_fab);
@@ -125,22 +200,6 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
-
-
-
-    private Bitmap getBitmap(Uri bitmap_uri) {
-        InputStream is=null;
-        try
-        {
-            is = this.getContentResolver().openInputStream(bitmap_uri);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return BitmapFactory.decodeStream(is);
-    }
-
     private void updateStudentPropic (final Bitmap bitmap) {
         //Upload su firebase storage
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -157,15 +216,27 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(EditProfile.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
+                headerProPic = findViewById(R.id.header);
+                headerProPic.setImageBitmap(bitmap);
+                final File f = new File(getBaseContext().getFilesDir(), "profile-pic.jpg");
+                FileOutputStream fos;
+                try {
+                    fos = new FileOutputStream(f);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(EditProfile.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
-
             }
         });
 
     }
+
 
 }
