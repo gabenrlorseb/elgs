@@ -137,6 +137,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout secondButton = view.findViewById(R.id.second_button);
+        secondButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent (MainActivity.this,CreateProject.class));
+            }
+        });
+
     }
 
     private void setBottomButtonsProfessor(View view) {
