@@ -1,9 +1,17 @@
 package com.legs.unijet;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+
 import java.util.Objects;
 
 public class User   {
     String name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email;
+
+
+
+    String type;
+    Bitmap profilePicture;
 
     //User sb;
 
@@ -36,6 +44,7 @@ public class User   {
 
     }
 
+
     public User(String name, String surname, String dipartimento, String ateneo, String email) {
         // sb();
         this.name = name;
@@ -66,7 +75,7 @@ public class User   {
 
     public void setAteneo(String ateneo) { this.ateneo = ateneo; }
 
-
+    
 
 
     public String getGender() { return gender; }
@@ -90,7 +99,21 @@ public class User   {
         return Objects.hash (matricola);
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Bitmap getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Bitmap profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 
 
 }
