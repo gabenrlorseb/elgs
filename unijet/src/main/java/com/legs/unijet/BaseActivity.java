@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.legs.unijet.registerActivity.RegisterActivityStart;
 
 public class BaseActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword;
@@ -61,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity (new Intent (BaseActivity.this, RegisterActivity.class));
+                startActivity (new Intent (BaseActivity.this, RegisterActivityStart.class));
 
             }
         });

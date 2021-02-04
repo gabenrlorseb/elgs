@@ -3,7 +3,7 @@ package com.legs.unijet;
 import java.util.Objects;
 
 public class User   {
-    String name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email;
+    String name,surname,ID,department,universityCampus,gender,dateBorn,email;
 
     //User sb;
 
@@ -22,13 +22,13 @@ public class User   {
         this.email = email;
     }
 
-    public User(String name, String surname, String matricola, String dipartimento, String ateneo, String gender, String dateBorn, String email) {
+    public User(String name, String surname, String ID, String department, String universityCampus, String gender, String dateBorn, String email) {
         // sb();
         this.name = name;
         this.surname = surname;
-        this.matricola = matricola;
-        this.dipartimento = dipartimento;
-        this.ateneo = ateneo;
+        this.ID = ID;
+        this.department = department;
+        this.universityCampus = universityCampus;
         this.gender = gender;
         this.dateBorn = dateBorn;
         this.email=email;
@@ -36,12 +36,12 @@ public class User   {
 
     }
 
-    public User(String name, String surname, String dipartimento, String ateneo, String email) {
+    public User(String name, String surname, String department, String universityCampus, String email) {
         // sb();
         this.name = name;
         this.surname = surname;
-        this.dipartimento = dipartimento;
-        this.ateneo = ateneo;
+        this.department = department;
+        this.universityCampus = universityCampus;
         this.email=email;
 
 
@@ -50,21 +50,21 @@ public class User   {
 
 
 
-    public String getMatricola() { return matricola; }
+    public String getID() { return ID; }
 
-    public void setMatricola(String matricola) { this.matricola = matricola; }
+    public void setID(String ID) { this.ID = ID; }
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
     public String getSurname() { return surname; }
 
     public void setSurname(String surname) { this.surname = surname; }
-    public String getDipartimento() { return dipartimento; }
+    public String getDepartment() { return department; }
 
-    public void setDipartimento(String dipartimento) { this.dipartimento = dipartimento; }
-    public String getAteneo() { return ateneo; }
+    public void setDepartment (String department) { this.department = department; }
+    public String getUniversityCampus() { return universityCampus; }
 
-    public void setAteneo(String ateneo) { this.ateneo = ateneo; }
+    public void setUniversityCampus(String universityCampus) { this.universityCampus = universityCampus; }
 
 
 
@@ -82,12 +82,11 @@ public class User   {
         if (this == o) return true;
         if (o == null || getClass () != o.getClass ()) return false;
         User that = (User) o;
-        return matricola.equals (that.matricola);
+        return ID.equals (that.ID);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash (matricola);
+        return Objects.hash (ID);
     }
 
 

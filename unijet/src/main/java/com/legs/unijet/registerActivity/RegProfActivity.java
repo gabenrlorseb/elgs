@@ -1,5 +1,4 @@
-package com.legs.unijet;
-
+package com.legs.unijet.registerActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,36 +17,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.BaseActivity;
+import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.util.Calendar;
 
-public class RegStudentActivity  extends RegisterActivity {
+public class RegProfActivity extends AppCompatActivity {
 
-    private EditText inputName, inputSurname,inputMatricola, inputDateBorn,inputEmail;
+
+    private EditText inputName, inputSurname,inputMatricola, inputDateBorn;
     private Spinner inputDepartment,inputGender, inputAteneo;
     DatePickerDialog.OnDateSetListener setListener;
     Button btnRegister;
-
+    DatabaseReference db;
     FirebaseAuth auth;
 
+
     Intent intent;
-    DatabaseReference db;
+
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog LoadingBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.sign_up_student);
+        setContentView (R.layout.sign_up_teacher);
 
-        inputName = findViewById (R.id.set_name_student);
-        inputSurname = findViewById (R.id.set_surname_student);
-        inputDepartment = findViewById (R.id.select_departement_student);
-        inputAteneo = findViewById (R.id.select_sede_student);
-        inputGender=findViewById(R.id.select_gender_student);
-        inputMatricola=findViewById (R.id.set_matricola_student);
-        inputDateBorn=findViewById (R.id.set_birth_day_student);
-        TextView btn=findViewById(R.id.text_help_student);
+        inputName = findViewById (R.id.set_name_teacher);
+        inputSurname = findViewById (R.id.set_surname_teacher);
+        inputDepartment = findViewById (R.id.select_departement_teacher);
+        inputAteneo = findViewById (R.id.select_sede_teacher);
+        inputGender=findViewById(R.id.select_gender_teacher);
+        inputMatricola=findViewById (R.id.set_matricola_teacher);
+        inputDateBorn=findViewById (R.id.set_birth_day_teacher);
+        TextView btn=findViewById(R.id.text_help_teacher);
 
 
 
@@ -57,7 +61,7 @@ public class RegStudentActivity  extends RegisterActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (RegStudentActivity.this,BaseActivity.class));
+                startActivity(new Intent (RegProfActivity.this, BaseActivity.class));
 
             }
         });
@@ -73,7 +77,7 @@ public class RegStudentActivity  extends RegisterActivity {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog= new DatePickerDialog (
-                        RegStudentActivity.this, new DatePickerDialog.OnDateSetListener () {
+                        RegProfActivity.this, new DatePickerDialog.OnDateSetListener () {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         month=month+1;
@@ -88,15 +92,12 @@ public class RegStudentActivity  extends RegisterActivity {
 
 
 
-        //  StringBuilder date = new StringBuilder ();
-
-        // date.append (day.toString());
 
 
 
         auth = FirebaseAuth.getInstance ();
-        LoadingBar = new ProgressDialog (RegStudentActivity.this);
-        btnRegister = findViewById (R.id.confirm_button_student);
+        LoadingBar = new ProgressDialog (RegProfActivity.this);
+        btnRegister = findViewById (R.id.confirm_button_teacher);
         btnRegister.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
@@ -110,7 +111,7 @@ public class RegStudentActivity  extends RegisterActivity {
             @Override
             public void onClick(View v) {
                 checkCrededentials ();
-                startActivity (new Intent (RegStudentActivity.this, BaseActivity.class));
+                startActivity (new Intent (RegProfActivity.this, BaseActivity.class));
             }
         });
 
@@ -125,39 +126,39 @@ public class RegStudentActivity  extends RegisterActivity {
 
         String name = inputName.getText ().toString ();
         String surname = inputSurname.getText ().toString ();
-        String matricola = inputMatricola.getText ().toString ();
-        String dipartimento = inputDepartment.getSelectedItem ().toString ();
-        String ateneo = inputAteneo.getSelectedItem ().toString ();
+        String professorID = inputMatricola.getText ().toString ();
+        String department = inputDepartment.getSelectedItem ().toString ();
+        String universityCampus = inputAteneo.getSelectedItem ().toString ();
         String gender=inputGender.getSelectedItem ().toString ();
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputName, getString(R.string.error_name));
         }  else if (surname.isEmpty () || !surname.contains ("")) {
             showError (inputSurname, getString(R.string.error_surname));
-        } else if (dipartimento.isEmpty ()) {
+        } else if (department.isEmpty ()) {
             showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
             showError3 (inputGender, getString(R.string.error_gender));
-        } else if (ateneo.isEmpty ()) {
+        } else if (universityCampus.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
-            db= FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+            db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras ();
             String email = bundle.getString ("email");
-            User student= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
-
-            if(student == null) {
+            User teacher= new User(name,surname,professorID,department,universityCampus,gender,dateBorn,email);
+            if(teacher == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
-                Log.d ("TAG", "checkCrededentials: "+student.getName ());
+                Log.d ("TAG", "checkCrededentials: "+teacher.getName ());
             }
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
+            db.setValue (teacher);
 
-            db.setValue (student);
-            LoadingBar.setTitle ("Registration");
-            LoadingBar.setMessage ("please wait check your credentials");
+            //mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
+            LoadingBar.setTitle (getString(R.string.registration));
+            LoadingBar.setMessage (getString(R.string.check_credentials));
             LoadingBar.setCanceledOnTouchOutside (false);
 
 

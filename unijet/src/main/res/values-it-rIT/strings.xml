@@ -108,5 +108,9 @@
     <string name="private_group_warning">Se il gruppo è privato, non sarà inserito nella sezione gruppi e non potrà essere cercato dagli utenti non appartenenti al gruppo. Verrà generato un link di invito per aggiungere ulteriori membri</string>
     <string name="error_name_project">Il nome del progetto selezionato non è valido</string>
     <string name="error_name_group">Il nome del gruppo selezionato non è valido</string>
+    <string name="propic_change_success">Immagine del profilo caricata correttamente</string>
+    <string name="error_profile_picture">Ce\'è stato un errore. Potresti controllare la tua connessione a Internet</string>
+    <string name="device_not_supported">Sembra che il tuo disposi tivo non supporti quest\'azione</string>
+    <string name="professor">"Professore: "</string>
     */
 </resources>
