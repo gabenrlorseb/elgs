@@ -50,7 +50,7 @@ public class EditProfile extends AppCompatActivity {
     Uri selectedImageUri;
     StorageReference storageReference;
     ImageView headerProPic;
-
+    DatabaseReference ref;
 
     @Override
     protected void onCreate (Bundle savedInstance) {
@@ -60,13 +60,20 @@ public class EditProfile extends AppCompatActivity {
 
         Bundle args = getIntent().getExtras();
 
-        final ImageView propic = findViewById(R.id.header);
+        String personJsonString = args.getString("PERSON_KEY");
+        person = GsonParser.getGsonParser().fromJson(personJsonString, User.class);
 
+        final ImageView propic = findViewById(R.id.header);
         storageReference = FirebaseStorage.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("students");
+
+        if (person.getEmail().contains("@studenti.uniba.it")) {
+            ref = database.getReference("students");
+        } else {
+            ref = database.getReference("teachers");
+        }
         DatabaseReference userRef = ref.child(user.getUid());
         final StorageReference fileRef = storageReference.child(userRef + ".jpg");
 
@@ -117,9 +124,7 @@ public class EditProfile extends AppCompatActivity {
 
 
 
-        String personJsonString = args.getString("PERSON_KEY");
 
-        person = GsonParser.getGsonParser().fromJson(personJsonString, User.class);
         userType = args.getString("PERSON_TYPE");
 
         CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
@@ -167,7 +172,7 @@ public class EditProfile extends AppCompatActivity {
                 if (data != null) {
                     Bundle extras = data.getExtras();
                     Bitmap bp = extras.getParcelable("data");
-                    updateStudentPropic(bp);
+                    updateUserPropic(bp);
                 }
             }
         }//end of outer if
@@ -200,11 +205,15 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
-    private void updateStudentPropic (final Bitmap bitmap) {
+    private void updateUserPropic(final Bitmap bitmap) {
         //Upload su firebase storage
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("students");
+        if (person.getEmail().contains("@studenti.uniba.it")) {
+            ref = database.getReference("students");
+        } else {
+            ref = database.getReference("teachers");
+        }
         DatabaseReference userRef = ref.child(user.getUid());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

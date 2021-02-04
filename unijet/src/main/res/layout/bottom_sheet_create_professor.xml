@@ -28,7 +28,8 @@
             android:paddingVertical="12dp"
             android:id="@+id/first_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
@@ -66,7 +67,8 @@
             android:paddingVertical="12dp"
             android:id="@+id/second_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
@@ -103,7 +105,8 @@
             android:paddingVertical="12dp"
             android:id="@+id/third_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
@@ -140,7 +143,8 @@
             android:paddingVertical="12dp"
             android:id="@+id/fourth_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginBottom="14dp"
             android:orientation="horizontal">
 
