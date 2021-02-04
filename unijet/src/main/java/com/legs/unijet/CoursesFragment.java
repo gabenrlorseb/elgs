@@ -89,7 +89,7 @@ public class CoursesFragment extends Fragment {
                         for (Course course : courses) {
                             if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
                                 String namesString = course.getName() + " " + course.getAcademicYear();
-                                String mail = course.getEmail();
+                                String mail = getString(R.string.professor) + " " + course.getEmail();
                                 courseList.add(new CourseSample(namesString, mail));
                             }
                         }

@@ -127,4 +127,6 @@
     <string name="propic_change_success">Profile Picture updated successfully</string>
     <string name="error_profile_picture">There has been an error. You might want to check your internet connection.</string>
     <string name="device_not_supported">It seems like your device doesn\'t support this action</string>
+    <string name="owner" translatable="false">Owner:</string>
+    <string name="professor">Professor:</string>
 </resources>
