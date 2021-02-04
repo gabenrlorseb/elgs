@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -19,8 +20,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.createGroupActivity.UserSample;
 
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 public class CreateGroup extends AppCompatActivity {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    FirebaseDatabase db= FirebaseDatabase.getInstance();
+    DatabaseReference db= FirebaseDatabase.getInstance().getReference();
 
 
     String userId;
@@ -40,8 +43,10 @@ public class CreateGroup extends AppCompatActivity {
 
     DataSnapshot snapshot;
     String userProfile;
+    String department;
     ArrayList<UserSample> membersAdded;
     ArrayList<String> addedMails;
+    ArrayList<User> students;
     Intent intent;
 
     final StringBuilder membersEmailList = new StringBuilder();
@@ -57,6 +62,8 @@ public class CreateGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         Bundle b = getIntent().getExtras();
+        department = groupDepartment();
+        department = (String) b.getString("department");
         membersAdded = (ArrayList<UserSample>) b.getSerializable("members");
         addedMails = (ArrayList<String>) b.getSerializable("mails");
 
@@ -127,7 +134,7 @@ public class CreateGroup extends AppCompatActivity {
             String email = user.getEmail();
 
 
-            Group group= new Group (name, email, addedMails, makePrivate.isChecked());
+            Group group= new Group (name, email, addedMails, department, makePrivate.isChecked());
             Log.d ("TAG", "gruppo Creato: " + group.getName ());
             Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
 
@@ -143,6 +150,42 @@ public class CreateGroup extends AppCompatActivity {
         }
 
 
+    }
+
+    public String groupDepartment(){
+        students = new ArrayList<>();
+        final String[] department = new String[1];
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    if(user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        String name = childSnapshot.child("name").getValue(String.class);
+                        String surname = childSnapshot.child("surname").getValue(String.class);
+                        String ID = childSnapshot.child("id").getValue(String.class);
+                        String department = childSnapshot.child("department").getValue(String.class);
+                        String universityCampus = childSnapshot.child("universityCampus").getValue(String.class);
+                        String gender = childSnapshot.child("gender").getValue(String.class);
+                        String dateBorn = childSnapshot.child("dateBorn").getValue(String.class);
+                        String email = childSnapshot.child("email").getValue(String.class);
+                        students.add(new User(name, surname, ID, department, universityCampus, gender, dateBorn, email));
+                    }
+                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        for (User student: students) {
+                            String mDepartment = student.getDepartment();
+                            department[0] = mDepartment;
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+      return department[0];
     }
 
     private void showError(EditText input, String s) {

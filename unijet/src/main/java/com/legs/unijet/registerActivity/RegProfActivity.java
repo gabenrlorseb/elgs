@@ -126,27 +126,27 @@ public class RegProfActivity extends AppCompatActivity {
 
         String name = inputName.getText ().toString ();
         String surname = inputSurname.getText ().toString ();
-        String matricola = inputMatricola.getText ().toString ();
-        String dipartimento = inputDepartment.getSelectedItem ().toString ();
-        String ateneo = inputAteneo.getSelectedItem ().toString ();
+        String professorID = inputMatricola.getText ().toString ();
+        String department = inputDepartment.getSelectedItem ().toString ();
+        String universityCampus = inputAteneo.getSelectedItem ().toString ();
         String gender=inputGender.getSelectedItem ().toString ();
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputName, getString(R.string.error_name));
         }  else if (surname.isEmpty () || !surname.contains ("")) {
             showError (inputSurname, getString(R.string.error_surname));
-        } else if (dipartimento.isEmpty ()) {
+        } else if (department.isEmpty ()) {
             showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
             showError3 (inputGender, getString(R.string.error_gender));
-        } else if (ateneo.isEmpty ()) {
+        } else if (universityCampus.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
             db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras ();
             String email = bundle.getString ("email");
-            User teacher= new User(name,surname,matricola,dipartimento,ateneo,gender,dateBorn,email);
+            User teacher= new User(name,surname,professorID,department,universityCampus,gender,dateBorn,email);
             if(teacher == null) {
                 Log.d ("TAG", "checkCrededentials: nullo");
             } else {
