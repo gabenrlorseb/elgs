@@ -85,7 +85,7 @@ public class GroupsFragment extends Fragment {
 
                 //if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                     String namesString = childSnapshot.child("name").getValue(String.class);
-                    String owner = "Owner: " + childSnapshot.child("author").getValue(String.class);
+                    String owner = getString(R.string.owner) + " " + childSnapshot.child("author").getValue(String.class);
                     fullSampleList.add(new CourseSample(namesString, owner));
                 //}
 

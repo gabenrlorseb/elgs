@@ -130,7 +130,7 @@ public class EditProfile extends AppCompatActivity {
 
 
         TextView departmentIndication = findViewById(R.id.department_indication);
-        departmentIndication.setText(person.getDipartimento());
+        departmentIndication.setText(person.getDepartment());
 
         TextView emailIndication = findViewById(R.id.email_indication);
         TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
