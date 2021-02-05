@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.Course;
 import com.legs.unijet.CreateGroup;
 import com.legs.unijet.R;
 
@@ -40,6 +41,7 @@ public class CreateGroupStart extends AppCompatActivity  {
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
     private ArrayList<UserSample> names;
+    private ArrayList<Course> courses;
 
 
     RecyclerView mRecyclerView;
@@ -124,18 +126,50 @@ public class CreateGroupStart extends AppCompatActivity  {
     }
 
     private void populateList() {
-        names = new ArrayList<>();
+        names = new ArrayList();
+        courses = new ArrayList();
+        db.child("courses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
+                        for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
+                            for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
+                                String name = childSnapshot4.child("name").getValue(String.class);
+                                String department = childSnapshot4.child("department").getValue(String.class);
+                                String academicYear = childSnapshot4.child("academicYear").getValue(String.class);
+                                String email = childSnapshot4.child("email").getValue(String.class);
+                                courses.add(new Course(name, academicYear, department, email));
+                                //courseList.add(new CourseSample(namesString, mail));
+                            }
+                        }
+                    }
+                }
+                buildRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()) {
                     if(!user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                        String namesString = childSnapshot.child("name").getValue(String.class) +
-                                " " +
-                                childSnapshot.child("surname").getValue(String.class);
-                        String mail = childSnapshot.child ("email").getValue (String.class);
-                        names.add (new UserSample(R.drawable.ic_people, namesString, mail, false));
+                        for (Course course : courses) {
+                            if (course.getDepartment().equals(childSnapshot.child("department").getValue(String.class))) {
+                                String namesString = childSnapshot.child("name").getValue(String.class) +
+                                        " " +
+                                        childSnapshot.child("surname").getValue(String.class);
+                                String mail = childSnapshot.child("email").getValue(String.class);
+                                names.add(new UserSample(R.drawable.ic_people, namesString, mail, false));
+                            }
+                        }
                     }
                 }
                 buildRecyclerView();
