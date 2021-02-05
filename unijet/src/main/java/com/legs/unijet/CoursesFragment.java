@@ -50,7 +50,7 @@ public class CoursesFragment extends Fragment {
 
     private void populateList() {
         courses = new ArrayList();
-        courseList = new ArrayList<CourseSample>();
+        courseList = new ArrayList();
         db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -58,7 +58,6 @@ public class CoursesFragment extends Fragment {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     for(DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
                         for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
-
                             for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
                                 String name = childSnapshot4.child("name").getValue(String.class);
                                 String department = childSnapshot4.child("department").getValue(String.class);
