@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.Course;
 import com.legs.unijet.CreateGroup;
 import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -114,6 +115,7 @@ public class CreateGroupStart extends AppCompatActivity  {
                     Intent i = new Intent(CreateGroupStart.this, CreateGroup.class);
                     i.putExtras(b);
                     startActivity(i);
+                    finish();
                 }
             }
         });
@@ -126,27 +128,13 @@ public class CreateGroupStart extends AppCompatActivity  {
     }
 
     private void populateList() {
-        names = new ArrayList();
-        courses = new ArrayList();
-        db.child("courses").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        final User[] userProfile = new User[1];
+        DatabaseReference userReference = FirebaseDatabase.getInstance ().getReference ("students");
+        userReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
-                        for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
-                            for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
-                                String name = childSnapshot4.child("name").getValue(String.class);
-                                String department = childSnapshot4.child("department").getValue(String.class);
-                                String academicYear = childSnapshot4.child("academicYear").getValue(String.class);
-                                String email = childSnapshot4.child("email").getValue(String.class);
-                                courses.add(new Course(name, academicYear, department, email));
-                                //courseList.add(new CourseSample(namesString, mail));
-                            }
-                        }
-                    }
-                }
-                buildRecyclerView();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userProfile[0] = snapshot.getValue(User.class);
             }
 
             @Override
@@ -154,22 +142,18 @@ public class CreateGroupStart extends AppCompatActivity  {
 
             }
         });
-
+        names = new ArrayList<>();
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()) {
-                    if(!user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                        for (Course course : courses) {
-                            if (course.getDepartment().equals(childSnapshot.child("department").getValue(String.class))) {
-                                String namesString = childSnapshot.child("name").getValue(String.class) +
-                                        " " +
-                                        childSnapshot.child("surname").getValue(String.class);
-                                String mail = childSnapshot.child("email").getValue(String.class);
-                                names.add(new UserSample(R.drawable.ic_people, namesString, mail, false));
-                            }
-                        }
+                    if(!(user.getEmail().equals(childSnapshot.child("email").getValue(String.class)) ) && userProfile[0].getDepartment().equals(childSnapshot.child("department").getValue(String.class))) {
+                        String namesString = childSnapshot.child("name").getValue(String.class) +
+                                " " +
+                                childSnapshot.child("surname").getValue(String.class);
+                        String mail = childSnapshot.child ("email").getValue (String.class);
+                        names.add (new UserSample(R.drawable.ic_people, namesString, mail, false));
                     }
                 }
                 buildRecyclerView();
