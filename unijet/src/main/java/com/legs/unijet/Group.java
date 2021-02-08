@@ -7,6 +7,15 @@ public class Group {
     String name;
     String department;
     String author;
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
     Boolean isPrivate;
     ArrayList<String> recipients;
 
