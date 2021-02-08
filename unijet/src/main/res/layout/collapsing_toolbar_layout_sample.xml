@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:title="@string/placeholder_text"
-            app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginBottom="65dp"
             app:expandedTitleMarginStart="20dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -80,6 +79,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/common_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
