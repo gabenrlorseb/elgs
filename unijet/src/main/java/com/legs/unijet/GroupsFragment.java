@@ -1,7 +1,9 @@
 package com.legs.unijet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,25 +11,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.createGroupActivity.GroupAdapter;
-import com.legs.unijet.createGroupActivity.MemberAdapter;
-import com.legs.unijet.createGroupActivity.UserSample;
-import com.legs.unijet.createGroupActivity.UserSample2;
+import com.legs.unijet.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.utils.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 
 public class GroupsFragment extends Fragment {
-    FirebaseUser group;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userId;
     FirebaseUser auth;
     DatabaseReference reference;
-    private ArrayList<UserSample2> fullSampleList;
+    private ArrayList<CourseSample> fullSampleList;
+    private ArrayList <Course> courses;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
@@ -47,17 +49,49 @@ public class GroupsFragment extends Fragment {
     }
 
     private void populateList() {
-        fullSampleList = new ArrayList<UserSample2> ();
-        db.child("groups").addValueEventListener(new ValueEventListener () {
+        courses = new ArrayList<Course>();
+        fullSampleList = new ArrayList<CourseSample> ();
+        db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    for(DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
+                        for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
 
-                                String namesString = childSnapshot.child("name").getValue(String.class) +
-                                        " " ;
-                                fullSampleList.add(new UserSample2 (namesString));
+                            for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
+                                String name = childSnapshot4.child("name").getValue(String.class);
+                                String department = childSnapshot4.child("department").getValue(String.class);
+                                String academicYear=  childSnapshot4.child("academicYear").getValue(String.class);
+                                String email = childSnapshot4.child("email").getValue(String.class);
+                                courses.add(new Course (name, academicYear, department, email));
+                                //courseList.add(new CourseSample(namesString, mail));
+                            }
+                        }
+                    }
 
+
+                }
+                buildRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        db.child("groups").addValueEventListener(new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                fullSampleList.clear();
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+
+                    //if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                    String namesString = childSnapshot.child("name").getValue(String.class);
+                    String owner = childSnapshot.child("author").getValue(String.class);
+                    fullSampleList.add(new CourseSample(namesString, owner));
+                    //}
 
 
 
@@ -80,5 +114,23 @@ public class GroupsFragment extends Fragment {
         mAdapter = new GroupAdapter (fullSampleList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Intent i = new Intent(view.getContext(), GroupActivity.class);
+                        i.putExtra("GName", mAdapter.returnTitle(position));
+                        i.putExtra("owner", mAdapter.returnOwner(position));
+                        view.getContext().startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        //non c'è bisogno
+                    }
+
+                })
+        );
     }
+
+
 }

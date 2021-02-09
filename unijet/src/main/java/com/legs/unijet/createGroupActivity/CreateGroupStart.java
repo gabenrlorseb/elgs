@@ -28,8 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.Course;
 import com.legs.unijet.CreateGroup;
 import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class CreateGroupStart extends AppCompatActivity  {
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
     private ArrayList<UserSample> names;
+    private ArrayList<Course> courses;
 
 
     RecyclerView mRecyclerView;
@@ -112,6 +115,7 @@ public class CreateGroupStart extends AppCompatActivity  {
                     Intent i = new Intent(CreateGroupStart.this, CreateGroup.class);
                     i.putExtras(b);
                     startActivity(i);
+                    finish();
                 }
             }
         });
@@ -124,13 +128,27 @@ public class CreateGroupStart extends AppCompatActivity  {
     }
 
     private void populateList() {
+        final User[] userProfile = new User[1];
+        DatabaseReference userReference = FirebaseDatabase.getInstance ().getReference ("students");
+        userReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userProfile[0] = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         names = new ArrayList<>();
         db.child ("students").addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()) {
-                    if(!user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                    if(!(user.getEmail().equals(childSnapshot.child("email").getValue(String.class)) ) && userProfile[0].getDepartment().equals(childSnapshot.child("department").getValue(String.class))) {
                         String namesString = childSnapshot.child("name").getValue(String.class) +
                                 " " +
                                 childSnapshot.child("surname").getValue(String.class);

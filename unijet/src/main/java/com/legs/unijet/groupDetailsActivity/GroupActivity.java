@@ -1,4 +1,4 @@
-package com.legs.unijet;
+ package com.legs.unijet.groupDetailsActivity;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -25,13 +25,17 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.utils.GsonParser;
+import com.legs.unijet.Group;
+import com.legs.unijet.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,46 +43,78 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class EditProfile extends AppCompatActivity {
+import static java.lang.String.valueOf;
+
+ public class  GroupActivity extends AppCompatActivity {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
-    User person;
-    String userType;
+    Group group;
+    String userType, groupUID;
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
     ImageView headerProPic;
-    DatabaseReference ref;
+    Boolean isAuthor;
+
 
     @Override
     protected void onCreate (Bundle savedInstance) {
 
         super.onCreate(savedInstance);
-        setContentView(R.layout.edit_profile_layout);
+        setContentView(R.layout.collapsing_toolbar_layout_sample);
 
-        Bundle args = getIntent().getExtras();
+        final Bundle args = getIntent().getExtras();
 
-        String personJsonString = args.getString("PERSON_KEY");
-        person = GsonParser.getGsonParser().fromJson(personJsonString, User.class);
+        final ImageView groupPic = findViewById(R.id.header);
 
-        final ImageView propic = findViewById(R.id.header);
+        final int[] NumberOfMembers = new int[1];
+
+        isAuthor = false;
+
         storageReference = FirebaseStorage.getInstance().getReference();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Log.v ("VALORE", args.getString("GName"));
+        Log.v ("VALORE", valueOf(args.getString("GName")));
+        database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    group = postSnapshot.getValue(Group.class);
+                    if (user.getEmail().equals(group.getAuthor())) {
+                        isAuthor = true;
+                    }
+                    groupUID = snapshot.getKey();
+                    ArrayList<String> addedMails = group.getRecipients();
+                    Log.v("VALORE CHILD", group.getName());
+                    Log.v("VALORE CHILD", group.getAuthor());
+                    NumberOfMembers[0] = addedMails.size() + 1;
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+                    collapsingToolbar.setTitle(group.getName());
 
-        if (person.getEmail().contains("@studenti.uniba.it")) {
-            ref = database.getReference("students");
-        } else {
-            ref = database.getReference("teachers");
-        }
-        DatabaseReference userRef = ref.child(user.getUid());
-        final StorageReference fileRef = storageReference.child(userRef + ".jpg");
+                    TextView memberIndication = findViewById(R.id.toolbar_additional_infos);
+
+                    memberIndication.setText(valueOf(NumberOfMembers[0]));
+
+                    TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
+                    toolBarShowEmail.setText(group.getAuthor());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("ERRORE", "loadPost:onCancelled", error.toException());
+            }
+        });
+
+        final StorageReference fileRef = storageReference.child(groupUID + ".jpg");
 
         File cachedProPic = getBaseContext().getFilesDir();
-        final File f = new File(cachedProPic, "profile-pic.jpg");
+        final File f = new File(cachedProPic, groupUID + ".jpg");
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(f);
@@ -111,13 +147,13 @@ public class EditProfile extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.v("AVVISO", "File could not be fetched from database");
-                        Toast.makeText(EditProfile.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(GroupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
                 Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
-                propic.setImageBitmap(bitmap);
+                groupPic.setImageBitmap(bitmap);
             }
         }
 
@@ -125,25 +161,8 @@ public class EditProfile extends AppCompatActivity {
 
 
 
-        userType = args.getString("PERSON_TYPE");
 
-        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(person.getName() + " " + person.getSurname());
-
-        TextView memberIndication = findViewById(R.id.toolbar_additional_infos);
-        memberIndication.setText(userType.toUpperCase());
-
-
-        TextView departmentIndication = findViewById(R.id.department_indication);
-        departmentIndication.setText(person.getDepartment());
-
-        TextView emailIndication = findViewById(R.id.email_indication);
-        TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
-        emailIndication.setText(person.getEmail());
-        toolBarShowEmail.setText(person.getEmail());
-
-
-        FloatingActionButton setProPicFab = findViewById(R.id.edit_profile_picture_fab);
+        FloatingActionButton setProPicFab = findViewById(R.id.common_fab);
         setProPicFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +191,7 @@ public class EditProfile extends AppCompatActivity {
                 if (data != null) {
                     Bundle extras = data.getExtras();
                     Bitmap bp = extras.getParcelable("data");
-                    updateUserPropic(bp);
+                    updateGroupProPic(bp);
                 }
             }
         }//end of outer if
@@ -205,15 +224,11 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
-    private void updateUserPropic(final Bitmap bitmap) {
+    private void updateGroupProPic(final Bitmap bitmap) {
         //Upload su firebase storage
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        if (person.getEmail().contains("@studenti.uniba.it")) {
-            ref = database.getReference("students");
-        } else {
-            ref = database.getReference("teachers");
-        }
+        DatabaseReference ref = database.getReference("groups");
         DatabaseReference userRef = ref.child(user.getUid());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -224,7 +239,7 @@ public class EditProfile extends AppCompatActivity {
         fileRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(EditProfile.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
                 headerProPic = findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
                 final File f = new File(getBaseContext().getFilesDir(), "profile-pic.jpg");
@@ -241,11 +256,10 @@ public class EditProfile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProfile.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-
 
 }

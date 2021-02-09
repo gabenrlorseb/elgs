@@ -3,7 +3,6 @@ package com.legs.unijet;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.createGroupActivity.UserSample;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 public class CreateGroup extends AppCompatActivity {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    FirebaseDatabase db= FirebaseDatabase.getInstance();
+    DatabaseReference db= FirebaseDatabase.getInstance().getReference();
 
 
     String userId;
@@ -40,8 +42,10 @@ public class CreateGroup extends AppCompatActivity {
 
     DataSnapshot snapshot;
     String userProfile;
+    String department;
     ArrayList<UserSample> membersAdded;
     ArrayList<String> addedMails;
+    ArrayList<User> students;
     Intent intent;
 
     final StringBuilder membersEmailList = new StringBuilder();
@@ -57,6 +61,7 @@ public class CreateGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         Bundle b = getIntent().getExtras();
+        department = b.getString("department");
         membersAdded = (ArrayList<UserSample>) b.getSerializable("members");
         addedMails = (ArrayList<String>) b.getSerializable("mails");
 
@@ -111,39 +116,80 @@ public class CreateGroup extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkCrededentials();
+                createGroup();
             }
         });
 
     }
 
-    void checkCrededentials() {
+    void createGroup() {
 
-        String name = setname.getText ().toString ();
+        final String name = setname.getText ().toString ();
         if (name.isEmpty ()) {
             showError (setname, getString(R.string.group_name_error));
         } else {
+            final User[] thisUser = new User[1];
+            final String email = user.getEmail();
+            DatabaseReference userReference = FirebaseDatabase.getInstance ().getReference ("students");
+            userReference.orderByChild("email").equalTo(user.getEmail()).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    thisUser[0] = snapshot.getValue(User.class);
+                    Boolean newBoolean = makePrivate.isChecked();
+                    Group group = new Group (name, email, addedMails, thisUser[0].getDepartment(), newBoolean);
+                    DatabaseReference dr = FirebaseDatabase.getInstance ().getReference ("groups");
+                    dr.push().setValue(group, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                System.out.println("Data could not be saved " + databaseError.getMessage());
+                                Toast.makeText (CreateGroup.this, "ERROR", Toast.LENGTH_SHORT).show ();
+                            } else {
+                                DatabaseReference dr2 = FirebaseDatabase.getInstance ().getReference ("members").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
 
-            String email = user.getEmail();
+                                Toast.makeText (CreateGroup.this, "success", Toast.LENGTH_SHORT).show ();
+                                startActivity(new Intent(CreateGroup.this, MainActivity.class));
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
 
 
-            Group group= new Group (name, email, addedMails, makePrivate.isChecked());
-            Log.d ("TAG", "gruppo Creato: " + group.getName ());
-            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            DatabaseReference dr = FirebaseDatabase.getInstance ().getReference ("groups").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
-            dr.setValue(group);
+                }
+            });
 
-            LoadingBar.setTitle (getString (R.string.course_creation));
-            LoadingBar.setMessage (getString(R.string.check_credentials));
-            LoadingBar.setCanceledOnTouchOutside (false);
 
-            startActivity(new Intent(CreateGroup.this, MainActivity.class));
+
+
+
+
+
+
 
         }
 
 
     }
+
+
 
     private void showError(EditText input, String s) {
         input.setError (s);

@@ -7,18 +7,27 @@ public class Group {
     String name;
     String department;
     String author;
-    Boolean isPrivate;
 
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    Boolean isPrivate;
     ArrayList<String> recipients;
 
     public Group() {
 
     }
 
-    public Group(String name, String author, ArrayList<String> recipients, Boolean beingPrivate) {
+    public Group(String name, String author, ArrayList<String> recipients,  String department, Boolean beingPrivate) {
         this.name = name;
         this.author = author;
         this.recipients = recipients;
+        this.department = department;
         this.isPrivate = beingPrivate;
     }
 

@@ -23,7 +23,7 @@ import com.legs.unijet.createGroupActivity.UserSample;
 import java.util.ArrayList;
 
 public class CoursesFragment extends Fragment {
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userId;
     FirebaseUser auth;
     DatabaseReference reference;
@@ -50,7 +50,7 @@ public class CoursesFragment extends Fragment {
 
     private void populateList() {
         courses = new ArrayList();
-        courseList = new ArrayList<CourseSample>();
+        courseList = new ArrayList();
         db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -58,7 +58,6 @@ public class CoursesFragment extends Fragment {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     for(DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
                         for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
-
                             for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
                                 String name = childSnapshot4.child("name").getValue(String.class);
                                 String department = childSnapshot4.child("department").getValue(String.class);
@@ -87,9 +86,9 @@ public class CoursesFragment extends Fragment {
                 for  (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     if(user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                         for (Course course : courses) {
-                            if (childSnapshot.child("dipartimento").getValue(String.class).equals(course.getDepartment())) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
                                 String namesString = course.getName() + " " + course.getAcademicYear();
-                                String mail = course.getEmail();
+                                String mail = getString(R.string.professor) + " " + course.getEmail();
                                 courseList.add(new CourseSample(namesString, mail));
                             }
                         }

@@ -17,7 +17,7 @@
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_text"
+            android:text="Placeholder Text"
             android:textSize="@dimen/common_default_title_text_size" />
 
 
