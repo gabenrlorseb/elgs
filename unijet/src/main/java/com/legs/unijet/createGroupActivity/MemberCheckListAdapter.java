@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -16,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.legs.unijet.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
-public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<UserSample> sampleList;
-    private ArrayList<UserSample> fullSampleList;
+public class MemberCheckListAdapter extends RecyclerView.Adapter<MemberCheckListAdapter.ExampleViewHolder> implements Filterable {
+    private ArrayList<UserChecklistSample> sampleList;
+    private ArrayList<UserChecklistSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -44,7 +42,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
 
     }
 
-    public MemberAdapter(ArrayList<UserSample> exampleList) {
+    public MemberCheckListAdapter(ArrayList<UserChecklistSample> exampleList) {
         this.sampleList = exampleList;
         fullSampleList = new ArrayList<>(exampleList);
     }
@@ -63,13 +61,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
     private Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<UserSample> filteredList = new ArrayList<>();
+            List<UserChecklistSample> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 filteredList.clear();
                 filteredList.addAll(fullSampleList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (UserSample item : fullSampleList) {
+                for (UserChecklistSample item : fullSampleList) {
                     if (item.getText1().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -99,7 +97,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
 
     @Override
     public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
-        final UserSample currentItem = sampleList.get(position);
+        final UserChecklistSample currentItem = sampleList.get(position);
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
@@ -114,9 +112,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
 
     }
 
-    public ArrayList<UserSample> getCheckedUsers() {
-        ArrayList<UserSample> addedMemberList = new ArrayList<>();
-        for (UserSample user : fullSampleList) {
+    public ArrayList<UserChecklistSample> getCheckedUsers() {
+        ArrayList<UserChecklistSample> addedMemberList = new ArrayList<>();
+        for (UserChecklistSample user : fullSampleList) {
             if (user.getChecked()){
                 addedMemberList.add(user);
             }
@@ -126,7 +124,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ExampleVie
 
     public ArrayList<String> getCheckedMails() {
         ArrayList<String> addedMemberList = new ArrayList<>();
-        for (UserSample user : fullSampleList) {
+        for (UserChecklistSample user : fullSampleList) {
             if (user.getChecked()){
                 addedMemberList.add(user.getText2());
             }

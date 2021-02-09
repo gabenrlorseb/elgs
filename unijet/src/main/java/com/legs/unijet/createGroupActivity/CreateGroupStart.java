@@ -6,11 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,7 +29,6 @@ import com.legs.unijet.CreateGroup;
 import com.legs.unijet.R;
 import com.legs.unijet.User;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CreateGroupStart extends AppCompatActivity  {
@@ -41,12 +36,12 @@ public class CreateGroupStart extends AppCompatActivity  {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
-    private ArrayList<UserSample> names;
+    private ArrayList<UserChecklistSample> names;
     private ArrayList<Course> courses;
 
 
     RecyclerView mRecyclerView;
-    private MemberAdapter mAdapter;
+    private MemberCheckListAdapter mAdapter;
 
     EditText searchEditText;
 
@@ -102,7 +97,7 @@ public class CreateGroupStart extends AppCompatActivity  {
                 if (mAdapter.getCheckedUsers().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
                 } else {
-                    ArrayList<UserSample> addedMembersSendList;
+                    ArrayList<UserChecklistSample> addedMembersSendList;
                     addedMembersSendList = mAdapter.getCheckedUsers();
 
                     ArrayList<String> membersMails;
@@ -153,7 +148,7 @@ public class CreateGroupStart extends AppCompatActivity  {
                                 " " +
                                 childSnapshot.child("surname").getValue(String.class);
                         String mail = childSnapshot.child ("email").getValue (String.class);
-                        names.add (new UserSample(R.drawable.ic_people, namesString, mail, false));
+                        names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false));
                     }
                 }
                 buildRecyclerView();
@@ -170,7 +165,7 @@ public class CreateGroupStart extends AppCompatActivity  {
         mRecyclerView = findViewById(R.id.possible_members_list);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new MemberAdapter(names);
+        mAdapter = new MemberCheckListAdapter(names);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }

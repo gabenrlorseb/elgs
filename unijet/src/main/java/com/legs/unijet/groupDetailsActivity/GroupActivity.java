@@ -96,12 +96,26 @@ import static java.lang.String.valueOf;
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
 
-                    TextView memberIndication = findViewById(R.id.toolbar_additional_infos);
+                    TextView memberIndication = findViewById(R.id.toolbar_subtitle);
 
-                    memberIndication.setText(valueOf(NumberOfMembers[0]));
+                    memberIndication.setText(valueOf(NumberOfMembers[0]) + "members");
+                    memberIndication.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                    TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
-                    toolBarShowEmail.setText(group.getAuthor());
+                            Bundle b = new Bundle();
+                            b.putSerializable("groupRecipients", group.getRecipients());
+
+                            Intent intent = new Intent(GroupActivity.this, MembersDetailsActivity.class);
+                            intent.putExtras(b);
+                            startActivity(intent);
+
+
+                        }
+                    });
+/*
+                    TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
+                    toolBarShowEmail.setText(group.getAuthor());*/
                 }
             }
 
@@ -155,6 +169,10 @@ import static java.lang.String.valueOf;
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }
+
+
+
+
         }
 
 
