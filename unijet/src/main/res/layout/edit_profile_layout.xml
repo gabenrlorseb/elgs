@@ -17,7 +17,7 @@
             android:fitsSystemWindows="true"
             app:title="Name surname"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginBottom="65dp"
+            app:expandedTitleMarginBottom="85dp"
             app:expandedTitleMarginStart="20dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <ImageView
@@ -39,6 +39,7 @@
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
+                android:maxLength="35"
                 app:layout_collapseMode="parallax"
                 android:layout_gravity="bottom"/>
 
@@ -46,9 +47,9 @@
                 android:id="@+id/toolbar_additional_infos"
                 android:layout_width="wrap_content"
                 android:layout_height="27dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="80dp"
-                android:layout_marginBottom="20dp"
+                android:layout_gravity="bottom|start"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="50dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="Profile type"
@@ -87,45 +88,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="10dp"/>
 
-            <LinearLayout
-                android:elevation="3dp"
-                app:layout_constraintTop_toBottomOf="@id/first_section_title"
-                app:layout_constraintStart_toStartOf="@id/first_section_title"
-                android:orientation="vertical"
-                android:layout_marginTop="7dp"
-                android:layout_marginHorizontal="18dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginTop="7dp"
+                android:elevation="3dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@id/first_section_title"
+                app:layout_constraintTop_toBottomOf="@id/first_section_title">
 
                 <LinearLayout
+                    android:id="@+id/first_option"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_department"/>
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_department" />
 
                     <LinearLayout
-                        android:layout_marginStart="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:text="@string/department"
-                            android:textSize="@dimen/common_profile_section_title_dimen"/>
+                            android:textSize="@dimen/common_profile_section_title_dimen"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/department_indication"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Placeholder text that shows the actual department"
-                            android:textSize="14sp"/>
+                            android:textSize="14sp" />
 
 
                     </LinearLayout>
@@ -133,35 +136,76 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/second_option"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="13dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/first_option">
 
                     <ImageView
                         android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_ui_email"/>
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_ui_email" />
 
                     <LinearLayout
-                        android:layout_marginStart="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:text="@string/e_mail"
-                            android:textSize="@dimen/common_profile_section_title_dimen"/>
+                            android:textSize="@dimen/common_profile_section_title_dimen"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/email_indication"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Placeholder text that shows the actual department"
-                            android:textSize="14sp"/>
+                            android:textSize="14sp" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="13dp"
+                    android:id="@+id/third_option"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/second_option">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_ui_password" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="2"
+                        android:layout_marginStart="4dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_password"
+                            android:textSize="@dimen/common_profile_section_title_dimen"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Change your current password"
+                            android:textSize="14sp" />
 
 
                     </LinearLayout>
@@ -169,7 +213,7 @@
                 </LinearLayout>
 
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
