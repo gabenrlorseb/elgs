@@ -2,14 +2,14 @@ package com.legs.unijet.createGroupActivity;
 
 import java.io.Serializable;
 
-public class UserSample implements Serializable {
+public class UserChecklistSample implements Serializable {
     private int mImageResource;
     private String mText1;
     private String mailText;
     private Boolean isChecked;
 
 
-    public UserSample(int imageResource, String text1, String text2, Boolean checkbox) {
+    public UserChecklistSample(int imageResource, String text1, String text2, Boolean checkbox) {
         mImageResource = imageResource;
         mText1 = text1;
         mailText = text2;
