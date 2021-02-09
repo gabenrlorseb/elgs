@@ -34,7 +34,7 @@
             android:id="@+id/member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_text"
+            android:text="Placeholder Text"
             android:textSize="@dimen/common_default_title_text_size" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:id="@+id/post_time_elapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/xxx_min"
+            android:text="XXX min"
             android:textSize="@dimen/common_default_subtitle_text_size" />
 
 

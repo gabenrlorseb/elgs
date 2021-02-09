@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_">Notifiche</string>
     <string name="courses_tab_name">Corsi</string>
     <string name="projects_tab_name">Progetti</string>
     <string name="groups_tab_name">Gruppi</string>
@@ -36,7 +35,6 @@
     <string name="add_member">Aggiungi membro</string>
     <string name="number_of_members">Numero di membri</string>
     <string name="rating">Valutazione</string>
-    <string name="name_surname">Nome Cognome</string>
     <string name="name_surname_email_com">Nome.Cognome@email.com</string>
     <string name="logout">Esc</string>
     <string name="settings">Impostazioni</string>
@@ -98,7 +96,6 @@
     <string name="post_option_title">Pubblica</string>
     <string name="upload_title">Caricamento</string>
     <string name="upload_subtitle">Carica un documento, un file o un immagine</string>
-    <string name="course_title">Corso</string>
     <string name="course_subtitle">Crea un nuovo corso</string>
     <string name="error_academic_year">L\'anno accademico inserito non è valido</string>
     <string name="error_name_course">Il nome del corso inserito non è valido</string>
@@ -110,7 +107,8 @@
     <string name="error_name_group">Il nome del gruppo selezionato non è valido</string>
     <string name="propic_change_success">Immagine del profilo caricata correttamente</string>
     <string name="error_profile_picture">Ce\'è stato un errore. Potresti controllare la tua connessione a Internet</string>
-    <string name="device_not_supported">Sembra che il tuo disposi tivo non supporti quest\'azione</string>
+    <string name="device_not_supported">Sembra che il tuo dispositivo non supporti quest\'azione</string>
     <string name="professor">"Professore: "</string>
+    <string name="START">INIZIA</string>
     */
 </resources>
