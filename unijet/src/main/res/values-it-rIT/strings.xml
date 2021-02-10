@@ -25,7 +25,7 @@
     <string name="universitary_campus">Sede</string>
     <string name="create_group">Crea gruppo</string>
     <string name="group_name">Nome gruppo</string>
-    <string name="member">Membro 1</string>
+    <string name="member">Membro</string>
     <string name="create_project">Crea progetto</string>
     <string name="project_name">Nome progetto</string>
     <string name="course">Corso</string>
@@ -114,6 +114,7 @@
     <string name="YES">SI</string>
     <string name="NO">NO</string>
     <string name="START">INIZIA</string>
+    <string name="you">Tu</string>
+    <string name="admin">AMMINISTRATORE</string>
 
-    */
 </resources>

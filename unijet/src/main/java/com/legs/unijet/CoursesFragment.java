@@ -20,8 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.createGroupActivity.MemberAdapter;
-import com.legs.unijet.createGroupActivity.UserSample;
+import com.legs.unijet.createGroupActivity.MemberCheckListAdapter;
+import com.legs.unijet.createGroupActivity.UserChecklistSample;
 import com.legs.unijet.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.utils.RecyclerItemClickListener;
 

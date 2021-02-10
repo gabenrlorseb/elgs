@@ -37,7 +37,6 @@
     <string name="group_creation">Group Creation</string>
     <string name="create_group">Create Group</string>
     <string name="group_name">Group Name</string>
-    <string name="member">Member 1</string>
     <string name="project_creation">Project Creation</string>
     <string name="create_project">Create Project</string>
     <string name="project_name">Project Name</string>
@@ -127,4 +126,7 @@
     <string name="would_course">Do you want to sign up in the course?:</string>
     <string name="YES">YES</string>
     <string name="NO">NO</string>
+    <string name="you">You</string>
+    <string name="member">Member</string>
+    <string name="admin">ADMIN</string>
 </resources>

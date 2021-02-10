@@ -36,8 +36,8 @@
     </plurals>
 
     <plurals name="members">
-        <item quantity="one">%d member</item>
-        <item quantity="other">%d members</item>
+        <item quantity="one">%d membro</item>
+        <item quantity="other">%d membri</item>
     </plurals>
 
 </resources>

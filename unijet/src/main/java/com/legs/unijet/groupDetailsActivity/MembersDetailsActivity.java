@@ -27,6 +27,9 @@
      private MemberNoChecklistAdapter mAdapter;
      DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
+     String authorName;
+     String authorMail;
+
 
      @Override
     protected void onCreate (Bundle savedInstance) {
@@ -39,6 +42,15 @@
         Bundle args = getIntent().getExtras();
 
         passed_names =  (ArrayList<String>) args.getSerializable("groupRecipients");
+        authorName = args.getString("author_name");
+
+        if (authorName.equals("you")) {
+            authorName = getString(R.string.you);
+            authorMail = getString(R.string.admin);
+        } else {
+            authorName = args.getString("author_name");
+            authorMail = args.getString("author");
+        }
 
         populateList();
 
@@ -47,6 +59,7 @@
 
      private void populateList() {
          names = new ArrayList<>();
+         names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
          db.child("students").addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -59,6 +72,10 @@
                          names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false));
                      }
                  }
+
+
+
+                 buildRecyclerView();
              }
 
              @Override
@@ -67,7 +84,6 @@
              }
          });
 
-             buildRecyclerView();
      }
 
      private void buildRecyclerView() {

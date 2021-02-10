@@ -1,58 +1,58 @@
  package com.legs.unijet.groupDetailsActivity;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+ import android.app.Activity;
+ import android.content.ActivityNotFoundException;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.graphics.Bitmap;
+ import android.graphics.BitmapFactory;
+ import android.net.ConnectivityManager;
+ import android.net.NetworkInfo;
+ import android.net.Uri;
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.ImageView;
+ import android.widget.TextView;
+ import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.Group;
-import com.legs.unijet.R;
+ import com.google.android.gms.tasks.OnFailureListener;
+ import com.google.android.gms.tasks.OnSuccessListener;
+ import com.google.android.material.appbar.CollapsingToolbarLayout;
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.database.DataSnapshot;
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+ import com.google.firebase.database.FirebaseDatabase;
+ import com.google.firebase.database.ValueEventListener;
+ import com.google.firebase.storage.FileDownloadTask;
+ import com.google.firebase.storage.FirebaseStorage;
+ import com.google.firebase.storage.StorageReference;
+ import com.google.firebase.storage.UploadTask;
+ import com.legs.unijet.Group;
+ import com.legs.unijet.R;
+ import com.legs.unijet.User;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import static java.lang.String.valueOf;
+ import java.io.ByteArrayOutputStream;
+ import java.io.File;
+ import java.io.FileInputStream;
+ import java.io.FileNotFoundException;
+ import java.io.FileOutputStream;
+ import java.io.IOException;
+ import java.util.ArrayList;
+ import java.util.Objects;
 
  public class  GroupActivity extends AppCompatActivity {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Group group;
-    String userType, groupUID;
+    String  groupUID;
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
@@ -77,47 +77,77 @@ import static java.lang.String.valueOf;
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        Log.v ("VALORE", args.getString("GName"));
-        Log.v ("VALORE", valueOf(args.getString("GName")));
+        final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+
+
         database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     group = postSnapshot.getValue(Group.class);
                     if (user.getEmail().equals(group.getAuthor())) {
                         isAuthor = true;
                     }
                     groupUID = snapshot.getKey();
                     ArrayList<String> addedMails = group.getRecipients();
-                    Log.v("VALORE CHILD", group.getName());
-                    Log.v("VALORE CHILD", group.getAuthor());
+
                     NumberOfMembers[0] = addedMails.size() + 1;
+
+                    final String[] groupAuthorName = new String[1];
+
+                    database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                            for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
+
+                                    User user;
+                                    user = childSnapshot.getValue(User.class);
+                                    groupAuthorName[0] = user.getName() + " " + user.getSurname();
+                                TextView memberIndication = findViewById(R.id.toolbar_subtitle);
+                                memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
+                                memberIndication.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.v("VALORE NOME", groupAuthorName[0]);
+                                        Bundle b = new Bundle();
+                                        b.putSerializable("groupRecipients", group.getRecipients());
+
+                                        Intent intent = new Intent(GroupActivity.this, MembersDetailsActivity.class);
+                                        intent.putExtras(b);
+                                        if (!isAuthor) {
+                                            intent.putExtra("author", group.getAuthor());
+                                            intent.putExtra("author_name", groupAuthorName[0]);
+                                        } else {
+                                            intent.putExtra("author", getString(R.string.you));
+                                            intent.putExtra("author_name", "you");
+                                        }
+                                        intent.putExtra("name", group.getName());
+                                        startActivity(intent);
+
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
 
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
 
-                    TextView memberIndication = findViewById(R.id.toolbar_subtitle);
-
-                    memberIndication.setText(valueOf(NumberOfMembers[0]) + "members");
-                    memberIndication.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            Bundle b = new Bundle();
-                            b.putSerializable("groupRecipients", group.getRecipients());
-
-                            Intent intent = new Intent(GroupActivity.this, MembersDetailsActivity.class);
-                            intent.putExtras(b);
-                            startActivity(intent);
 
 
-                        }
-                    });
 /*
                     TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
                     toolBarShowEmail.setText(group.getAuthor());*/
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -260,7 +290,7 @@ import static java.lang.String.valueOf;
                 Toast.makeText(GroupActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
                 headerProPic = findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
-                final File f = new File(getBaseContext().getFilesDir(), "profile-pic.jpg");
+                final File f = new File(getBaseContext().getFilesDir(), groupUID + "jpg");
                 FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(f);
