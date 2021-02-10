@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +24,7 @@ import com.legs.unijet.createGroupActivity.MemberAdapter;
 import com.legs.unijet.createGroupActivity.UserSample;
 import com.legs.unijet.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.utils.RecyclerItemClickListener;
+
 
 import java.util.ArrayList;
 

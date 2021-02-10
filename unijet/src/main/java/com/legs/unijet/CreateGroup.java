@@ -23,7 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.createGroupActivity.UserSample;
+import com.legs.unijet.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class CreateGroup extends AppCompatActivity {
     DataSnapshot snapshot;
     String userProfile;
     String department;
-    ArrayList<UserSample> membersAdded;
+    ArrayList<UserChecklistSample> membersAdded;
     ArrayList<String> addedMails;
     ArrayList<User> students;
     Intent intent;
@@ -62,7 +62,7 @@ public class CreateGroup extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         Bundle b = getIntent().getExtras();
         department = b.getString("department");
-        membersAdded = (ArrayList<UserSample>) b.getSerializable("members");
+        membersAdded = (ArrayList<UserChecklistSample>) b.getSerializable("members");
         addedMails = (ArrayList<String>) b.getSerializable("mails");
 
 

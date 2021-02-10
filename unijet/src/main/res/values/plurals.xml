@@ -30,6 +30,9 @@
         <item quantity="other" >@string/years_ago</item>
     </plurals>
 
-
+    <plurals name ="members_number">
+        <item quantity="one">@string/year_ago</item>
+        <item quantity="other" >@string/years_ago</item>
+    </plurals>
 
 </resources>
