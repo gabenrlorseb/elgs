@@ -13,27 +13,42 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.createGroupActivity.MemberAdapter;
+import com.legs.unijet.createGroupActivity.UserSample;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class CreateCourse extends AppCompatActivity {
     private EditText inputNameCourse;
     private Spinner inputDepartment, inputAcademicYear;
+    private MemberAdapter mAdapter;
+    TextView addedMembers;
+    ArrayList<String> addedIDStudents;
+    ArrayList<String> students;
     FirebaseAuth auth;
     DatabaseReference db;
     Button btnCreation;
+    final StringBuilder studentsIDList = new StringBuilder();
 
     Bundle bundle;
     Intent intent;
 
     private FirebaseAuth firebaseAuth;
-    FirebaseUser user;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userId;
 
 
@@ -44,10 +59,31 @@ public class CreateCourse extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.create_course);
+        Bundle b = getIntent().getExtras();
 
         inputNameCourse = findViewById (R.id.set_name_course);
         inputDepartment = findViewById (R.id.select_department);
         inputAcademicYear = findViewById (R.id.select_academic_year);
+
+
+
+
+        /*addedMembers.setText(new StringBuilder().append(students.size()));
+
+        for (int i = 0; i < addedIDStudents.size(); i++) {
+            String addThis = addedIDStudents.get(i);
+            studentsIDList.append(addThis);
+            if (i != addedIDStudents.size() - 1 ) {
+                studentsIDList.append(",");
+            }
+        }
+
+        addedMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addedMembers.setText(studentsIDList);
+            }
+        });*/
 
         firebaseAuth = FirebaseAuth.getInstance ();
 
@@ -57,20 +93,15 @@ public class CreateCourse extends AppCompatActivity {
         auth = FirebaseAuth.getInstance ();
         LoadingBar = new ProgressDialog (CreateCourse.this);
         btnCreation = findViewById (R.id.creation_button);
-        btnCreation.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick(View v) {
-                checkCrededentials ();
-            }
-        });
+
 
 
 
         btnCreation.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                checkCrededentials ();
-                startActivity (new Intent (CreateCourse.this, MainActivity.class));
+                createCourse ();
+                startActivity(new Intent(CreateCourse.this, MainActivity.class));
             }
         });
 
@@ -80,9 +111,44 @@ public class CreateCourse extends AppCompatActivity {
 
     }
 
+    void createCourse() {
 
-    void checkCrededentials() {
+        final String name = inputNameCourse.getText ().toString ();
+        final String department = inputDepartment.getSelectedItem ().toString ();
+        final String academicYear = inputAcademicYear.getSelectedItem ().toString ();
+        final String email = user.getEmail();
+        final ArrayList<String> students = new ArrayList<>();
+        if (name.isEmpty () || !name.contains ("")) {
+            showError (inputNameCourse, getString(R.string.error_name_course));
+        } else if (department.isEmpty ()) {
+            showError2 (inputDepartment, getString(R.string.error_department));
+        } else if (academicYear.isEmpty ()) {
+            showError3 (inputAcademicYear, getString(R.string.error_academic_year));
 
+        } else {
+
+
+                  DatabaseReference courseReference = FirebaseDatabase.getInstance ().getReference("courses");
+                    Course course = new Course (name, academicYear, department, email, students);
+                    courseReference.push().setValue(course, new DatabaseReference.CompletionListener()  {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                System.out.println("Data could not be saved " + databaseError.getMessage());
+                                Toast.makeText (CreateCourse.this, "ERROR", Toast.LENGTH_SHORT).show ();
+                            } else {
+                                DatabaseReference dr2 = FirebaseDatabase.getInstance ().getReference ("members").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+
+                                Toast.makeText (CreateCourse.this, "success", Toast.LENGTH_SHORT).show ();
+                            }
+                        }
+                    });
+
+                            }
+
+
+    }
+    /*void checkCrededentials() {
         String name = inputNameCourse.getText ().toString ();
         String department = inputDepartment.getSelectedItem ().toString ();
         String academicYear = inputAcademicYear.getSelectedItem ().toString ();
@@ -117,7 +183,8 @@ public class CreateCourse extends AppCompatActivity {
         }
 
 
-    }
+    }*/
+
 
     private void showError(EditText input, String s) {
         input.setError (s);

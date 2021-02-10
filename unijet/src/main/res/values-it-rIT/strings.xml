@@ -112,5 +112,9 @@
     <string name="error_profile_picture">Ce\'è stato un errore. Potresti controllare la tua connessione a Internet</string>
     <string name="device_not_supported">Sembra che il tuo disposi tivo non supporti quest\'azione</string>
     <string name="professor">"Professore: "</string>
+    <string name="sign_up_course">Iscrizione al corso</string>
+    <string name="would_course">Vuoi iscriverti al corso?</string>
+    <string name="YES">SI</string>
+    <string name="NO">NO</string>
     */
 </resources>

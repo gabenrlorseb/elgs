@@ -1,22 +1,29 @@
 package com.legs.unijet;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Course{
-    String name, department, academicYear, email;
+    String IDCourse, name, department, academicYear, email;
+    ArrayList<String> members, IDFeedbacks;
 
 public Course (){
 
 }
 
 
-    public Course(String name, String academicYear, String department, String email) {
+    public Course(String name, String academicYear, String department, String email,
+                  ArrayList<String> members) {
         this.name = name;
         this.academicYear = academicYear;
         this.department = department;
         this.email = email;
+        this.members = members;
+        /*this.IDPosts = IDPosts;
+        this.IDFeedbacks = IDFeedbacks;*/
     }
+
 
     public String getEmail() {
         return email;
@@ -48,6 +55,22 @@ public Course (){
 
     public void setAcademicYear(String academicYear) {
         this.academicYear = academicYear;
+    }
+
+    public ArrayList<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(ArrayList<String> recipients) {
+        this.members = members;
+    }
+
+    public ArrayList<String> getIDFeedbacks() {
+        return IDFeedbacks;
+    }
+
+    public void setIDFeedbacks(ArrayList<String> recipients) {
+        this.IDFeedbacks = IDFeedbacks;
     }
 
     @Override
