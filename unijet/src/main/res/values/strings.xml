@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">UniJET</string>
     <string name="title_home" translatable="false">MyUniJET</string>
@@ -122,4 +123,8 @@
     <string name="device_not_supported">It seems like your device doesn\'t support this action</string>
     <string name="owner" translatable="false">Owner:</string>
     <string name="professor">Professor:</string>
+    <string name="sign_up_course">Signin up to the course</string>
+    <string name="would_course">Do you want to sign up in the course?:</string>
+    <string name="YES">YES</string>
+    <string name="NO">NO</string>
 </resources>
