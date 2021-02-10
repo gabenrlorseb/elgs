@@ -34,6 +34,7 @@
         <activity android:name=".CreateProject" />
         <activity android:name=".EditProfile" />
         <activity android:name=".CourseDetailsActivity" />
+        <activity android:name=".groupDetailsActivity.GroupActivity" />
 
         <activity android:name=".createGroupActivity.CreateGroupStart"
             android:exported="true"/>

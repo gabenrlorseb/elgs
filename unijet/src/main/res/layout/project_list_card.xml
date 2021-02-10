@@ -16,7 +16,9 @@
             android:id="@+id/project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="Placeholder Text"
+
             android:textSize="@dimen/common_default_title_text_size" />
 
 

@@ -131,7 +131,7 @@ public class CreateProject extends AppCompatActivity {
 private void populateSpinnerCourse() {
     courses = new ArrayList<>();
     spinnerCourses = new ArrayList<>();
-    db.child("courses").addValueEventListener(new ValueEventListener() {
+    /*db.child("courses").addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             for (DataSnapshot childSnapshot : snapshot.getChildren()) {
@@ -153,7 +153,7 @@ private void populateSpinnerCourse() {
         public void onCancelled(@NonNull DatabaseError error) {
 
         }
-    });
+    });*/
 
     db.child("students").addValueEventListener(new ValueEventListener() {
         @Override
