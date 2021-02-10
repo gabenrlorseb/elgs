@@ -64,7 +64,6 @@ public class GroupsFragment extends Fragment {
                                 String department = childSnapshot4.child("department").getValue(String.class);
                                 String academicYear=  childSnapshot4.child("academicYear").getValue(String.class);
                                 String email = childSnapshot4.child("email").getValue(String.class);
-                                courses.add(new Course (name, academicYear, department, email));
                                 //courseList.add(new CourseSample(namesString, mail));
                             }
                         }

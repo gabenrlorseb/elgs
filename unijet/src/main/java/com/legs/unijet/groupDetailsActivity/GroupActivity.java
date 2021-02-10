@@ -95,15 +95,38 @@
 
                     final String[] groupAuthorName = new String[1];
 
-                    database2.child("students").addValueEventListener(new ValueEventListener() {
+                    database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot2) {
                             for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
-                                if (Objects.equals(childSnapshot.child("email").getValue(String.class), group.getAuthor())) {
+
                                     User user;
-                                    user = snapshot2.getValue(User.class);
+                                    user = childSnapshot.getValue(User.class);
                                     groupAuthorName[0] = user.getName() + " " + user.getSurname();
-                                }
+                                TextView memberIndication = findViewById(R.id.toolbar_subtitle);
+                                memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
+                                memberIndication.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.v("VALORE NOME", groupAuthorName[0]);
+                                        Bundle b = new Bundle();
+                                        b.putSerializable("groupRecipients", group.getRecipients());
+
+                                        Intent intent = new Intent(GroupActivity.this, MembersDetailsActivity.class);
+                                        intent.putExtras(b);
+                                        if (!isAuthor) {
+                                            intent.putExtra("author", group.getAuthor());
+                                            intent.putExtra("author_name", groupAuthorName[0]);
+                                        } else {
+                                            intent.putExtra("author", getString(R.string.you));
+                                            intent.putExtra("author_name", "you");
+                                        }
+                                        intent.putExtra("name", group.getName());
+                                        startActivity(intent);
+
+
+                                    }
+                                });
                             }
                         }
 
@@ -118,30 +141,7 @@
                     collapsingToolbar.setTitle(group.getName());
 
 
-                    TextView memberIndication = findViewById(R.id.toolbar_subtitle);
-                    memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
-                    memberIndication.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.v("VALORE NOME", groupAuthorName[0]);
-                            Bundle b = new Bundle();
-                            b.putSerializable("groupRecipients", group.getRecipients());
 
-                            Intent intent = new Intent(GroupActivity.this, MembersDetailsActivity.class);
-                            intent.putExtras(b);
-                            if (!isAuthor) {
-                                intent.putExtra("author", group.getAuthor());
-                                intent.putExtra("author_name", groupAuthorName[0]);
-                            } else {
-                                intent.putExtra("author", getString(R.string.you));
-                                intent.putExtra("author_name", "you");
-                            }
-                            intent.putExtra("name", group.getName());
-                            startActivity(intent);
-
-
-                        }
-                    });
 /*
                     TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
                     toolBarShowEmail.setText(group.getAuthor());*/

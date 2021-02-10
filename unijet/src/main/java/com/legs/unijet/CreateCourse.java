@@ -24,8 +24,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.createGroupActivity.MemberAdapter;
-import com.legs.unijet.createGroupActivity.UserSample;
+import com.legs.unijet.createGroupActivity.MemberCheckListAdapter;
+import com.legs.unijet.createGroupActivity.UserChecklistSample;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.Random;
 public class CreateCourse extends AppCompatActivity {
     private EditText inputNameCourse;
     private Spinner inputDepartment, inputAcademicYear;
-    private MemberAdapter mAdapter;
+    private MemberCheckListAdapter mAdapter;
     TextView addedMembers;
     ArrayList<String> addedIDStudents;
     ArrayList<String> students;
