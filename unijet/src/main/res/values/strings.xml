@@ -36,7 +36,6 @@
     <string name="group_creation">Group Creation</string>
     <string name="create_group">Create Group</string>
     <string name="group_name">Group Name</string>
-    <string name="member">Member 1</string>
     <string name="project_creation">Project Creation</string>
     <string name="create_project">Create Project</string>
     <string name="project_name">Project Name</string>
@@ -122,4 +121,7 @@
     <string name="device_not_supported">It seems like your device doesn\'t support this action</string>
     <string name="owner" translatable="false">Owner:</string>
     <string name="professor">Professor:</string>
+    <string name="you">You</string>
+    <string name="member">Member</string>
+    <string name="admin">ADMIN</string>
 </resources>
