@@ -29,7 +29,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-        <activity android:name=".CreateGroup" />
+        <activity android:name=".createGroupActivity.CreateGroup" />
         <activity android:name=".CreateCourse" />
         <activity android:name=".CreateProject" />
         <activity android:name=".EditProfile" />
@@ -39,7 +39,6 @@
         <activity android:name=".createGroupActivity.CreateGroupStart"
             android:exported="true"/>
 
-        <activity android:name=".groupDetailsActivity.GroupActivity"/>
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>
 
         <meta-data
