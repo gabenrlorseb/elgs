@@ -53,22 +53,12 @@ public class ProjectsFragment extends Fragment {
         db.child ("projects").addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+              projectList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren ()) {
-                    for (DataSnapshot childSnapshot2 : childSnapshot.getChildren ()) {
-                        for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren ()) {
-
-                            for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren ()) {
-
-                                String name = childSnapshot4.child ("name").getValue (String.class);
-                                String group = childSnapshot4.child ("group").getValue (String.class);
-                                Log.d ("", "onDataChange: " + group);
+                                String name = childSnapshot.child ("name").getValue (String.class);
+                                String group = childSnapshot.child ("group").getValue (String.class);
                                 projectList.add (new ProjectSample (name, group));
 
-
-                            }
-                        }
-                    }
                 }
 
                 buildRecyclerView ();

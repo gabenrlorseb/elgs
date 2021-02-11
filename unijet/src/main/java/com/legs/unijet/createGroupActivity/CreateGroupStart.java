@@ -25,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.Course;
-import com.legs.unijet.CreateGroup;
 import com.legs.unijet.R;
 import com.legs.unijet.User;
 

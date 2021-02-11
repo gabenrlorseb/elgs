@@ -90,16 +90,13 @@
                     }
                     groupUID = snapshot.getKey();
                     ArrayList<String> addedMails = group.getRecipients();
-
                     NumberOfMembers[0] = addedMails.size() + 1;
-
                     final String[] groupAuthorName = new String[1];
 
                     database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot2) {
                             for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
-
                                     User user;
                                     user = childSnapshot.getValue(User.class);
                                     groupAuthorName[0] = user.getName() + " " + user.getSurname();
@@ -123,28 +120,19 @@
                                         }
                                         intent.putExtra("name", group.getName());
                                         startActivity(intent);
-
-
                                     }
                                 });
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });
 
-
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
 
-
-
-/*
-                    TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
-                    toolBarShowEmail.setText(group.getAuthor());*/
                 }
             }
 
