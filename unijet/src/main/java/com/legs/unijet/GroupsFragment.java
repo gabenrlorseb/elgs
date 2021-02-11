@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +34,7 @@ public class GroupsFragment extends Fragment {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,41 +46,35 @@ public class GroupsFragment extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.groups_page, container, false);
         populateList();
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mSwipeRefreshLayout.setRefreshing(true);
+
+                        populateList();
+                    }
+                });
+            }
+        });
+
         return view;
 
     }
 
     private void populateList() {
-        courses = new ArrayList<Course>();
-        fullSampleList = new ArrayList<CourseSample> ();
-        db.child("courses").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    for(DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
-                        for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
-
-                            for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
-                                String name = childSnapshot4.child("name").getValue(String.class);
-                                String department = childSnapshot4.child("department").getValue(String.class);
-                                String academicYear=  childSnapshot4.child("academicYear").getValue(String.class);
-                                String email = childSnapshot4.child("email").getValue(String.class);
-                                //courseList.add(new CourseSample(namesString, mail));
-                            }
-                        }
-                    }
-
-
-                }
-                buildRecyclerView();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        courses = new ArrayList<>();
+        fullSampleList = new ArrayList<>();
 
         db.child("groups").addValueEventListener(new ValueEventListener () {
             @Override
@@ -90,21 +86,27 @@ public class GroupsFragment extends Fragment {
                     String namesString = childSnapshot.child("name").getValue(String.class);
                     String owner = childSnapshot.child("author").getValue(String.class);
                     fullSampleList.add(new CourseSample(namesString, owner));
-                    //}
-
-
-
 
                 }
                 buildRecyclerView();
-            }
+
+                    if (mSwipeRefreshLayout.isRefreshing()) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
+
+
     }
+
+
 
     private void buildRecyclerView() {
         mRecyclerView = getView().findViewById(R.id.groups_list);

@@ -1,4 +1,4 @@
-package com.legs.unijet;
+package com.legs.unijet.createGroupActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,7 +23,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.Group;
+import com.legs.unijet.MainActivity;
+import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.util.ArrayList;
 
