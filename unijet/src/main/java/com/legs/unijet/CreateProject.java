@@ -32,7 +32,7 @@ public class CreateProject extends AppCompatActivity {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     DatabaseReference db2;
     Button btnCreation;
-    ArrayList <String>  spinnerCourses, groups;
+    ArrayList <String>  coursess,spinnerCourses, groups;
     ArrayList <Course> courses;
 
     Bundle bundle;
@@ -70,7 +70,7 @@ public class CreateProject extends AppCompatActivity {
         btnCreation.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                checkCrededentials ();
+                createProject ();
             }
         });
 
@@ -79,7 +79,7 @@ public class CreateProject extends AppCompatActivity {
         btnCreation.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                checkCrededentials ();
+                createProject ();
                 startActivity (new Intent (CreateProject.this, MainActivity.class));
             }
         });
@@ -90,70 +90,78 @@ public class CreateProject extends AppCompatActivity {
 
     }
 
-
-    void checkCrededentials() {
-
-        String name = inputNameProject.getText ().toString ();
-        String course = inputCourse.getSelectedItem ().toString ();
-        String group = inputGroup.getSelectedItem ().toString ();
+    void createProject() {
+        final String name = inputNameProject.getText ().toString ();
+         String course = inputCourse.getSelectedItem ().toString ();
+         String group = inputGroup.getSelectedItem ().toString ();
+        final String email = user.getEmail();
+        final ArrayList<String> students = new ArrayList<>();
+        students.add(email);
         if (name.isEmpty () || !name.contains ("")) {
-            showError (inputNameProject, getString(R.string.error_name_project));
+            showError (inputNameProject, getString(R.string.error_name_course));
         } else if (course.isEmpty ()) {
-            showError2 (inputCourse, getString(R.string.error_name_course));
+            showError2 (inputCourse, getString(R.string.error_department));
         } else if (group.isEmpty ()) {
-            showError3 (inputGroup, getString(R.string.error_name_group));
-        }
-        else {
-            db = FirebaseDatabase.getInstance ().getReference ("projects").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
-            intent = getIntent ();
-
+            showError3 (inputGroup, getString(R.string.error_academic_year));
+        } else {
+            DatabaseReference courseReference = FirebaseDatabase.getInstance ().getReference("projects");
             Project project = new Project (name, course, group);
-            if (project == null) {
-                Log.d ("TAG", "checkCrededentials: nullo");
-            } else {
-                Log.d ("TAG", "checkCrededentials: " + project.getName ());
-            }
-            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
-            db.child(project.getGroup()).child(project.getCourse()).
-                    child(project.getName()).setValue (project);
-
-
-
-            LoadingBar.setTitle (getString (R.string.project_creation));
-            LoadingBar.setMessage (getString(R.string.check_credentials));
-            LoadingBar.setCanceledOnTouchOutside (false);
-
-        }
-
-
-    }
-
-private void populateSpinnerCourse() {
-    courses = new ArrayList<>();
-    spinnerCourses = new ArrayList<>();
-    /*db.child("courses").addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                for (DataSnapshot childSnapshot2 : childSnapshot.getChildren()) {
-                    for (DataSnapshot childSnapshot3 : childSnapshot2.getChildren()) {
-                        for (DataSnapshot childSnapshot4 : childSnapshot3.getChildren()) {
-                            String name = childSnapshot4.child("name").getValue(String.class);
-                            String department = childSnapshot4.child("department").getValue(String.class);
-                            String academicYear=  childSnapshot4.child("academicYear").getValue(String.class);
-                            String email = childSnapshot4.child("email").getValue(String.class);
-                            courses.add(new Course (name, academicYear, department, email));
-                        }
+            courseReference.push().setValue(project, new DatabaseReference.CompletionListener()  {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if (databaseError != null) {
+                        System.out.println("Data could not be saved " + databaseError.getMessage());
+                        Toast.makeText (CreateProject.this, "ERROR", Toast.LENGTH_SHORT).show ();
+                    } else {
+                        DatabaseReference dr2 = FirebaseDatabase.getInstance ().getReference ("members").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+                        Toast.makeText (CreateProject.this, "success", Toast.LENGTH_SHORT).show ();
                     }
                 }
+            });
+        }
+    }
+
+
+    private void populateSpinnerCourse() {
+
+        courses = new ArrayList<>();
+        spinnerCourses = new ArrayList<>();
+        db.child("courses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String department = childSnapshot.child("department").getValue(String.class);
+                    String academicYear=  childSnapshot.child("academicYear").getValue(String.class);
+                    String email = childSnapshot.child("email").getValue(String.class);
+                    courses.add(new Course (name, academicYear, department, email, coursess));
+                }
             }
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for  (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    if(user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        for (Course course : courses) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
+                                String spinnerName = course.getName() + " " + course.getAcademicYear();
+                                spinnerCourses.add(spinnerName);
+                            }
+                        }
+                    }
+                }ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(CreateProject.this, android.R.layout.simple_spinner_item, spinnerCourses);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                inputCourse.setAdapter(arrayAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-
-        }
-    });*/
 
     db.child("students").addValueEventListener(new ValueEventListener() {
         @Override
