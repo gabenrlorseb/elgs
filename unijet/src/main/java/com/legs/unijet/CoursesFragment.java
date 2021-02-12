@@ -85,7 +85,7 @@ public class CoursesFragment extends Fragment {
         //members = new ArrayList<>();
         courses = new ArrayList();
         courseList = new ArrayList();
-        /*db.child("courses").addValueEventListener(new ValueEventListener() {
+        db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -98,47 +98,88 @@ public class CoursesFragment extends Fragment {
                                 //courseList.add(new CourseSample(namesString, mail));
                             }
 
-               // buildRecyclerView();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });*/
-        db.child("courses").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                courseList.clear();
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+        });
+        if (user.getEmail().contains("@studenti.uniba.it")){
+        fragmentStudent();
+        } else if (user.getEmail().contains("uniba.it")){
+        fragmentProfessor();
+        }
 
-                    //if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                    //for (Course course : courses) {
-                    //if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
-                    //|| user.getEmail().equals(course.getEmail())) {
-                    String namesString = childSnapshot.child("name").getValue(String.class);
+
+        }
+
+
+private void fragmentProfessor(){
+    db.child("teachers").addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            courseList.clear();
+            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+                if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                    for (Course course : courses) {
+                        if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
+                                || user.getEmail().equals(course.getEmail())) {
+                            String namesString = course.getName();
                             //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
-                    String mail = childSnapshot.child("email").getValue(String.class);
+                            String mail = course.getEmail();
 
-                    courseList.add(new CourseSample(namesString, mail));
-                    //}
+                            courseList.add(new CourseSample(namesString, mail));
+                        }
 
-                    //}
+                    }
                 }
                 buildRecyclerView();
                 if (mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
+        }
+        @Override
+        public void onCancelled (@NonNull DatabaseError error){
 
         }
+    });
+}
 
+private void fragmentStudent(){
+    db.child("students").addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            courseList.clear();
+            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+                if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                    for (Course course : courses) {
+                        if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
+                            String namesString = course.getName();
+                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                            String mail = course.getEmail();
+
+                            courseList.add(new CourseSample(namesString, mail));
+                        }
+
+                    }
+                }
+                buildRecyclerView();
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        }
+        @Override
+        public void onCancelled (@NonNull DatabaseError error){
+
+        }
+    });
+
+}
 
 
     private void buildRecyclerView() {
