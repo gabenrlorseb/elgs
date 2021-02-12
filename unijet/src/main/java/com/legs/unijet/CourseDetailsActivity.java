@@ -1,5 +1,6 @@
 package com.legs.unijet;
 
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -15,9 +16,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.legs.unijet.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +36,9 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.Group;
+import com.legs.unijet.R;
+import com.legs.unijet.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,14 +47,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
-import static java.lang.String.valueOf;
+public class  CourseDetailsActivity extends AppCompatActivity {
 
-public class CourseDetailsActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Course course;
-    String userType, courseUID;
+    String  courseUID;
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
@@ -76,30 +79,76 @@ public class CourseDetailsActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        Log.v ("VALORE", args.getString("CName"));
-        Log.v ("VALORE", valueOf(args.getString("CName")));
+
+
         database.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     course = postSnapshot.getValue(Course.class);
+                    if (user.getEmail().equals(course.getEmail())) {
+                        isAuthor = true;
+                    }
                     courseUID = snapshot.getKey();
                     ArrayList<String> addedMails = course.getMembers();
-                    Log.v("VALORE CHILD", course.getName());
-                    Log.v("VALORE CHILD", course.getEmail());
+
                     NumberOfMembers[0] = addedMails.size() + 1;
+
+                    final String[] groupAuthorName = new String[1];
+                    DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+                    database2.child("teachers").orderByChild("email").equalTo(course.getEmail()).addValueEventListener (new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                            for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
+
+                                User user;
+                                user = childSnapshot.getValue(User.class);
+                                groupAuthorName[0] = user.getName() + " " + user.getSurname();
+                                TextView memberIndication = findViewById(R.id.toolbar_subtitle);
+                                memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
+                                memberIndication.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.v("VALORE NOME", groupAuthorName[0]);
+                                        Bundle b = new Bundle();
+                                        b.putSerializable("groupRecipients", course.getMembers());
+
+                                        Intent intent = new Intent(CourseDetailsActivity.this, MembersDetailsActivity.class);
+                                        intent.putExtras(b);
+                                        if (!isAuthor) {
+                                            intent.putExtra("author", course.getEmail());
+                                            intent.putExtra("author_name", groupAuthorName[0]);
+                                        } else {
+                                            intent.putExtra("author", getString(R.string.you));
+                                            intent.putExtra("author_name", "you");
+                                        }
+                                        intent.putExtra("name", course.getName());
+                                        startActivity(intent);
+
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
 
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(course.getName());
 
-                    TextView memberIndication = findViewById(R.id.toolbar_additional_infos);
 
-                    memberIndication.setText(valueOf(NumberOfMembers[0]));
 
-                    TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
-                    toolBarShowEmail.setText(course.getEmail());
+/*
+                    TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
+                    toolBarShowEmail.setText(group.getAuthor());*/
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -151,6 +200,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }
+
+
+
+
         }
 
 
@@ -224,7 +277,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         //Upload su firebase storage
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("groups");
+        DatabaseReference ref = database.getReference("courses");
         DatabaseReference userRef = ref.child(user.getUid());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -238,7 +291,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Toast.makeText(CourseDetailsActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
                 headerProPic = findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
-                final File f = new File(getBaseContext().getFilesDir(), "profile-pic.jpg");
+                final File f = new File(getBaseContext().getFilesDir(), courseUID + "jpg");
                 FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(f);
@@ -257,6 +310,5 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
     }
+
 }
-
-
