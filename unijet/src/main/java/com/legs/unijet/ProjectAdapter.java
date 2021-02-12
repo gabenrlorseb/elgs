@@ -43,7 +43,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public static class ProjectViewHolder extends RecyclerView.ViewHolder {
         public TextView mNameProjects;
         public TextView mTitle;
-        public LinearLayout mLayout;
 
 
 
@@ -53,7 +52,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             super(itemView);
             mNameProjects = itemView.findViewById(R.id.project_name);
             mTitle = itemView.findViewById(R.id.project_subtitle);
-            mLayout = itemView.findViewById(R.id.project_layout);
         }
     }
 
@@ -69,7 +67,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
     @Override
     public ProjectViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.project_list_card, viewGroup, false);
         ProjectViewHolder cvh = new ProjectViewHolder(v);
         return cvh;
     }
@@ -79,41 +77,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
         projectViewHolder.mNameProjects.setText(projectList.get(i).getText1());
         projectViewHolder.mTitle.setText(projectList.get(i).getText2());
-
-
-        projectViewHolder.mLayout.setOnClickListener(new View.OnClickListener() {
+        projectViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(View v) {
 
-
-
-                        bundle = intent.getExtras();
-                        final
-                        //members.add(user.getEmail());
-                                DatabaseReference addMembers = FirebaseDatabase.getInstance ().getReference("projects");
-                        addMembers.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                    ArrayList<String> members = childSnapshot.child("members").getValue(ArrayList.class);
-                                    members.add(user.getEmail());
-                                    addMembers.push().setValue(members);
-                                }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                        Intent i = new Intent (v.getContext(), CourseDetailsActivity.class);
-                        i.putExtra("CName", projectViewHolder.mNameProjects.getText());
-                        i.putExtra("professor", projectViewHolder.mTitle.getText());
+                        Intent i = new Intent (v.getContext(), ProjectDetailsActivity.class);
+                        i.putExtra("PName", projectViewHolder.mNameProjects.getText());
+                        i.putExtra("group", projectViewHolder.mTitle.getText());
                         v.getContext().startActivity(i);
-
-
-
-
-
 
             }
         });
@@ -130,7 +101,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         return projectList.get(position).getText1();
     }
 
-    public String returnProfessor (int position) {
+    public String returnGroup (int position) {
         return projectList.get(position).getText2();
     }
 

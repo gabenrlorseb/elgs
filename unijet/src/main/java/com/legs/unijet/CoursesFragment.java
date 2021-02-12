@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +38,8 @@ public class CoursesFragment extends Fragment {
     DatabaseReference reference;
     private ArrayList<CourseSample> courseList;
     private ArrayList<Course> courses;
+    private ArrayList<String> members;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
     RecyclerView mRecyclerView;
@@ -52,14 +55,37 @@ public class CoursesFragment extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.courses_page, container, false);
         populateList();
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mSwipeRefreshLayout.setRefreshing(true);
+
+                        populateList();
+                    }
+                });
+            }
+        });
+
         return view;
 
     }
 
     private void populateList() {
+        //members = new ArrayList<>();
         courses = new ArrayList();
         courseList = new ArrayList();
-        db.child("courses").addValueEventListener(new ValueEventListener() {
+        /*db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -68,83 +94,67 @@ public class CoursesFragment extends Fragment {
                                 String department = childSnapshot.child("department").getValue(String.class);
                                 String academicYear=  childSnapshot.child("academicYear").getValue(String.class);
                                 String email = childSnapshot.child("email").getValue(String.class);
-                                ArrayList<String> members = childSnapshot.child("members").getValue(ArrayList.class);
                                 courses.add(new Course (name, academicYear, department, email, members));
                                 //courseList.add(new CourseSample(namesString, mail));
                             }
 
-                buildRecyclerView();
+               // buildRecyclerView();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
-        db.child("students").addValueEventListener(new ValueEventListener() {
+        });*/
+        db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for  (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    if(user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                        for (Course course : courses) {
-                            if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
-                                String namesString = course.getName() + " " + course.getAcademicYear();
-                                String mail = getString(R.string.professor) + " " + course.getEmail();
-                                courseList.add(new CourseSample(namesString, mail));
-                            }
-                        }
-                    }
+                courseList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+                    //if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                    //for (Course course : courses) {
+                    //if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
+                    //|| user.getEmail().equals(course.getEmail())) {
+                    String namesString = childSnapshot.child("name").getValue(String.class);
+                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                    String mail = childSnapshot.child("email").getValue(String.class);
+
+                    courseList.add(new CourseSample(namesString, mail));
+                    //}
+
+                    //}
                 }
-             buildRecyclerView();
+                buildRecyclerView();
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
 
-            }
-        });
-    }
+
+        }
+
+
 
     private void buildRecyclerView() {
         mRecyclerView = getView().findViewById(R.id.courses_list);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new CourseAdapter(courseList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getContext());
+        mAdapter = new CourseAdapter (courseList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(final View view, final int position) {
-                        final AlertDialog.Builder alertbox = new AlertDialog.Builder(view.getContext());
-                        alertbox.setTitle(view.getContext().getString(R.string.sign_up_course));
-                        alertbox.setMessage(view.getContext().getString(R.string.would_course));
-                        alertbox.setPositiveButton(view.getContext().getString(R.string.YES), new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Intent i = new Intent (view.getContext(), CourseDetailsActivity.class);
-                                i.putExtra("CName", mAdapter.returnTitle(position));
-                                i.putExtra("professor", mAdapter.returnProfessor(position));
-
-                                view.getContext().startActivity(i);
-                            }
-                        });
-
-
-                        alertbox.setNegativeButton(view.getContext().getString(R.string.NO), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert= alertbox.create();
-                        alert.show();
-                        /*Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
+                    @Override public void onItemClick(View view, int position) {
+                        Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
                         i.putExtra("CName", mAdapter.returnTitle(position));
                         i.putExtra("professor", mAdapter.returnProfessor(position));
-                        view.getContext().startActivity(i);*/
+                        view.getContext().startActivity(i);
                     }
 
                     @Override
@@ -155,4 +165,12 @@ public class CoursesFragment extends Fragment {
                 })
         );
     }
+
+
+
+
+
+
+
 }
+
