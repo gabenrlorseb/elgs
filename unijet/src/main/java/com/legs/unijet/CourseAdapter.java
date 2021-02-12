@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.groupDetailsActivity.GroupActivity;
 
 import java.util.ArrayList;
 
@@ -36,14 +37,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     Bundle bundle;
     Intent intent;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-private Context context;
+    private Context context;
 
 
     public static class CourseViewHolder extends RecyclerView.ViewHolder {
         public TextView mCourses;
         public TextView mProfessors;
-        public LinearLayout mLayout;
-
 
 
 
@@ -52,7 +51,6 @@ private Context context;
             super(itemView);
             mCourses = itemView.findViewById(R.id.course_name);
             mProfessors = itemView.findViewById(R.id.course_professor);
-            mLayout = itemView.findViewById(R.id.course_layout);
         }
     }
 
@@ -69,66 +67,28 @@ private Context context;
     @Override
     public CourseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
-        CourseViewHolder cvh = new CourseViewHolder(v);
-        return cvh;
+        CourseViewHolder svh = new CourseViewHolder(v);
+        return svh;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull final CourseViewHolder courseViewHolder, int i) {
-
+        final CourseSample currentItem = coursesList.get(i);
         courseViewHolder.mCourses.setText(coursesList.get(i).getText1());
         courseViewHolder.mProfessors.setText(coursesList.get(i).getText2());
 
+        courseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
+                i.putExtra("CName", courseViewHolder.mCourses.getText());
+                i.putExtra("professor", courseViewHolder.mProfessors.getText());
+                view.getContext().startActivity(i);
+            }
+        });
 
-            courseViewHolder.mLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    final AlertDialog.Builder alertbox = new AlertDialog.Builder(v.getContext());
-                            alertbox.setTitle(v.getContext().getString(R.string.sign_up_course));
-                            alertbox.setMessage(v.getContext().getString(R.string.would_course));
-                            alertbox.setPositiveButton(v.getContext().getString(R.string.YES), new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    bundle = intent.getExtras();
-                                    final
-                                    //members.add(user.getEmail());
-                                    DatabaseReference addMembers = FirebaseDatabase.getInstance ().getReference("courses");
-                                    addMembers.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                                    ArrayList<String> members = childSnapshot.child("members").getValue(ArrayList.class);
-                                                    members.add(user.getEmail());
-                                                    addMembers.push().setValue(members);
-                                            }
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                    Intent i = new Intent (v.getContext(), CourseDetailsActivity.class);
-                                    i.putExtra("CName", courseViewHolder.mCourses.getText());
-                                    i.putExtra("professor", courseViewHolder.mProfessors.getText());
-                                    v.getContext().startActivity(i);
-                                }
-                            });
-
-
-                    alertbox.setNegativeButton(v.getContext().getString(R.string.NO), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alert= alertbox.create();
-                    alert.show();
-                }
-            });
-        }
-
-
+    }
 
     @Override
     public int getItemCount() {
