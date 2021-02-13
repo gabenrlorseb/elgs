@@ -3,9 +3,15 @@ package com.legs.unijet;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -31,6 +37,8 @@ import java.util.ArrayList;
 
 public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    ImageView item;
+    EditText searchEditText;
     String userId;
     FirebaseUser auth;
     Bundle bundle;
@@ -39,7 +47,6 @@ public class CoursesFragment extends Fragment {
     private ArrayList<CourseSample> courseList;
     private ArrayList<Course> courses;
     private ArrayList<String> members;
-    SwipeRefreshLayout mSwipeRefreshLayout;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
     RecyclerView mRecyclerView;
@@ -48,32 +55,39 @@ public class CoursesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.courses_page, container, false);
         populateList();
+        item = (ImageView) view.findViewById(R.id.courses_search_button);
 
-        mSwipeRefreshLayout = view.findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
-                android.R.color.holo_green_dark,
-                android.R.color.holo_orange_dark,
-                android.R.color.holo_blue_dark);
+        searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        item.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                mSwipeRefreshLayout.post(new Runnable() {
+            public void onClick(View v) {
+                searchEditText.setVisibility(View.VISIBLE);
+            }
+        });
 
-                    @Override
-                    public void run() {
 
-                        mSwipeRefreshLayout.setRefreshing(true);
+        searchEditText.addTextChangedListener(new TextWatcher() {
 
-                        populateList();
-                    }
-                });
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                mAdapter.getFilter().filter(s);
+                mAdapter.notifyDataSetChanged();
             }
         });
 
@@ -84,7 +98,7 @@ public class CoursesFragment extends Fragment {
     private void populateList() {
         //members = new ArrayList<>();
         courses = new ArrayList();
-        courseList = new ArrayList();
+
         db.child("courses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,7 +111,7 @@ public class CoursesFragment extends Fragment {
                                 courses.add(new Course (name, academicYear, department, email, members));
                                 //courseList.add(new CourseSample(namesString, mail));
                             }
-
+buildRecyclerView();
             }
 
             @Override
@@ -107,7 +121,7 @@ public class CoursesFragment extends Fragment {
         });
         if (user.getEmail().contains("@studenti.uniba.it")){
         fragmentStudent();
-        } else if (user.getEmail().contains("uniba.it")){
+        } else if (user.getEmail().contains("@uniba.it")){
         fragmentProfessor();
         }
 
@@ -116,6 +130,7 @@ public class CoursesFragment extends Fragment {
 
 
 private void fragmentProfessor(){
+    courseList = new ArrayList();
     db.child("teachers").addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -136,9 +151,6 @@ private void fragmentProfessor(){
                     }
                 }
                 buildRecyclerView();
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
             }
         }
         @Override
@@ -149,6 +161,7 @@ private void fragmentProfessor(){
 }
 
 private void fragmentStudent(){
+    courseList = new ArrayList();
     db.child("students").addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -168,9 +181,6 @@ private void fragmentStudent(){
                     }
                 }
                 buildRecyclerView();
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
             }
         }
         @Override

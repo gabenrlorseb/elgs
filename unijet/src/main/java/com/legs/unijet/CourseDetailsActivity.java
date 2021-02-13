@@ -168,11 +168,17 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
                                             PopupMenu profMenu;
-                                            profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
-                                            MenuInflater inflater = profMenu.getMenuInflater();
-                                            inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
-                                            profMenu.show();
-                                        }
+                                            MenuItem item = findViewById(R.id.student_tab);
+                                            if (course.getMembers().contains(user.getEmail())) {
+                                                item.setTitle("Leave Course");
+                                            } else {
+                                                item.setTitle("Subscribe to course");
+                                            }
+                                                profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
+                                                MenuInflater inflater = profMenu.getMenuInflater();
+                                                inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
+                                                profMenu.show();
+                                            }
 
                                     });
 

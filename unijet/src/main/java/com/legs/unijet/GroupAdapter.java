@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,8 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.legs.unijet.groupDetailsActivity.GroupActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> implements Filterable {
 
 
     private ArrayList<CourseSample> groupsList;
@@ -34,10 +37,48 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     }
 
 
-    public GroupAdapter(ArrayList<CourseSample> groupsList){
+    public GroupAdapter(ArrayList<CourseSample> groupsList) {
         this.groupsList = groupsList;
     }
 
+    @Override
+    public int getItemCount() {
+        return groupsList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    private Filter mFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<CourseSample> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.clear();
+                filteredList.addAll(groupsList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (CourseSample item : groupsList) {
+                    if (item.getText1().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            groupsList.clear();
+            groupsList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
 
@@ -69,10 +110,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     }
 
-    @Override
-    public int getItemCount() {
-        return groupsList.size();
-    }
+
 
     public String returnTitle (int position) {
         return groupsList.get(position).getText1();
