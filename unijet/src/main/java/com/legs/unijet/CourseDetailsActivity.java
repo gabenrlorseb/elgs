@@ -1,25 +1,32 @@
 package com.legs.unijet;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.legs.unijet.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,9 +43,6 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.Group;
-import com.legs.unijet.R;
-import com.legs.unijet.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,7 +51,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class  CourseDetailsActivity extends AppCompatActivity {
 
@@ -60,14 +63,16 @@ public class  CourseDetailsActivity extends AppCompatActivity {
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+    PopupMenu profMenu;
 
 
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate (Bundle savedInstance) {
 
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
-
         final Bundle args = getIntent().getExtras();
 
         final ImageView groupPic = findViewById(R.id.header);
@@ -94,22 +99,26 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
                     NumberOfMembers[0] = addedMails.size() + 1;
 
-                    final String[] groupAuthorName = new String[1];
+
+
+
+                    final String[] courseAuthorName = new String[1];
                     DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
                     database2.child("teachers").orderByChild("email").equalTo(course.getEmail()).addValueEventListener (new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot2) {
+
                             for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
 
-                                User user;
-                                user = childSnapshot.getValue(User.class);
-                                groupAuthorName[0] = user.getName() + " " + user.getSurname();
+                                final User userd;
+                                userd = childSnapshot.getValue(User.class);
+                                courseAuthorName[0] = userd.getName() + " " + userd.getSurname();
                                 TextView memberIndication = findViewById(R.id.toolbar_subtitle);
                                 memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Log.v("VALORE NOME", groupAuthorName[0]);
+                                        Log.v("VALORE NOME", courseAuthorName[0]);
                                         Bundle b = new Bundle();
                                         b.putSerializable("groupRecipients", course.getMembers());
 
@@ -117,7 +126,7 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                         intent.putExtras(b);
                                         if (!isAuthor) {
                                             intent.putExtra("author", course.getEmail());
-                                            intent.putExtra("author_name", groupAuthorName[0]);
+                                            intent.putExtra("author_name", courseAuthorName[0]);
                                         } else {
                                             intent.putExtra("author", getString(R.string.you));
                                             intent.putExtra("author_name", "you");
@@ -126,7 +135,11 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                         startActivity(intent);
 
 
+
+
                                     }
+
+
                                 });
                             }
                         }
@@ -141,11 +154,44 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(course.getName());
 
+                    final FloatingActionButton fab = findViewById(R.id.common_fab);
+                                if (user.getEmail().contains("@uniba.it")) {
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            PopupMenu profMenu;
+                                            profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
+                                            MenuInflater inflater = profMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
+                                            profMenu.show();
+                                        }
+
+                                    });
+
+
+                                } else {
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_baseline_add_24);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View v) {
+                                            PopupMenu studentMenu;
+                                            studentMenu = new PopupMenu(CourseDetailsActivity.this, fab);
+                                            MenuInflater inflater = studentMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.course_student_menu, studentMenu.getMenu());
+                                            studentMenu.show();
+                                        }
+                                    });
+                                }
 
 
 /*
                     TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
                     toolBarShowEmail.setText(group.getAuthor());*/
+
                 }
             }
 
@@ -211,20 +257,31 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton setProPicFab = findViewById(R.id.common_fab);
-        setProPicFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE);
-            }
-        });
-
     }
 
+    /*public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.course_prof_menu, menu);
+        return true;
+    }*/
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.settings_tab:
+                //
+                break;
+            case R.id.change_pic_tab:
+                //
+                break;
+            case R.id.members_tab:
+                //
+                break;
+        }
+        return true;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
