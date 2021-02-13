@@ -54,6 +54,8 @@ public class ProjectsFragment extends Fragment {
 
     private void populateList() {
         projectList = new ArrayList<ProjectSample> ();
+
+
         db.child ("projects").addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
