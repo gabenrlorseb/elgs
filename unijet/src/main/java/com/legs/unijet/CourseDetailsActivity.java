@@ -67,7 +67,6 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
 
 
-    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate (Bundle savedInstance) {
 
@@ -154,8 +153,15 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(course.getName());
 
+                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                    database3.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
                     final FloatingActionButton fab = findViewById(R.id.common_fab);
-                                if (user.getEmail().contains("@uniba.it")) {
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                course = postSnapshot.getValue(Course.class);
+                                if (isAuthor) {
                                     Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
                                     fab.setImageDrawable(myDrawable);
                                     fab.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +192,15 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                         }
                                     });
                                 }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
 
 
 /*
