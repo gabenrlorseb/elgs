@@ -1,8 +1,10 @@
 package com.legs.unijet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -18,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
@@ -50,6 +54,8 @@ public class ProjectsFragment extends Fragment {
 
     private void populateList() {
         projectList = new ArrayList<ProjectSample> ();
+
+
         db.child ("projects").addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -78,6 +84,22 @@ public class ProjectsFragment extends Fragment {
         mAdapter = new ProjectAdapter (projectList);
         mRecyclerView.setLayoutManager (mLayoutManager);
         mRecyclerView.setAdapter (mAdapter);
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Intent i = new Intent(view.getContext(), ProjectDetailsActivity.class);
+                        i.putExtra("PName", mAdapter.returnTitle(position));
+                        i.putExtra("group", mAdapter.returnGroup(position));
+                        view.getContext().startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        //non c'è bisogno
+                    }
+
+                })
+        );
     }
 }
 

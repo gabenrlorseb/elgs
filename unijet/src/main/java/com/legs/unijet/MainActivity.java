@@ -83,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
 
         loadFragment(new MyUnijetFragment());
         navigation.setSelectedItemId(R.id.myunijet_tab);
+
+        /*loadFragment(new ProjectsFragment());
+        navigation.setSelectedItemId(R.id.projects_tab);
+
+        loadFragment(new CoursesFragment());
+        navigation.setSelectedItemId(R.id.courses_tab);
+
+        loadFragment(new GroupsFragment());
+        navigation.setSelectedItemId(R.id.myunijet_tab);*/
     }
 
 

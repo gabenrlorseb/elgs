@@ -129,4 +129,7 @@
     <string name="you">You</string>
     <string name="member">Member</string>
     <string name="admin">ADMIN</string>
+    <string name="course_settings">Course Settings</string>
+    <string name="change_course_pic">Change Course Pic</string>
+    <string name="manage_members">Manage Members</string>
 </resources>

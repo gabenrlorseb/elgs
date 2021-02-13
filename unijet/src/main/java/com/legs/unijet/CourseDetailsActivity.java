@@ -1,24 +1,32 @@
 package com.legs.unijet;
 
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.legs.unijet.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +43,6 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.groupDetailsActivity.GroupActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,18 +52,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static java.lang.String.valueOf;
+public class  CourseDetailsActivity extends AppCompatActivity {
 
-public class CourseDetailsActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Course course;
-    String userType, courseUID;
+    String  courseUID;
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+    PopupMenu profMenu;
+
 
 
     @Override
@@ -64,7 +72,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
-
         final Bundle args = getIntent().getExtras();
 
         final ImageView groupPic = findViewById(R.id.header);
@@ -76,30 +83,133 @@ public class CourseDetailsActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        Log.v ("VALORE", args.getString("CName"));
-        Log.v ("VALORE", valueOf(args.getString("CName")));
+
+
         database.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     course = postSnapshot.getValue(Course.class);
+                    if (user.getEmail().equals(course.getEmail())) {
+                        isAuthor = true;
+                    }
                     courseUID = snapshot.getKey();
                     ArrayList<String> addedMails = course.getMembers();
-                    Log.v("VALORE CHILD", course.getName());
-                    Log.v("VALORE CHILD", course.getEmail());
+
                     NumberOfMembers[0] = addedMails.size() + 1;
+
+
+
+
+                    final String[] courseAuthorName = new String[1];
+                    DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+                    database2.child("teachers").orderByChild("email").equalTo(course.getEmail()).addValueEventListener (new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
+
+                            for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
+
+                                final User userd;
+                                userd = childSnapshot.getValue(User.class);
+                                courseAuthorName[0] = userd.getName() + " " + userd.getSurname();
+                                TextView memberIndication = findViewById(R.id.toolbar_subtitle);
+                                memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
+                                memberIndication.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.v("VALORE NOME", courseAuthorName[0]);
+                                        Bundle b = new Bundle();
+                                        b.putSerializable("groupRecipients", course.getMembers());
+
+                                        Intent intent = new Intent(CourseDetailsActivity.this, MembersDetailsActivity.class);
+                                        intent.putExtras(b);
+                                        if (!isAuthor) {
+                                            intent.putExtra("author", course.getEmail());
+                                            intent.putExtra("author_name", courseAuthorName[0]);
+                                        } else {
+                                            intent.putExtra("author", getString(R.string.you));
+                                            intent.putExtra("author_name", "you");
+                                        }
+                                        intent.putExtra("name", course.getName());
+                                        startActivity(intent);
+
+
+
+
+                                    }
+
+
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
 
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(course.getName());
 
-                    TextView memberIndication = findViewById(R.id.toolbar_additional_infos);
+                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                    database3.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
-                    memberIndication.setText(valueOf(NumberOfMembers[0]));
 
-                    TextView toolBarShowEmail = findViewById(R.id.toolbar_subtitle);
-                    toolBarShowEmail.setText(course.getEmail());
+                    final FloatingActionButton fab = findViewById(R.id.common_fab);
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                course = postSnapshot.getValue(Course.class);
+                                if (isAuthor) {
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            PopupMenu profMenu;
+                                            profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
+                                            MenuInflater inflater = profMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
+                                            profMenu.show();
+                                        }
+
+                                    });
+
+
+                                } else {
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_baseline_add_24);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View v) {
+                                            PopupMenu studentMenu;
+                                            studentMenu = new PopupMenu(CourseDetailsActivity.this, fab);
+                                            MenuInflater inflater = studentMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.course_student_menu, studentMenu.getMenu());
+                                            studentMenu.show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+
+/*
+                    TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
+                    toolBarShowEmail.setText(group.getAuthor());*/
+
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -151,6 +261,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }
+
+
+
+
         }
 
 
@@ -158,20 +272,31 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton setProPicFab = findViewById(R.id.common_fab);
-        setProPicFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE);
-            }
-        });
-
     }
 
+    /*public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.course_prof_menu, menu);
+        return true;
+    }*/
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.settings_tab:
+                //
+                break;
+            case R.id.change_pic_tab:
+                //
+                break;
+            case R.id.members_tab:
+                //
+                break;
+        }
+        return true;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -224,7 +349,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         //Upload su firebase storage
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("groups");
+        DatabaseReference ref = database.getReference("courses");
         DatabaseReference userRef = ref.child(user.getUid());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -238,7 +363,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Toast.makeText(CourseDetailsActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
                 headerProPic = findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
-                final File f = new File(getBaseContext().getFilesDir(), "profile-pic.jpg");
+                final File f = new File(getBaseContext().getFilesDir(), courseUID + "jpg");
                 FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(f);
@@ -257,6 +382,5 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
     }
+
 }
-
-

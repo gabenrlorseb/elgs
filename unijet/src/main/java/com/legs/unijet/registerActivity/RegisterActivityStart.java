@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.legs.unijet.BaseActivity;
+import com.legs.unijet.CreateCourse;
+import com.legs.unijet.MainActivity;
 import com.legs.unijet.R;
 
 public class RegisterActivityStart extends AppCompatActivity {
@@ -26,6 +29,7 @@ public class RegisterActivityStart extends AppCompatActivity {
     private EditText inputPassword, inputEmail, inputConfirmPassword;
     Button btnNext;
     FirebaseAuth auth;
+    TextView haveAccount;
     private ProgressDialog LoadingBar;
     DatabaseReference dbReference;
     @Override
@@ -56,6 +60,16 @@ public class RegisterActivityStart extends AppCompatActivity {
         });
         auth=FirebaseAuth.getInstance();
         LoadingBar=new ProgressDialog(RegisterActivityStart.this);
+
+        haveAccount=findViewById(R.id.text_help);
+
+        haveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (RegisterActivityStart.this, BaseActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

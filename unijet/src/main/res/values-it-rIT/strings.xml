@@ -116,5 +116,8 @@
     <string name="START">INIZIA</string>
     <string name="you">Tu</string>
     <string name="admin">AMMINISTRATORE</string>
+    <string name="course_settings">Impostazioni del corso</string>
+    <string name="change_course_pic">Cambia immagine del corso</string>
+    <string name="manage_members">Gestione Membri</string>
 
 </resources>
