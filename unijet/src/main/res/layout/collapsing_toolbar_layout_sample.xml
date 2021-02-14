@@ -67,12 +67,54 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/area_post"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="14dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/member_icon_placeholder"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                app:cardCornerRadius="18dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp">
+
+                <ImageView
+                    android:id="@+id/member_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <EditText
+                android:layout_toEndOf="@id/member_icon_placeholder"
+                android:layout_marginStart="13dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:hint="Post an update..."/>
+
+            </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/area_post"
+            android:id="@+id/recyclerview_posts"
+            android:layout_marginHorizontal="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
