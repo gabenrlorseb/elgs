@@ -167,12 +167,40 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                     fab.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            PopupMenu profMenu;
+                                            final PopupMenu profMenu;
                                             profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
                                             MenuInflater inflater = profMenu.getMenuInflater();
                                             inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
+                                            profMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                @Override
+                                                public boolean onMenuItemClick(MenuItem item) {
+                                                    switch (item.getItemId()) {
+                                                        case R.id.settings_tab:
+                                                            //impostazioni
+                                                            return true;
+                                                        case R.id.change_pic_tab:
+                                                            Intent intent = new Intent();
+                                                            intent.setType("image/*");
+                                                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                                                            startActivityForResult(Intent.createChooser(intent,
+                                                                    "Select Picture"), SELECT_PICTURE);
+                                                            return true;
+                                                        case R.id.members_tab:
+                                                            //gestione membri
+                                                            return true;
+                                                        default:
+                                                            return false;
+                                                    }
+
+                                                }
+                                            });
                                             profMenu.show();
-                                        }
+
+                                            }
+
+
+
+
 
                                     });
 
@@ -186,6 +214,7 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                         public void onClick(View v) {
                                             String courseUID = snapshot.getKey();
                                             PopupMenu studentMenu;
+
                                             ArrayList<String> courseSubscribers = course.getMembers();
                                             studentMenu = new PopupMenu(CourseDetailsActivity.this, fab);
                                             MenuInflater inflater = studentMenu.getMenuInflater();
@@ -198,6 +227,8 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                             database3.child(courseUID).child("members").setValue(courseSubscribers);
                                             studentMenu.show();
                                         }
+
+
                                     });
                                 }
                             }
