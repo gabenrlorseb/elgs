@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/settings_tab"
+        android:title="@string/project_settings" />
+
+    <item
+        android:id="@+id/change_pic_tab"
+        android:title="@string/change_project_pic" />
+</menu>

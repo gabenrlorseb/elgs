@@ -1,7 +1,6 @@
 package com.legs.unijet;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -14,7 +13,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +24,6 @@ import com.legs.unijet.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -170,7 +167,7 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                             final PopupMenu profMenu;
                                             profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
                                             MenuInflater inflater = profMenu.getMenuInflater();
-                                            inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
+                                            inflater.inflate(R.menu.course_author_menu, profMenu.getMenu());
                                             profMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                                 @Override
                                                 public boolean onMenuItemClick(MenuItem item) {
@@ -212,19 +209,34 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onClick(View v) {
-                                            String courseUID = snapshot.getKey();
+
                                             PopupMenu studentMenu;
 
-                                            ArrayList<String> courseSubscribers = course.getMembers();
+
                                             studentMenu = new PopupMenu(CourseDetailsActivity.this, fab);
                                             MenuInflater inflater = studentMenu.getMenuInflater();
                                             inflater.inflate(R.menu.course_student_menu, studentMenu.getMenu());
-                                            if(courseSubscribers.contains(user.getEmail())){
-                                            courseSubscribers.remove(user.getEmail());
-                                            } else {
-                                                courseSubscribers.add(user.getEmail());
+                                            studentMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                @Override
+                                            public boolean onMenuItemClick(MenuItem item) {
+                                                switch (item.getItemId()) {
+                                                    case R.id.student_tab:
+                                                        String courseUID = postSnapshot.getKey();
+                                                        ArrayList<String> courseSubscribers = course.getMembers();
+                                                        if(courseSubscribers.contains(user.getEmail())){
+                                                            courseSubscribers.remove(user.getEmail());
+                                                        } else {
+                                                            courseSubscribers.add(user.getEmail());
+                                                        }
+                                                        database3.child("courses").child(courseUID).child("members").setValue(courseSubscribers);
+                                                        return true;
+                                                    default:
+                                                        return false;
+                                                }
+
                                             }
-                                            database3.child(courseUID).child("members").setValue(courseSubscribers);
+                                        });
+
                                             studentMenu.show();
                                         }
 
