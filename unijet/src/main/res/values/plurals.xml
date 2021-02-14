@@ -40,4 +40,13 @@
         <item quantity="other">%d members</item>
     </plurals>
 
+    <plurals name="d_images_added">
+        <item quantity="one">%d image added</item>
+        <item quantity="other">%d images added</item>
+    </plurals>
+
+    <plurals name="d_document_added">
+        <item quantity="one">%d document added</item>
+        <item quantity="other">%d documents added</item>
+    </plurals>
 </resources>

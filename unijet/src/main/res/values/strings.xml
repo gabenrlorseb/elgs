@@ -129,6 +129,7 @@
     <string name="you">You</string>
     <string name="member">Member</string>
     <string name="admin">ADMIN</string>
+    <string name="new_post_activity_name">New post</string>
     <string name="course_settings">Course Settings</string>
     <string name="change_course_pic">Change Course Pic</string>
     <string name="manage_members">Manage Members</string>
@@ -136,4 +137,7 @@
     <string name="leave_course">Leave the course</string>
     <string name="sign_in_leave_the_course">Sign in/Leave the course</string>
     <string name="error_date">Your date is not valid</string>
+    <string name="d_document_added">%d document added</string>
+    <string name="back_warning">Want to go back?</string>
+    <string name="warning_back_content">Are you sure you want to go back? All changes will be lost</string>
 </resources>
