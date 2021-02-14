@@ -129,4 +129,5 @@
     <string name="you">You</string>
     <string name="member">Member</string>
     <string name="admin">ADMIN</string>
+    <string name="new_post_activity_name">New post</string>
 </resources>
