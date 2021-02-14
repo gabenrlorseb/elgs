@@ -2,8 +2,10 @@ package com.legs.unijet;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -225,8 +227,28 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                                         ArrayList<String> courseSubscribers = course.getMembers();
                                                         if(courseSubscribers.contains(user.getEmail())){
                                                             courseSubscribers.remove(user.getEmail());
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(CourseDetailsActivity.this);
+                                                            builder.setMessage(R.string.course_elimination)
+                                                                    .setCancelable(false)
+                                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            //do things
+                                                                        }
+                                                                    });
+                                                            AlertDialog alert = builder.create();
+                                                            alert.show();
                                                         } else {
                                                             courseSubscribers.add(user.getEmail());
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(CourseDetailsActivity.this);
+                                                            builder.setMessage(R.string.course_registration)
+                                                                    .setCancelable(false)
+                                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                            //do things
+                                                                        }
+                                                                    });
+                                                            AlertDialog alert = builder.create();
+                                                            alert.show();
                                                         }
                                                         database3.child("courses").child(courseUID).child("members").setValue(courseSubscribers);
                                                         return true;
