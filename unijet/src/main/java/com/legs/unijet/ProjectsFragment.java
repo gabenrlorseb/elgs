@@ -2,10 +2,14 @@ package com.legs.unijet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,8 +31,8 @@ import com.legs.unijet.utils.RecyclerItemClickListener;
 import java.util.ArrayList;
 
 public class ProjectsFragment extends Fragment {
-
-
+ImageView item;
+EditText searchEditText;
     FirebaseUser project;
     String userId;
     FirebaseUser auth;
@@ -48,12 +52,42 @@ public class ProjectsFragment extends Fragment {
         final android.view.View view = inflater.inflate (R.layout.projects_page, container, false);
         populateList ();
 
+        item = (ImageView) view.findViewById(R.id.projects_search_button);
+
+        searchEditText = (EditText) view.findViewById(R.id.projects_search_edit_text);
+
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchEditText.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                mAdapter.getFilter().filter(s);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
         return view;
 
     }
 
     private void populateList() {
         projectList = new ArrayList<ProjectSample> ();
+
+
         db.child ("projects").addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

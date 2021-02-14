@@ -85,7 +85,7 @@
         android:layout_margin="10dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_settings"
+
         app:backgroundTint="@color/colorPrimaryDark"
         app:tint="#FFFFFF"
         app:layout_anchor="@id/appbar"

@@ -130,4 +130,11 @@
     <string name="member">Member</string>
     <string name="admin">ADMIN</string>
     <string name="new_post_activity_name">New post</string>
+    <string name="course_settings">Course Settings</string>
+    <string name="change_course_pic">Change Course Pic</string>
+    <string name="manage_members">Manage Members</string>
+    <string name="sign_course">Sign in on course</string>
+    <string name="leave_course">Leave the course</string>
+    <string name="sign_in_leave_the_course">Sign in/Leave the course</string>
+    <string name="error_date">Your date is not valid</string>
 </resources>

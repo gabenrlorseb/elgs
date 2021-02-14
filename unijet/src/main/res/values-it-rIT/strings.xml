@@ -116,5 +116,12 @@
     <string name="START">INIZIA</string>
     <string name="you">Tu</string>
     <string name="admin">AMMINISTRATORE</string>
+    <string name="course_settings">Impostazioni del corso</string>
+    <string name="change_course_pic">Cambia immagine del corso</string>
+    <string name="manage_members">Gestione Membri</string>
+    <string name="sign_course">Iscriviti al corso</string>
+    <string name="leave_course">Esci dal coeso</string>
+    <string name="sign_in_leave_the_course">Iscriviti/Esci dal corso</string>
+    <string name="error_date">La data inserita non è valida</string>
 
 </resources>

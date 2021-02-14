@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,12 +29,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.createGroupActivity.MemberCheckListAdapter;
+import com.legs.unijet.createGroupActivity.UserChecklistSample;
 import com.legs.unijet.groupDetailsActivity.GroupActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> implements Filterable {
     private ArrayList<CourseSample> coursesList;
     Bundle bundle;
     Intent intent;
@@ -60,6 +65,44 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
 
 
+    @Override
+    public int getItemCount() {
+        return coursesList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    private Filter mFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<CourseSample> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.clear();
+                filteredList.addAll(coursesList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (CourseSample item : coursesList) {
+                    if (item.getText1().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            coursesList.clear();
+            coursesList.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     @NonNull
 
@@ -90,10 +133,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     }
 
-    @Override
-    public int getItemCount() {
-        return coursesList.size();
-    }
 
     public String returnTitle (int position) {
         return coursesList.get(position).getText1();

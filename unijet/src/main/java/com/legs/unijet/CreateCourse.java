@@ -67,24 +67,6 @@ public class CreateCourse extends AppCompatActivity {
 
 
 
-
-        /*addedMembers.setText(new StringBuilder().append(students.size()));
-
-        for (int i = 0; i < addedIDStudents.size(); i++) {
-            String addThis = addedIDStudents.get(i);
-            studentsIDList.append(addThis);
-            if (i != addedIDStudents.size() - 1 ) {
-                studentsIDList.append(",");
-            }
-        }
-
-        addedMembers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addedMembers.setText(studentsIDList);
-            }
-        });*/
-
         firebaseAuth = FirebaseAuth.getInstance ();
 
 
@@ -112,12 +94,12 @@ public class CreateCourse extends AppCompatActivity {
     }
 
     void createCourse() {
-
         final String name = inputNameCourse.getText ().toString ();
         final String department = inputDepartment.getSelectedItem ().toString ();
         final String academicYear = inputAcademicYear.getSelectedItem ().toString ();
         final String email = user.getEmail();
         final ArrayList<String> students = new ArrayList<>();
+        students.add(email);
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputNameCourse, getString(R.string.error_name_course));
         } else if (department.isEmpty ()) {
