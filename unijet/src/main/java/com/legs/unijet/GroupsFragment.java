@@ -2,9 +2,13 @@ package com.legs.unijet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,6 +29,8 @@ import com.legs.unijet.utils.RecyclerItemClickListener;
 import java.util.ArrayList;
 
 public class GroupsFragment extends Fragment {
+    ImageView item;
+    EditText searchEditText;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userId;
     FirebaseUser auth;
@@ -45,32 +51,38 @@ public class GroupsFragment extends Fragment {
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.groups_page, container, false);
         populateList();
+        item = (ImageView) view.findViewById(R.id.groups_search_button);
 
-        mSwipeRefreshLayout = view.findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
-                android.R.color.holo_green_dark,
-                android.R.color.holo_orange_dark,
-                android.R.color.holo_blue_dark);
+        searchEditText = (EditText) view.findViewById(R.id.groups_search_edit_text);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        item.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                mSwipeRefreshLayout.post(new Runnable() {
+            public void onClick(View v) {
+                searchEditText.setVisibility(View.VISIBLE);
+            }
+        });
 
-                    @Override
-                    public void run() {
 
-                        mSwipeRefreshLayout.setRefreshing(true);
+        searchEditText.addTextChangedListener(new TextWatcher() {
 
-                        populateList();
-                    }
-                });
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                mAdapter.getFilter().filter(s);
+                mAdapter.notifyDataSetChanged();
             }
         });
 
         return view;
 
     }
+
 
     private void populateList() {
         courses = new ArrayList<>();
@@ -90,10 +102,8 @@ public class GroupsFragment extends Fragment {
                 }
                 buildRecyclerView();
 
-                    if (mSwipeRefreshLayout.isRefreshing()) {
-                        mSwipeRefreshLayout.setRefreshing(false);
                     }
-                }
+
 
 
             @Override

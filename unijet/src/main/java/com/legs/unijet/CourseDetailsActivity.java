@@ -153,26 +153,54 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(course.getName());
 
-                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                    final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
                     database3.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                     final FloatingActionButton fab = findViewById(R.id.common_fab);
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        public void onDataChange(@NonNull final DataSnapshot snapshot) {
                             for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                                 course = postSnapshot.getValue(Course.class);
-                                if (isAuthor) {
+                                if (user.getEmail().equals(course.getEmail())) {
                                     Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
                                     fab.setImageDrawable(myDrawable);
                                     fab.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            PopupMenu profMenu;
+                                            final PopupMenu profMenu;
                                             profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
                                             MenuInflater inflater = profMenu.getMenuInflater();
                                             inflater.inflate(R.menu.course_prof_menu, profMenu.getMenu());
+                                            profMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                @Override
+                                                public boolean onMenuItemClick(MenuItem item) {
+                                                    switch (item.getItemId()) {
+                                                        case R.id.settings_tab:
+                                                            //impostazioni
+                                                            return true;
+                                                        case R.id.change_pic_tab:
+                                                            Intent intent = new Intent();
+                                                            intent.setType("image/*");
+                                                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                                                            startActivityForResult(Intent.createChooser(intent,
+                                                                    "Select Picture"), SELECT_PICTURE);
+                                                            return true;
+                                                        case R.id.members_tab:
+                                                            //gestione membri
+                                                            return true;
+                                                        default:
+                                                            return false;
+                                                    }
+
+                                                }
+                                            });
                                             profMenu.show();
-                                        }
+
+                                            }
+
+
+
+
 
                                     });
 
@@ -184,12 +212,23 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onClick(View v) {
+                                            String courseUID = snapshot.getKey();
                                             PopupMenu studentMenu;
+
+                                            ArrayList<String> courseSubscribers = course.getMembers();
                                             studentMenu = new PopupMenu(CourseDetailsActivity.this, fab);
                                             MenuInflater inflater = studentMenu.getMenuInflater();
                                             inflater.inflate(R.menu.course_student_menu, studentMenu.getMenu());
+                                            if(courseSubscribers.contains(user.getEmail())){
+                                            courseSubscribers.remove(user.getEmail());
+                                            } else {
+                                                courseSubscribers.add(user.getEmail());
+                                            }
+                                            database3.child(courseUID).child("members").setValue(courseSubscribers);
                                             studentMenu.show();
                                         }
+
+
                                     });
                                 }
                             }

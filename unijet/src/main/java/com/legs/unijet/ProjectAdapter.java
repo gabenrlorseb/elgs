@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,9 +31,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.createGroupActivity.CreateGroupStart;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> implements Filterable {
     private ArrayList<ProjectSample> projectList;
 
     Bundle bundle;
@@ -60,7 +63,38 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     }
 
 
+    public Filter getFilter() {
+        return mFilter;
+    }
 
+    private Filter mFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<ProjectSample> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.clear();
+                filteredList.addAll(projectList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (ProjectSample item : projectList) {
+                    if (item.getText1().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            projectList.clear();
+            projectList.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     @NonNull
 
@@ -71,6 +105,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         ProjectViewHolder cvh = new ProjectViewHolder(v);
         return cvh;
     }
+
+    @Override
+    public int getItemCount() {
+        return projectList.size();
+    }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull final ProjectViewHolder projectViewHolder, int i) {
@@ -92,10 +133,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
 
 
-    @Override
-    public int getItemCount() {
-        return projectList.size();
-    }
+
+
 
     public String returnTitle (int position) {
         return projectList.get(position).getText1();

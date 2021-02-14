@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/student_tab"
-        android:title="Placeholder Text" />
+        android:title="@string/sign_in_leave_the_course" />
 
 
 
