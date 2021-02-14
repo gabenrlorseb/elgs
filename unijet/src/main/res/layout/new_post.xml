@@ -86,6 +86,24 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/added_images_indication"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:text=""/>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/added_images_thumbnails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+
         <View
             android:layout_marginTop="7dp"
             android:layout_width="match_parent"
@@ -115,7 +133,23 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/attached_documents_indication"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/added_documents_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
     </LinearLayout>
 

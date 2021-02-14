@@ -1,23 +1,27 @@
 package com.legs.unijet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,9 +51,16 @@ public class NewPostActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
     private static final int FILE_SELECT_CODE = 2;
 
-    ArrayList<Bitmap> NumberOfImages;
-    ArrayList<Uri> NumberOfDocuments;
+    ArrayList<Bitmap> Images = new ArrayList<>();
+    ArrayList<Uri> Documents = new ArrayList<>();
     Post post;
+
+    LinearLayout addedImagesThumbnails;
+    LinearLayout addedDocumentsName;
+
+    TextView indicationAttachedImages;
+    TextView indicationDocumentsAttached;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,9 +75,15 @@ public class NewPostActivity extends AppCompatActivity {
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference(reference);
 
         final StorageReference fileDatabase1 = FirebaseStorage.getInstance().getReference(reference);
+        final StorageReference fileDatabase2 = FirebaseStorage.getInstance().getReference(reference);
 
 
         final TextView postButton = findViewById(R.id.post_now_button);
+        indicationAttachedImages = findViewById(R.id.added_images_indication);
+        indicationDocumentsAttached = findViewById(R.id.attached_documents_indication);
+
+        addedImagesThumbnails = findViewById(R.id.added_images_thumbnails);
+        addedDocumentsName = findViewById(R.id.added_documents_preview);
 
         final LinearLayout attachImage = findViewById(R.id.attach_image);
         attachImage.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +153,22 @@ public class NewPostActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: avviso tornare indietro
+                AlertDialog alertDialog = new AlertDialog.Builder(NewPostActivity.this).create();
+                alertDialog.setTitle(getString(R.string.back_warning));
+                alertDialog.setMessage(getString(R.string.warning_back_content));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(android.R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                alertDialog.show();
             }
         });
 
@@ -156,41 +190,49 @@ public class NewPostActivity extends AppCompatActivity {
                         String uniqueId = UUID.randomUUID().toString();
 
                         assert user != null;
-                        post = new Post(postID, user.getEmail(), postContent.getText().toString(), NumberOfDocuments.size(), NumberOfImages.size(), false, 0, uniqueId);
 
-                        for (int counter = 0; counter < NumberOfImages.size(); counter++) {
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            NumberOfImages.get(counter).compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                            byte[] data = baos.toByteArray();
-                            fileDatabase1.child("documents").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    Toast.makeText(NewPostActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        int numberOfDocuments = 0;
+                        int numberOfImages = 0;
 
+                        if (!Documents.isEmpty()) {
+                            numberOfDocuments = Documents.size();
+                            for (int counter = 0; counter < Documents.size(); counter++) {
+                                Uri file = Documents.get(counter);
+                                fileDatabase1.child(uniqueId + "/document" + counter).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
                         }
 
-                        for (int counter = 0; counter < NumberOfDocuments.size(); counter++) {
-                            Uri file = NumberOfDocuments.get(counter);
-                            fileDatabase1.child("pictures").putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    Toast.makeText(NewPostActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        if (!Images.isEmpty()) {
+                            numberOfImages = Images.size();
+                            for (int counter2 = 0; counter2 < Images.size(); counter2++) {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                Images.get(counter2).compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
+                                fileDatabase2.child(uniqueId + "/pic" + counter2).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 
+                            }
                         }
+
+                        post = new Post(postID, user.getEmail(), postContent.getText().toString(), numberOfDocuments, numberOfImages, false, 0, uniqueId);
 
                         database2.push().setValue(post, new DatabaseReference.CompletionListener()  {
                             @Override
@@ -199,7 +241,7 @@ public class NewPostActivity extends AppCompatActivity {
                                     System.out.println("Data could not be saved " + databaseError.getMessage());
                                     Toast.makeText (NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show ();
                                 } else {
-                                    Toast.makeText (NewPostActivity.this, "success", Toast.LENGTH_SHORT).show ();
+                                    Toast.makeText (NewPostActivity.this, "Success", Toast.LENGTH_SHORT).show ();
                                 }
                             }
                         });
@@ -208,11 +250,11 @@ public class NewPostActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        //TODO errore database (?)
+                        Toast.makeText (NewPostActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show ();
                     }
                 });
-
-
+                
+                finish();
             }
         });
 
@@ -239,13 +281,43 @@ public class NewPostActivity extends AppCompatActivity {
                         }
                     }
                 }
+                break;
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
                     if (intent != null) {
                         // Get the Uri of the selected file
                         Uri uri = intent.getData();
                         // Get the path
-                        NumberOfDocuments.add(uri);
+                        Documents.add(uri);
+
+                        if (indicationDocumentsAttached.getVisibility() == View.GONE) {
+                            indicationDocumentsAttached.setVisibility(View.VISIBLE);
+                        }
+                        indicationDocumentsAttached.setText(getResources().getQuantityString(R.plurals.d_document_added, Documents.size(), Documents.size()));
+
+                        indicationDocumentsAttached.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (addedDocumentsName.getVisibility() == View.GONE) {
+                                    addedDocumentsName.setVisibility(View.VISIBLE);
+                                } else {
+                                    addedDocumentsName.setVisibility(View.GONE);
+                                }
+                            }
+                        });
+
+                        LinearLayout.LayoutParams imParams =
+                                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+                        imParams.setMarginEnd(9);
+                        TextView newDocument = new TextView(getApplicationContext());
+                        newDocument.setTextSize((float) 15.0);
+                        String result = uri.getPath();
+                        int cut = result.lastIndexOf('/');
+                        if (cut != -1) {
+                            result = result.substring(cut + 1);
+                        }
+                        newDocument.setText(result);
+                        addedDocumentsName.addView(newDocument,imParams);
                     }
                 }
                 break;
@@ -259,6 +331,33 @@ public class NewPostActivity extends AppCompatActivity {
 
     void useImage(Uri uri) throws IOException {
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        Images.add(bitmap);
+
+        if (indicationAttachedImages.getVisibility() == View.GONE) {
+            indicationAttachedImages.setVisibility(View.VISIBLE);
+        }
+
+        indicationAttachedImages.setText(getResources().getQuantityString(R.plurals.d_images_added, Images.size(), Images.size()));
+
+        indicationAttachedImages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (addedImagesThumbnails.getVisibility() == View.GONE) {
+                    addedImagesThumbnails.setVisibility(View.VISIBLE);
+                } else {
+                    addedImagesThumbnails.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        LinearLayout.LayoutParams imParams =
+                new LinearLayout.LayoutParams(300, 300, 1);
+        imParams.setMarginEnd(9);
+        ImageView newImage = new ImageView(getApplicationContext());
+        newImage.setImageBitmap(bitmap);
+
+        addedImagesThumbnails.addView(newImage,imParams);
+
     }
 
 

@@ -3,13 +3,13 @@ package com.legs.unijet;
 import java.util.ArrayList;
 
 public class Post {
-    String ID;
+    int ID;
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
@@ -21,27 +21,19 @@ public class Post {
         this.author = author;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Boolean getHasDocument() {
+    public int getHasDocument() {
         return hasDocument;
     }
 
-    public void setHasDocument(Boolean hasDocument) {
+    public void setHasDocument(int hasDocument) {
         this.hasDocument = hasDocument;
     }
 
-    public Boolean getHasPicture() {
+    public int getHasPicture() {
         return hasPicture;
     }
 
-    public void setHasPicture(Boolean hasPicture) {
+    public void setHasPicture(int hasPicture) {
         this.hasPicture = hasPicture;
     }
 
@@ -61,29 +53,30 @@ public class Post {
         this.likes = likes;
     }
 
-    public int getCommentSectionID() {
+    public String getCommentSectionID() {
         return commentSectionID;
     }
 
-    public void setCommentSectionID(int commentSectionID) {
+    public void setCommentSectionID(String commentSectionID) {
         this.commentSectionID = commentSectionID;
     }
 
     String author;
-    String type;
 
 
-    Boolean hasDocument, hasPicture, isDeleted;
+
+    Boolean isDeleted;
+    int hasDocument, hasPicture;
     int likes;
 
 
     public Post() {
     }
 
-    public Post(String ID, String author, String type, Boolean hasDocument, Boolean hasPicture, Boolean isDeleted, int likes, int commentSectionID) {
+    public Post(int ID, String author, String content, int hasDocument, int hasPicture, Boolean isDeleted, int likes, String commentSectionID) {
         this.ID = ID;
+        this.content = content;
         this.author = author;
-        this.type = type;
         this.hasDocument = hasDocument;
         this.hasPicture = hasPicture;
         this.isDeleted = isDeleted;
@@ -91,7 +84,17 @@ public class Post {
         this.commentSectionID = commentSectionID;
     }
 
-    int commentSectionID;
+    String commentSectionID;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    String content;
 
 
 }
