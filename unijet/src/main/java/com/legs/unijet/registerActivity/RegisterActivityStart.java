@@ -88,7 +88,10 @@ public class RegisterActivityStart extends AppCompatActivity {
 
         if (email.isEmpty () && (!email.contains ("@studenti.uniba.it") || !email.contains ("@uniba.it"))) {
             showError (inputEmail, getString(R.string.error_email));
-        } else if (password.isEmpty () || password.length () < 7) {
+        }/*else if (auth.){
+
+        }*/
+            else if (password.isEmpty () || password.length () < 7) {
             showError (inputPassword, getString(R.string.error_password));
         } else if (confirmPassword.isEmpty () || !confirmPassword.equals (password)) {
             showError (inputConfirmPassword, getString(R.string.error_confirm_password));

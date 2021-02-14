@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,10 @@ import com.legs.unijet.BaseActivity;
 import com.legs.unijet.R;
 import com.legs.unijet.User;
 
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class RegStudentActivity  extends RegisterActivityStart {
 
@@ -47,6 +51,7 @@ public class RegStudentActivity  extends RegisterActivityStart {
         inputGender=findViewById(R.id.select_gender_student);
         inputMatricola=findViewById (R.id.set_matricola_student);
         inputDateBorn=findViewById (R.id.set_birth_day_student);
+        inputDateBorn.setInputType(InputType.TYPE_NULL);
         TextView btn=findViewById(R.id.text_help_student);
 
 
@@ -62,23 +67,28 @@ public class RegStudentActivity  extends RegisterActivityStart {
             }
         });
 
-        Calendar calendar= Calendar.getInstance ();
+        final Calendar calendar= Calendar.getInstance ();
         final int day=calendar.get (Calendar.DAY_OF_MONTH);
         final int month= calendar.get (Calendar.MONTH);
         final int year= calendar.get (Calendar.YEAR);
         inputDateBorn.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog= new DatePickerDialog (
+               final DatePickerDialog datePickerDialog= new DatePickerDialog (
                         RegStudentActivity.this, new DatePickerDialog.OnDateSetListener () {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         month=month+1;
                         String date= day+"/"+ month+"/"+year;
-                        inputDateBorn.setText(date);
-
+                            inputDateBorn.setText(date);
                     }
                 },day,month,year);
+                Calendar minCal = Calendar.getInstance();
+                minCal.set(Calendar.YEAR, minCal.get(Calendar.YEAR) - 80);
+                Calendar maxCal = Calendar.getInstance();
+                maxCal.set(Calendar.YEAR, maxCal.get(Calendar.YEAR) - 18);
+                datePickerDialog.getDatePicker().setMinDate(minCal.getTimeInMillis());
+                datePickerDialog.getDatePicker().setMaxDate(maxCal.getTimeInMillis());
                 datePickerDialog.show();
             }
         });
@@ -120,20 +130,25 @@ public class RegStudentActivity  extends RegisterActivityStart {
 
     void checkCrededentials() {
 
+Date d = new Date();
+
         String name = inputName.getText ().toString ();
         String surname = inputSurname.getText ().toString ();
         String studentID = inputMatricola.getText ().toString ();
         String department = inputDepartment.getSelectedItem ().toString ();
         String universityCampus = inputAteneo.getSelectedItem ().toString ();
         String gender=inputGender.getSelectedItem ().toString ();
-        String dateBorn=inputDateBorn.getText ().toString ();
+        String dateBorn = inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputName, getString(R.string.error_name));
-        }  else if (surname.isEmpty () || !surname.contains ("")) {
+        } else if (surname.isEmpty () || !surname.contains ("")) {
             showError (inputSurname, getString(R.string.error_surname));
         } else if (department.isEmpty ()) {
             showError2 (inputDepartment, getString(R.string.error_department));
-        } else if (gender.isEmpty ()) {
+        } else if (dateBorn.isEmpty ()){
+            showError (inputDateBorn, getString(R.string.error_date));
+        }
+        else if (gender.isEmpty ()) {
             showError3 (inputGender, getString(R.string.error_gender));
         } else if (universityCampus.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
@@ -168,6 +183,7 @@ public class RegStudentActivity  extends RegisterActivityStart {
         input.requestFocus ();
 
     }
+
 
     private void showError2(Spinner input, String s) {
         TextView errorText = (TextView) inputDepartment.getSelectedView ();

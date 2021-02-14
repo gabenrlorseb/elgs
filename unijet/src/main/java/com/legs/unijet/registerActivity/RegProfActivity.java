@@ -3,6 +3,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,7 @@ public class RegProfActivity extends AppCompatActivity {
         inputGender=findViewById(R.id.select_gender_teacher);
         inputMatricola=findViewById (R.id.set_matricola_teacher);
         inputDateBorn=findViewById (R.id.set_birth_day_teacher);
+        inputDateBorn.setInputType(InputType.TYPE_NULL);
         TextView btn=findViewById(R.id.text_help_teacher);
 
 
@@ -86,6 +88,13 @@ public class RegProfActivity extends AppCompatActivity {
 
                     }
                 },day,month,year);
+                Calendar minCal = Calendar.getInstance();
+                minCal.set(Calendar.YEAR, minCal.get(Calendar.YEAR) - 80);
+                Calendar maxCal = Calendar.getInstance();
+                maxCal.set(Calendar.YEAR, maxCal.get(Calendar.YEAR) - 18);
+                datePickerDialog.getDatePicker().setMinDate(minCal.getTimeInMillis());
+                datePickerDialog.getDatePicker().setMaxDate(maxCal.getTimeInMillis());
+                datePickerDialog.show();
                 datePickerDialog.show();
             }
         });
@@ -133,8 +142,10 @@ public class RegProfActivity extends AppCompatActivity {
         String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputName, getString(R.string.error_name));
-        }  else if (surname.isEmpty () || !surname.contains ("")) {
-            showError (inputSurname, getString(R.string.error_surname));
+        } else if (surname.isEmpty () || !surname.contains ("")) {
+            showError(inputSurname, getString(R.string.error_surname));
+        } else if (dateBorn.isEmpty ()){
+            showError (inputDateBorn, getString(R.string.error_date));
         } else if (department.isEmpty ()) {
             showError2 (inputDepartment, getString(R.string.error_department));
         } else if (gender.isEmpty ()) {
