@@ -137,6 +137,8 @@
     <string name="leave_course">Leave the course</string>
     <string name="sign_in_leave_the_course">Sign in/Leave the course</string>
     <string name="error_date">Your date is not valid</string>
+    <string name="project_settings">Project Settings</string>
+    <string name="change_project_pic">Change Project Pic</string>
     <string name="d_document_added">%d document added</string>
     <string name="back_warning">Want to go back?</string>
     <string name="warning_back_content">Are you sure you want to go back? All changes will be lost</string>
