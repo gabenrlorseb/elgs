@@ -36,7 +36,9 @@ public class GroupsFragment extends Fragment {
     FirebaseUser auth;
     DatabaseReference reference;
     private ArrayList<CourseSample> fullSampleList;
-    private ArrayList <Course> courses;
+    private ArrayList <Group> groups;
+    private ArrayList <String> members;
+    private boolean isPrivate;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
@@ -85,24 +87,26 @@ public class GroupsFragment extends Fragment {
 
 
     private void populateList() {
-        courses = new ArrayList<>();
+        groups = new ArrayList<>();
         fullSampleList = new ArrayList<>();
 
         db.child("groups").addValueEventListener(new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                fullSampleList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
 
-                    //if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                    String namesString = childSnapshot.child("name").getValue(String.class);
+                    String name = childSnapshot.child("name").getValue(String.class);
                     String owner = childSnapshot.child("author").getValue(String.class);
-                    fullSampleList.add(new CourseSample(namesString, owner));
+                    String department = childSnapshot.child("department").getValue(String.class);
+
+                    groups.add(new Group(name, owner, members, department, isPrivate));
 
                 }
                 buildRecyclerView();
 
                     }
+
+
 
 
 
@@ -113,8 +117,35 @@ public class GroupsFragment extends Fragment {
 
         });
 
+        fullSampleList = new ArrayList();
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                fullSampleList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        for (Group group : groups) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())) {
+                                String namesString = group.getName();
+                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                                String mail = group.getAuthor();
+
+                                fullSampleList.add(new CourseSample(namesString, mail));
+                            }
+
+                        }
+                    }
+                    buildRecyclerView();
+                }
+            }
+            @Override
+            public void onCancelled (@NonNull DatabaseError error){
+
+            }
+        });
 
     }
+
 
 
 
