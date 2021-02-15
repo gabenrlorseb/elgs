@@ -123,5 +123,23 @@
     <string name="leave_course">Esci dal coeso</string>
     <string name="sign_in_leave_the_course">Iscriviti/Esci dal corso</string>
     <string name="error_date">La data inserita non è valida</string>
+    <string name="new_post_activity_name">Nuovo Post</string>
+    <string name="project_settings">Impostazioni Progetto</string>
+    <string name="change_project_pic">Cambia Immagine Progetto</string>
+    <string name="course_registration">Registrazione al corso eseguita con successo</string>
+    <string name="course_elimination">Eliminazione dal corso eseguita con successo</string>
+    <string name="remove_course">Rimuovi Corso</string>
+    <string name="remove_from_course">Rimuovi dal corso</string>
+    <string name="change_group_pic">Cambia immagine del gruppo</string>
+    <string name="group_settings">Impostazioni Gruppo</string>
+    <string name="remove_group">Rimuovi Gruppo</string>
+    <string name="sign_in_leave_group">Registrati al gruppo</string>
+    <string name="leave_the_group">Esci dal gruppo</string>
+    <string name="remove_project">Rimuovi Progetto</string>
+    <string name="group_registration">Registrazione al gruppo avvenuta con successo</string>
+    <string name="group_elimination">Eliminazione dal gruppo avvvenuta con successo</string>
+    <string name="d_document_added">%d documento aggiunto</string>
+    <string name="back_warning">Vuoi tornare indietro</string>
+    <string name="warning_back_content">Sei sicuro di voler tornare indietro? Tutti i cambiamenti verranno persi</string>
 
 </resources>
