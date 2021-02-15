@@ -38,7 +38,7 @@ public class PostSample implements Serializable {
     private ArrayList<String> documents;
     private ArrayList<Bitmap> images;
 
-    public PostSample(Bitmap author_propic, String author_name, String post_content, int number_of_pics, int number_of_docs, ArrayList<String> documents, ArrayList<Bitmap> images, Map<String, String> timestamp, int likes, boolean hasPictures, boolean hasDocuments, boolean isLiked, int comments) {
+    public PostSample(Bitmap author_propic, String author_name, String post_content, int number_of_pics, int number_of_docs, ArrayList<String> documents, ArrayList<Bitmap> images, long timestamp, int likes, boolean hasPictures, boolean hasDocuments, boolean isLiked, int comments) {
         this.author_propic = author_propic;
         this.author_name = author_name;
         this.post_content = post_content;
@@ -94,11 +94,11 @@ public class PostSample implements Serializable {
         this.post_content = post_content;
     }
 
-    public Map<String, String> getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Map<String, String> timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -142,7 +142,7 @@ public class PostSample implements Serializable {
         this.comments = comments;
     }
 
-    private Map<String, String> timestamp;
+    private long timestamp;
     private int likes;
     private boolean hasPictures;
     private boolean hasDocuments;

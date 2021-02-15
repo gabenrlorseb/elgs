@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public TextView number_of_likes;
         public boolean liked;
         public ImageView like;
-        public LinearLayout image_area;
+        public HorizontalScrollView image_area;
         public LinearLayout documents_area;
 
         public PostViewHolder(View itemView) {
@@ -69,10 +70,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.author_propic.setImageBitmap(currentItem.getAuthor_propic());
         holder.author_name.setText(currentItem.getAuthor_name());
         holder.post_content.setText(currentItem.getPost_content());
-        holder.number_of_likes.setText(currentItem.getLikes());
-        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        sfd.format(String.valueOf(currentItem.getTimestamp()));
-        holder.date_time.setText(sfd.toString());
+        holder.number_of_likes.setText(Integer.toString(currentItem.getLikes()));
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a");
+        String date = sdf.format(currentItem.getTimestamp());
+        holder.date_time.setText(date);
         if (holder.liked) {
             holder.like.setColorFilter(Color.argb(255,255,0,0));
         }
@@ -91,7 +92,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
 
         if (currentItem.isHasPictures()) {
-            LinearLayout layout = (LinearLayout) holder.image_area;
+            HorizontalScrollView layout = (HorizontalScrollView) holder.image_area;
             for (int i = 0; i < currentItem.getNumber_of_pics(); i++) {
                 ImageView imageView = new ImageView(holder.author_propic.getContext());
                 imageView.setId(i);
@@ -112,6 +113,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 layout.addView(document);
             }
         }
+
+        sampleList.add(currentItem);
 
     }
 

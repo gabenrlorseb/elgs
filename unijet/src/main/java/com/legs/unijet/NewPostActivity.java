@@ -45,6 +45,7 @@ import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -240,7 +241,9 @@ public class NewPostActivity extends AppCompatActivity {
                             }
                         }
 
-                        post = new Post(postID, user.getEmail(), postContent.getText().toString(), numberOfDocuments, numberOfImages, false, new ArrayList<String>(), uniqueId, ServerValue.TIMESTAMP);
+                        long ut2 = System.currentTimeMillis() / 1000L;
+
+                        post = new Post(postID, user.getEmail(), false, numberOfDocuments, numberOfImages, new ArrayList<String>(), ut2, uniqueId, uniqueId,postContent.getText().toString());
 
                         database2.push().setValue(post, new DatabaseReference.CompletionListener()  {
                             @Override
