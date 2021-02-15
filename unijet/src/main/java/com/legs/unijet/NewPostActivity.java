@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,7 +41,14 @@ import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class NewPostActivity extends AppCompatActivity {
@@ -232,7 +240,7 @@ public class NewPostActivity extends AppCompatActivity {
                             }
                         }
 
-                        post = new Post(postID, user.getEmail(), postContent.getText().toString(), numberOfDocuments, numberOfImages, false, 0, uniqueId);
+                        post = new Post(postID, user.getEmail(), postContent.getText().toString(), numberOfDocuments, numberOfImages, false, new ArrayList<String>(), uniqueId, ServerValue.TIMESTAMP);
 
                         database2.push().setValue(post, new DatabaseReference.CompletionListener()  {
                             @Override

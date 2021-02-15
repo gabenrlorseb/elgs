@@ -1,6 +1,11 @@
 package com.legs.unijet;
 
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.Array;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Post {
     int ID;
@@ -45,11 +50,11 @@ public class Post {
         isDeleted = deleted;
     }
 
-    public int getLikes() {
+    public ArrayList<String> getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(ArrayList<String> likes) {
         this.likes = likes;
     }
 
@@ -67,13 +72,25 @@ public class Post {
 
     Boolean isDeleted;
     int hasDocument, hasPicture;
-    int likes;
+    ArrayList<String> likes;
+
+    public Map<String, String> getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Map<String, String> timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private Map<String, String> timestamp;
+
+
 
 
     public Post() {
     }
 
-    public Post(int ID, String author, String content, int hasDocument, int hasPicture, Boolean isDeleted, int likes, String commentSectionID) {
+    public Post(int ID, String author, String content, int hasDocument, int hasPicture, Boolean isDeleted, ArrayList<String> likes, String commentSectionID, Map<String, String> timestamp) {
         this.ID = ID;
         this.content = content;
         this.author = author;
@@ -82,6 +99,7 @@ public class Post {
         this.isDeleted = isDeleted;
         this.likes = likes;
         this.commentSectionID = commentSectionID;
+        this.timestamp = timestamp;
     }
 
     String commentSectionID;
