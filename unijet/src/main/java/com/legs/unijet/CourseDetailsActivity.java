@@ -26,6 +26,8 @@ import com.legs.unijet.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -200,7 +202,10 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                                             startActivity(intent2);
                                                             return true;
                                                         case R.id.remove_course_tab:
-                                                            //rimuovi corso
+                                                            Intent intent3 = new Intent(CourseDetailsActivity.this, MainActivity.class);
+                                                            String courseUID = postSnapshot.getKey();
+                                                            database3.child("courses").child(courseUID).removeValue();
+                                                            startActivity(intent3);
                                                         default:
                                                             return false;
                                                     }
@@ -304,6 +309,9 @@ public class  CourseDetailsActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         final StorageReference fileRef = storageReference.child(courseUID + ".jpg");
 
         File cachedProPic = getBaseContext().getFilesDir();
@@ -359,6 +367,14 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void loadFragment(Fragment fragment){
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /*public boolean onCreateOptionsMenu(Menu menu) {
