@@ -144,4 +144,15 @@
     <string name="course_registration">Course Registration made successfully</string>
     <string name="course_elimination">Elimination from Course made successfully</string>
     <string name="warning_back_content">Are you sure you want to go back? All changes will be lost</string>
+    <string name="remove_from_course">Remove from course</string>
+    <string name="remove_course">Remove Course</string>
+    <string name="change_group_pic">Change Group Pic</string>
+    <string name="group_settings">Group Settings</string>
+    <string name="remove_group">Remove Group</string>
+    <string name="sign_in_leave_group">Sign In/Leave Group</string>
+    <string name="leave_the_group">Leave the group</string>
+    <string name="group_registration">Group Registration made successfully</string>
+    <string name="group_elimination">Elimination from Group made successfully</string>
+    <string name="remove_project">Remove Project</string>
+
 </resources>

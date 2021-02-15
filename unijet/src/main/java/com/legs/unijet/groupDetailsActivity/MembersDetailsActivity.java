@@ -37,7 +37,7 @@
         setContentView(R.layout.simple_activity_recyclerview_list);
 
         Toolbar actionBar = findViewById(R.id.toolbar);
-        actionBar.setTitle("Members of");
+        actionBar.setTitle("Members");
 
         Bundle args = getIntent().getExtras();
 

@@ -62,7 +62,7 @@ public class  CourseDetailsActivity extends AppCompatActivity {
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
-    PopupMenu profMenu;
+
 
 
 
@@ -166,11 +166,11 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                     fab.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            final PopupMenu profMenu;
-                                            profMenu = new PopupMenu(CourseDetailsActivity.this, fab);
-                                            MenuInflater inflater = profMenu.getMenuInflater();
-                                            inflater.inflate(R.menu.course_author_menu, profMenu.getMenu());
-                                            profMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                            final PopupMenu authorMenu;
+                                            authorMenu = new PopupMenu(CourseDetailsActivity.this, fab);
+                                            MenuInflater inflater = authorMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.course_author_menu, authorMenu.getMenu());
+                                            authorMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                                 @Override
                                                 public boolean onMenuItemClick(MenuItem item) {
                                                     switch (item.getItemId()) {
@@ -185,15 +185,29 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                                                     "Select Picture"), SELECT_PICTURE);
                                                             return true;
                                                         case R.id.members_tab:
-                                                            //gestione membri
+                                                            Intent intent2 = new Intent(CourseDetailsActivity.this, AuthorCourseManageActivity.class);
+                                                            Bundle b = new Bundle();
+                                                            b.putSerializable("groupRecipients", course.getMembers());
+                                                            intent2.putExtras(b);
+                                                            if (!isAuthor) {
+                                                                intent2.putExtra("author", course.getEmail());
+                                                                intent2.putExtra("author_name", courseAuthorName[0]);
+                                                            } else {
+                                                                intent2.putExtra("author", getString(R.string.you));
+                                                                intent2.putExtra("author_name", "you");
+                                                            }
+                                                            intent2.putExtra("name", course.getName());
+                                                            startActivity(intent2);
                                                             return true;
+                                                        case R.id.remove_course_tab:
+                                                            //rimuovi corso
                                                         default:
                                                             return false;
                                                     }
 
                                                 }
                                             });
-                                            profMenu.show();
+                                            authorMenu.show();
 
                                             }
 
