@@ -42,6 +42,7 @@
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.CourseDetailsActivity;
  import com.legs.unijet.Group;
+ import com.legs.unijet.MainActivity;
  import com.legs.unijet.R;
  import com.legs.unijet.User;
 
@@ -192,7 +193,11 @@
                                                             startActivity(intent2);
                                                             return true;
                                                         case R.id.remove_group_tab:
-                                                          //remove group
+                                                            Intent intent3 = new Intent(GroupActivity.this, MainActivity.class);
+                                                            String groupUID = postSnapshot.getKey();
+                                                            database3.child("groups").child(groupUID).removeValue();
+                                                            startActivity(intent3);
+
                                                             return true;
                                                         default:
                                                             return false;
@@ -222,7 +227,14 @@
                                                 public boolean onMenuItemClick(MenuItem item) {
                                                     switch (item.getItemId()) {
                                                         case R.id.leave_group:
-                                                            //remove group
+                                                            Intent intent = new Intent (GroupActivity.this, MainActivity.class);
+                                                            String groupUID = postSnapshot.getKey();
+                                                            ArrayList<String> courseSubscribers = group.getRecipients();
+                                                            if(courseSubscribers.contains(user.getEmail())){
+                                                            courseSubscribers.remove(user.getEmail());
+                                                            }
+                                                            database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
+                                                            startActivity(intent);
                                                             return true;
                                                         default:
                                                             return false;
@@ -244,8 +256,6 @@
                                         public void onClick(View v) {
 
                                             PopupMenu studentMenu;
-
-
                                             studentMenu = new PopupMenu(GroupActivity.this, fab);
                                             MenuInflater inflater = studentMenu.getMenuInflater();
                                             inflater.inflate(R.menu.group_student_menu, studentMenu.getMenu());
@@ -255,33 +265,9 @@
                                                     switch (item.getItemId()) {
                                                         case R.id.student_tab:
                                                             String groupUID = postSnapshot.getKey();
-                                                            ArrayList<String> courseSubscribers = group.getRecipients();
-                                                            if(courseSubscribers.contains(user.getEmail())){
-                                                                courseSubscribers.remove(user.getEmail());
-                                                                AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
-                                                                builder.setMessage(R.string.group_elimination)
-                                                                        .setCancelable(false)
-                                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                                //do things
-                                                                            }
-                                                                        });
-                                                                AlertDialog alert = builder.create();
-                                                                alert.show();
-                                                            } else {
-                                                                courseSubscribers.add(user.getEmail());
-                                                                AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
-                                                                builder.setMessage(R.string.group_registration)
-                                                                        .setCancelable(false)
-                                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                                //do things
-                                                                            }
-                                                                        });
-                                                                AlertDialog alert = builder.create();
-                                                                alert.show();
-                                                            }
-                                                            database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
+                                                            ArrayList<String> groupSubscribers = group.getRecipients();
+                                                            groupSubscribers.add(user.getEmail());
+                                                            database3.child("groups").child(groupUID).child("recipients").setValue(groupSubscribers);
                                                             return true;
                                                         default:
                                                             return false;
