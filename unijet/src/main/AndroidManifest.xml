@@ -32,9 +32,11 @@
         <activity android:name=".createGroupActivity.CreateGroup" />
         <activity android:name=".CreateCourse" />
         <activity android:name=".CreateProject" />
+        <activity android:name=".AuthorCourseManageActivity" />
         <activity android:name=".EditProfile" />
         <activity android:name=".CourseDetailsActivity" />
         <activity android:name=".groupDetailsActivity.GroupActivity" />
+        <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
         <activity android:name=".ProjectDetailsActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
         <activity android:name=".NewPostActivity" />
