@@ -1,18 +1,24 @@
  package com.legs.unijet.groupDetailsActivity;
 
  import android.app.Activity;
+ import android.app.AlertDialog;
  import android.content.ActivityNotFoundException;
  import android.content.Context;
+ import android.content.DialogInterface;
  import android.content.Intent;
  import android.graphics.Bitmap;
  import android.graphics.BitmapFactory;
+ import android.graphics.drawable.Drawable;
  import android.net.ConnectivityManager;
  import android.net.NetworkInfo;
  import android.net.Uri;
  import android.os.Bundle;
  import android.util.Log;
+ import android.view.MenuInflater;
+ import android.view.MenuItem;
  import android.view.View;
  import android.widget.ImageView;
+ import android.widget.PopupMenu;
  import android.widget.TextView;
  import android.widget.Toast;
 
@@ -34,6 +40,7 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
+ import com.legs.unijet.CourseDetailsActivity;
  import com.legs.unijet.Group;
  import com.legs.unijet.R;
  import com.legs.unijet.User;
@@ -129,9 +136,174 @@
 
                         }
                     });
-
+                    /*Intent intent = getIntent();
+                    Bundle bundle = intent.getExtras ();
+                    String group = bundle.getString ("GName");*/
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
+
+
+                    final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                    database3.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+                        final FloatingActionButton fab = findViewById(R.id.common_fab);
+                        public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                            for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                final Group group;
+                                group = postSnapshot.getValue(Group.class);
+                                if (user.getEmail().equals(group.getAuthor())) {
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            final PopupMenu authorMenu;
+                                            authorMenu = new PopupMenu(GroupActivity.this, fab);
+                                            MenuInflater inflater = authorMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.group_author_menu, authorMenu.getMenu());
+                                            authorMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                @Override
+                                                public boolean onMenuItemClick(MenuItem item) {
+                                                    switch (item.getItemId()) {
+                                                        case R.id.settings_tab:
+                                                            //impostazioni
+                                                            return true;
+                                                        case R.id.change_pic_tab:
+                                                            Intent intent = new Intent();
+                                                            intent.setType("image/*");
+                                                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                                                            startActivityForResult(Intent.createChooser(intent,
+                                                                    "Select Picture"), SELECT_PICTURE);
+                                                            return true;
+                                                        case R.id.members_tab:
+                                                            Intent intent2 = new Intent(GroupActivity.this, AuthorGroupManageActivity.class);
+                                                            Bundle b = new Bundle();
+                                                            b.putSerializable("groupRecipients", group.getRecipients());
+                                                            intent2.putExtras(b);
+                                                            if (!isAuthor) {
+                                                                intent2.putExtra("author", group.getAuthor());
+                                                                intent2.putExtra("author_name", groupAuthorName[0]);
+                                                            } else {
+                                                                intent2.putExtra("author", getString(R.string.you));
+                                                                intent2.putExtra("author_name", "you");
+                                                            }
+                                                            intent2.putExtra("name", group.getName());
+                                                            startActivity(intent2);
+                                                            return true;
+                                                        case R.id.remove_group_tab:
+                                                          //remove group
+                                                            return true;
+                                                        default:
+                                                            return false;
+                                                    }
+
+                                                }
+                                            });
+                                            authorMenu.show();
+
+                                        }
+
+                                    });
+
+
+                                } else if (group.getRecipients().contains(user.getEmail())){
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            final PopupMenu componentMenu;
+                                            componentMenu = new PopupMenu(GroupActivity.this, fab);
+                                            MenuInflater inflater = componentMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.group_component_menu, componentMenu.getMenu());
+                                            componentMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                @Override
+                                                public boolean onMenuItemClick(MenuItem item) {
+                                                    switch (item.getItemId()) {
+                                                        case R.id.leave_group:
+                                                            //remove group
+                                                            return true;
+                                                        default:
+                                                            return false;
+                                                    }
+
+                                                }
+                                            });
+                                            componentMenu.show();
+
+                                        }
+                                    });
+
+                                }  else{
+                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_baseline_add_24);
+                                    fab.setImageDrawable(myDrawable);
+                                    fab.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            PopupMenu studentMenu;
+
+
+                                            studentMenu = new PopupMenu(GroupActivity.this, fab);
+                                            MenuInflater inflater = studentMenu.getMenuInflater();
+                                            inflater.inflate(R.menu.group_student_menu, studentMenu.getMenu());
+                                            studentMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                @Override
+                                                public boolean onMenuItemClick(MenuItem item) {
+                                                    switch (item.getItemId()) {
+                                                        case R.id.student_tab:
+                                                            String groupUID = postSnapshot.getKey();
+                                                            ArrayList<String> courseSubscribers = group.getRecipients();
+                                                            if(courseSubscribers.contains(user.getEmail())){
+                                                                courseSubscribers.remove(user.getEmail());
+                                                                AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
+                                                                builder.setMessage(R.string.group_elimination)
+                                                                        .setCancelable(false)
+                                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                                //do things
+                                                                            }
+                                                                        });
+                                                                AlertDialog alert = builder.create();
+                                                                alert.show();
+                                                            } else {
+                                                                courseSubscribers.add(user.getEmail());
+                                                                AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
+                                                                builder.setMessage(R.string.group_registration)
+                                                                        .setCancelable(false)
+                                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                                //do things
+                                                                            }
+                                                                        });
+                                                                AlertDialog alert = builder.create();
+                                                                alert.show();
+                                                            }
+                                                            database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
+                                                            return true;
+                                                        default:
+                                                            return false;
+                                                    }
+
+                                                }
+                                            });
+
+                                            studentMenu.show();
+                                        }
+
+
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 }
             }
