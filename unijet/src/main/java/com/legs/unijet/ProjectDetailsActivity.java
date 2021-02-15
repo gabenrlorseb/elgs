@@ -152,34 +152,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                                     }
                                 });
 
-                                /*groupIndication.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Log.v("VALORE NOME", groupName[0]);
-                                        Bundle b = new Bundle();
-                                        b.putSerializable("groupRecipients", group.getRecipients());
 
-                                        Intent intent = new Intent(ProjectDetailsActivity.this, MembersDetailsActivity.class);
-                                        intent.putExtras(b);
-                                        if (!isAuthor) {
-                                            intent.putExtra("author", group.getAuthor());
-                                            intent.putExtra("author_name", groupAuthorName[0]);
-                                        } else {
-                                            intent.putExtra("author", getString(R.string.you));
-                                            intent.putExtra("author_name", "you");
-                                        }
-                                        intent.putExtra("name", group.getName());
-                                        startActivity(intent);
-
-
-
-
-
-
-                                    }
-
-
-                                });*/
                             }
                         }
 
@@ -194,9 +167,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                     collapsingToolbar.setTitle(project.getName());
 
 
-/*
-                    TextView toolBarShowEmail = findViewById(R.id.toolbar_additional_infos);
-                    toolBarShowEmail.setText(group.getAuthor());*/
+
                 }
             }
 
