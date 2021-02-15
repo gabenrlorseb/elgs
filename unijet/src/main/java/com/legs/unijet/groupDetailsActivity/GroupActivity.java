@@ -197,6 +197,7 @@
                                                             String groupUID = postSnapshot.getKey();
                                                             database3.child("groups").child(groupUID).removeValue();
                                                             startActivity(intent3);
+
                                                             return true;
                                                         default:
                                                             return false;
@@ -246,7 +247,7 @@
                                         }
                                     });
 
-                                }   else {
+                                }  else{
                                     Drawable myDrawable = getResources().getDrawable(R.drawable.ic_baseline_add_24);
                                     fab.setImageDrawable(myDrawable);
                                     fab.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +256,6 @@
                                         public void onClick(View v) {
 
                                             PopupMenu studentMenu;
-
                                             studentMenu = new PopupMenu(GroupActivity.this, fab);
                                             MenuInflater inflater = studentMenu.getMenuInflater();
                                             inflater.inflate(R.menu.group_student_menu, studentMenu.getMenu());
@@ -265,9 +265,9 @@
                                                     switch (item.getItemId()) {
                                                         case R.id.student_tab:
                                                             String groupUID = postSnapshot.getKey();
-                                                            ArrayList<String> courseSubscribers = group.getRecipients();
-                                                            courseSubscribers.add(user.getEmail());
-                                                            database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
+                                                            ArrayList<String> groupSubscribers = group.getRecipients();
+                                                            groupSubscribers.add(user.getEmail());
+                                                            database3.child("groups").child(groupUID).child("recipients").setValue(groupSubscribers);
                                                             return true;
                                                         default:
                                                             return false;
