@@ -11,17 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ExampleViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private final ArrayList<PostSample> sampleList;
 
-    public static class ExampleViewHolder extends RecyclerView.ViewHolder {
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
         public ImageView author_propic;
         public TextView author_name;
         public TextView post_content;
@@ -33,7 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ExampleViewHol
         public LinearLayout image_area;
         public LinearLayout documents_area;
 
-        public ExampleViewHolder(View itemView) {
+        public PostViewHolder(View itemView) {
             super(itemView);
             author_propic = itemView.findViewById(R.id.member_icon);
             author_name = itemView.findViewById(R.id.member_name);
@@ -61,13 +58,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ExampleViewHol
 
     @NonNull
     @Override
-    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_bacheca_sample, parent, false);
-        return new ExampleViewHolder(v);
+        return new PostViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
+    public void onBindViewHolder(final PostViewHolder holder, final int position) {
         final PostSample currentItem = sampleList.get(position);
         holder.author_propic.setImageBitmap(currentItem.getAuthor_propic());
         holder.author_name.setText(currentItem.getAuthor_name());
