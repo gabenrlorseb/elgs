@@ -72,7 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.post_content.setText(currentItem.getPost_content());
         holder.number_of_likes.setText(Integer.toString(currentItem.getLikes()));
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a");
-        String date = sdf.format(currentItem.getTimestamp());
+        String date = sdf.format(currentItem.getTimestamp() * 1000);
         holder.date_time.setText(date);
         if (holder.liked) {
             holder.like.setColorFilter(Color.argb(255,255,0,0));
@@ -114,7 +114,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         }
 
-        sampleList.add(currentItem);
 
     }
 
