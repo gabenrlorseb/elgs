@@ -17,6 +17,7 @@
  import android.view.MenuInflater;
  import android.view.MenuItem;
  import android.view.View;
+ import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
  import android.widget.LinearLayout;
@@ -285,6 +286,7 @@
                                         Log.v("AVVISO", "STO PER AGGIUNGER ALL'ARRAYLIST RECYCLERVIEW");
 
                                         fetchedPosts.add(new PostSample(authorBitmap[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, fetchedDocs, fetchedImages, newPost.getTimestamp(), 0, hasPictures, hasDocuments, liked, numberOfComments[0]));
+
                                         if (!fetchedPosts.isEmpty()) {
                                             buildBacheca();
                                         }
@@ -303,6 +305,8 @@
 
                         }
                     });
+
+
 
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
@@ -478,6 +482,15 @@
             }
         });
 
+        EditText postNow = findViewById(R.id.post_update_editText);
+        postNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (GroupActivity.this, NewPostActivity.class);
+                i.putExtra("key", groupUID);
+                startActivity(i);
+            }
+        });
 
 
         final StorageReference fileRef = storageReference.child(groupUID + ".jpg");

@@ -33,7 +33,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
             super(itemView);
             mImageView = itemView.findViewById(R.id.member_icon);
             mTextView1 = itemView.findViewById(R.id.member_name);
-            mTextView2 = itemView.findViewById(R.id.member_mail);
+            mTextView2 = itemView.findViewById(R.id.post_content);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
         }
 

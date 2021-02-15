@@ -98,8 +98,11 @@
             </androidx.cardview.widget.CardView>
 
             <EditText
+                android:id="@+id/post_update_editText"
+                android:focusableInTouchMode="false"
                 android:clickable="false"
                 android:focusable="false"
+                android:inputType="none"
                 android:layout_toEndOf="@id/member_icon_placeholder"
                 android:layout_marginStart="13dp"
                 android:layout_width="match_parent"
