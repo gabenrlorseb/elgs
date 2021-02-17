@@ -17,13 +17,19 @@
  import android.view.MenuInflater;
  import android.view.MenuItem;
  import android.view.View;
+ import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
+ import android.widget.LinearLayout;
+ import android.widget.RelativeLayout;
  import android.widget.TextView;
  import android.widget.Toast;
 
  import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
  import androidx.appcompat.app.AppCompatActivity;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
 
  import com.google.android.gms.tasks.OnFailureListener;
  import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +37,7 @@
  import com.google.android.material.floatingactionbutton.FloatingActionButton;
  import com.google.firebase.auth.FirebaseAuth;
  import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.database.ChildEventListener;
  import com.google.firebase.database.DataSnapshot;
  import com.google.firebase.database.DatabaseError;
  import com.google.firebase.database.DatabaseReference;
@@ -42,6 +49,10 @@
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.CourseDetailsActivity;
  import com.legs.unijet.Group;
+ import com.legs.unijet.NewPostActivity;
+ import com.legs.unijet.Post;
+ import com.legs.unijet.PostAdapter;
+ import com.legs.unijet.PostSample;
  import com.legs.unijet.MainActivity;
  import com.legs.unijet.R;
  import com.legs.unijet.User;
@@ -66,6 +77,14 @@
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+     RecyclerView recyclerViewBacheca;
+     private PostAdapter postAdapter;
+
+     private ArrayList<PostSample> fetchedPosts;
+
+
+
+
 
 
     @Override
@@ -86,6 +105,13 @@
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference("students");
+
+        final StorageReference reference1 = FirebaseStorage.getInstance().getReference("posts");
+
+        final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        fetchedPosts = new ArrayList<>();
 
 
         database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -96,10 +122,12 @@
                     if (user.getEmail().equals(group.getAuthor())) {
                         isAuthor = true;
                     }
-                    groupUID = snapshot.getKey();
+                    groupUID = postSnapshot.getKey();
                     ArrayList<String> addedMails = group.getRecipients();
                     NumberOfMembers[0] = addedMails.size() + 1;
                     final String[] groupAuthorName = new String[1];
+
+                    Log.v("AUTORE GRUPPO", group.getAuthor());
 
                     database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
                         @Override
@@ -131,15 +159,168 @@
                                     }
                                 });
                             }
+                            database2.child("posts/" + groupUID + "/").orderByChild("id").addValueEventListener(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        final Post newPost = postSnapshot.getValue(Post.class);
+
+                                        final ArrayList<Bitmap> fetchedImages = new ArrayList<>();
+                                        final ArrayList<String> fetchedDocs = new ArrayList<>();
+
+                                        final Bitmap[] authorBitmap = new Bitmap[1];
+
+                                        boolean hasPictures = false;
+                                        boolean hasDocuments = false;
+
+
+                                        int PostID = newPost.getID();
+                                        final int numberOfPics = newPost.getHasPicture();
+                                        final int numberOfDocs = newPost.getHasDocument();
+                                        final String[] authorName = new String[1];
+
+                                        final String[] authorKey = new String[1];
+
+
+                                        if (numberOfPics != 0) {
+                                            hasPictures = true;
+                                            for (int i = 0; i < numberOfPics; i++) {
+                                                reference1.child(groupUID + "/" + PostID + "pic" + numberOfPics).getBytes(2048 * 2048).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                    @Override
+                                                    public void onSuccess(byte[] bytes) {
+                                                        Bitmap tempImageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                        fetchedImages.add(tempImageBitmap);
+                                                    }
+                                                });
+                                            }
+                                        }
+
+
+                                        if (numberOfDocs != 0) {
+                                            hasDocuments = true;
+                                            for (int i = 0; i < numberOfDocs; i++) {
+                                                final ArrayList<Uri> newArrayList = null;
+                                                reference1.child(groupUID + "/" + PostID + "document" + numberOfDocs).getFile(newArrayList.get(numberOfDocs)).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                        String result = newArrayList.get(numberOfDocs).getPath();
+                                                        int cut = result.lastIndexOf('/');
+                                                        if (cut != -1) {
+                                                            result = result.substring(cut + 1);
+                                                        }
+                                                        fetchedDocs.add(result);
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                        final boolean finalHasPictures = hasPictures;
+                                        final boolean finalHasDocuments = hasDocuments;
+                                        database3.orderByChild("email").equalTo(newPost.getAuthor()).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot3) {
+                                                for(DataSnapshot datas: snapshot3.getChildren()) {
+                                                    String keys = datas.getKey();
+                                                    User user = datas.getValue(User.class);
+                                                    authorKey[0] = datas.getKey();
+                                                    Log.v("AVVISO", "UTENTE TROVATO SU " + datas.getKey());
+                                                    StringBuilder newSB = new StringBuilder();
+                                                    newSB.append(user.getName());
+                                                    newSB.append(" ");
+                                                    newSB.append(user.getSurname());
+                                                    authorName[0] = newSB.toString();
+
+                                                    File cachedProPic = getBaseContext().getFilesDir();
+                                                    final File f = new File(cachedProPic, authorKey[0] + ".jpg");
+                                                    FileInputStream fis = null;
+                                                    try {
+                                                        fis = new FileInputStream(f);
+                                                        authorBitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
+                                                        Log.v("AVVISO", "Found in cache");
+                                                    } catch (FileNotFoundException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    if (fis != null) {
+                                                        reference1.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                                Log.v("AVVISO", "Il file è stato scaricato dal database");
+                                                                authorBitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
+                                                                FileOutputStream fos;
+                                                                try {
+                                                                    fos = new FileOutputStream(f);
+                                                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                                                                    fos.flush();
+                                                                    fos.close();
+                                                                } catch (IOException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.v("AVVISO", "File could not be fetched from database");
+                                                                Toast.makeText(GroupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                                                authorBitmap[0] = BitmapFactory.decodeResource(getResources(), R.drawable.ic_generic_user_avatar);
+                                                            }
+                                                        });
+                                                    }
+
+                                                    boolean liked = false;
+
+
+                                                    final int[] numberOfComments = {0};
+
+                                                    database.child("comments").orderByKey().equalTo(newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                                                            numberOfComments[0] = (int) snapshot.getChildrenCount();
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+                                                    Log.v("AVVISO", "STO PER AGGIUNGER ALL'ARRAYLIST RECYCLERVIEW");
+
+                                                    fetchedPosts.add(new PostSample(authorBitmap[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, fetchedDocs, fetchedImages, newPost.getTimestamp(), 0, finalHasPictures, finalHasDocuments, liked, numberOfComments[0]));
+
+                                                    if (!fetchedPosts.isEmpty()) {
+                                                        buildBacheca();
+                                                    }
+                                                }
+                                            }
+
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });
-                    /*Intent intent = getIntent();
-                    Bundle bundle = intent.getExtras ();
-                    String group = bundle.getString ("GName");*/
+
+
+
                     CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
 
@@ -301,6 +482,30 @@
             }
         });
 
+
+
+
+        RelativeLayout postLayout = findViewById(R.id.area_post);
+        postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (GroupActivity.this, NewPostActivity.class);
+                i.putExtra("key", groupUID);
+                startActivity(i);
+            }
+        });
+
+        EditText postNow = findViewById(R.id.post_update_editText);
+        postNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (GroupActivity.this, NewPostActivity.class);
+                i.putExtra("key", groupUID);
+                startActivity(i);
+            }
+        });
+
+
         final StorageReference fileRef = storageReference.child(groupUID + ".jpg");
 
         File cachedProPic = getBaseContext().getFilesDir();
@@ -370,6 +575,15 @@
 
     }
 
+    protected void buildBacheca () {
+        recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
+        recyclerViewBacheca.setHasFixedSize(false);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        postAdapter = new PostAdapter(fetchedPosts);
+        recyclerViewBacheca.setLayoutManager(mLayoutManager);
+        recyclerViewBacheca.setAdapter(postAdapter);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -423,7 +637,7 @@
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("groups");
-        DatabaseReference userRef = ref.child(user.getUid());
+        DatabaseReference userRef = ref.child(groupUID);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);

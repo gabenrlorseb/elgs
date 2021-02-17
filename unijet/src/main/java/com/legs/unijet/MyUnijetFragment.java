@@ -46,7 +46,7 @@ public class MyUnijetFragment extends Fragment {
 
     FirebaseUser user;
     String userId;
-    FirebaseUser auth;
+
     DatabaseReference reference;
     TextView text_name_surname, email_login_field;
 

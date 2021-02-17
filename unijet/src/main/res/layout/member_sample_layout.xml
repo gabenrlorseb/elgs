@@ -42,12 +42,11 @@
             android:textSize="@dimen/common_default_title_text_size" />
 
 
-
-        <TextView
-            android:id="@+id/member_mail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="prova prova"/>
+            <TextView
+                android:id="@+id/post_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="prova prova" />
 
         </LinearLayout>
 

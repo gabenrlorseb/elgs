@@ -72,50 +72,56 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
             <RelativeLayout
                 android:id="@+id/area_post"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="14dp">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recyclerview_posts">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/member_icon_placeholder"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                app:cardCornerRadius="18dp"
-                android:layout_width="36dp"
-                android:layout_height="36dp">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/member_icon_placeholder"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    app:cardCornerRadius="18dp">
 
-                <ImageView
-                    android:id="@+id/member_icon"
+                    <ImageView
+                        android:id="@+id/member_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </androidx.cardview.widget.CardView>
+
+                <EditText
+                    android:id="@+id/post_update_editText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </androidx.cardview.widget.CardView>
-
-            <EditText
-                android:layout_toEndOf="@id/member_icon_placeholder"
-                android:layout_marginStart="13dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:hint="Post an update..."/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_toEndOf="@id/member_icon_placeholder"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Post an update..."
+                    android:inputType="none"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="@id/area_post"
-            android:id="@+id/recyclerview_posts"
-            android:layout_marginHorizontal="14dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_posts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                app:layout_constraintTop_toBottomOf="@id/area_post"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </androidx.core.widget.NestedScrollView>
