@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gruppi">
+        <item>Gruppo 1</item>
+        <item>Gruppo 2</item>
+
+    </string-array>
+</resources>

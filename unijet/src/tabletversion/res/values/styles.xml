@@ -1,0 +1,54 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#1958F6</item>
+        <item name="colorPrimaryVariant">#092D95</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+    </style>
+
+    <style name="BaseAppTextAppeareance" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="font">@font/open_sans</item>
+    </style>
+
+    <style name="top_bar_theme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="popupTheme">?titleTextColor</item>
+        <item name="tint">?titleTextColor</item>
+    </style>
+
+    <style name="TitleBarTextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
+    <style name="TextAppearance.SelectedNavBarItem" parent="android:TextAppearance">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="TextAppearance.UnselectedNavBarItem" parent="android:TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="Common_Section_Title">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_bg</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+
+</resources>
