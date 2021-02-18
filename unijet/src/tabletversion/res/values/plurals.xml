@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name ="x_seconds_ago">
+        <item quantity="one">%d second ago</item>
+        <item quantity="other" >%d seconds ago</item>
+    </plurals>
+
+<plurals name ="x_minutes_ago">
+<item quantity="one">@string/second_ago</item>
+    <item quantity="other" >@string/seconds_ago</item>
+</plurals>
+
+    <plurals name ="x_hours_ago">
+        <item quantity="one">@string/hour_ago</item>
+        <item quantity="other" >@string/hours_ago</item>
+    </plurals>
+
+    <plurals name ="x_days_ago">
+        <item quantity="one">@string/day_ago</item>
+        <item quantity="other" >@string/days_ago</item>
+    </plurals>
+
+    <plurals name ="x_months_ago">
+        <item quantity="one">@string/month_ago</item>
+        <item quantity="other" >@string/months_ago</item>
+    </plurals>
+
+    <plurals name ="x_years_ago">
+        <item quantity="one">@string/year_ago</item>
+        <item quantity="other" >@string/years_ago</item>
+    </plurals>
+
+    <plurals name ="members_number">
+        <item quantity="one">@string/year_ago</item>
+        <item quantity="other" >@string/years_ago</item>
+    </plurals>
+
+    <plurals name="members">
+        <item quantity="one">%d member</item>
+        <item quantity="other">%d members</item>
+    </plurals>
+
+    <plurals name="d_images_added">
+        <item quantity="one">%d image added</item>
+        <item quantity="other">%d images added</item>
+    </plurals>
+
+    <plurals name="d_document_added">
+        <item quantity="one">%d document added</item>
+        <item quantity="other">%d documents added</item>
+    </plurals>
+</resources>
