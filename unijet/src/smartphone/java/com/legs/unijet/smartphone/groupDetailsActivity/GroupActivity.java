@@ -111,8 +111,6 @@
 
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        fetchedPosts = new ArrayList<>();
-
 
         database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -163,6 +161,7 @@
 
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    fetchedPosts = new ArrayList<>();
                                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                                         final Post newPost = postSnapshot.getValue(Post.class);
 
@@ -200,7 +199,7 @@
                                         if (numberOfDocs != 0) {
                                             hasDocuments = true;
                                             for (int i = 0; i < numberOfDocs; i++) {
-                                                final ArrayList<Uri> newArrayList = null;
+                                                final ArrayList<Uri> newArrayList = new ArrayList<>();
                                                 reference1.child(groupUID + "/" + PostID + "document" + numberOfDocs).getFile(newArrayList.get(numberOfDocs)).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                                     @Override
                                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -275,8 +274,6 @@
                                                     database.child("comments").orderByKey().equalTo(newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                                                             numberOfComments[0] = (int) snapshot.getChildrenCount();
                                                         }
 
