@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
@@ -39,9 +38,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.smartphone.Group;
-import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.User;
+import com.legs.unijet.smartphone.group.Group;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,8 +46,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class ProjectDetailsActivity extends AppCompatActivity {
 

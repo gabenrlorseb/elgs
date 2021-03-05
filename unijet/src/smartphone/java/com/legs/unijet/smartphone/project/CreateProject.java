@@ -1,9 +1,8 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.project;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.smartphone.MainActivity;
+import com.legs.unijet.smartphone.Project;
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.course.Course;
 
 import java.util.ArrayList;
 

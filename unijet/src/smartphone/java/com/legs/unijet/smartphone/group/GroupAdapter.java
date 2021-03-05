@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.group;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 
 import java.util.ArrayList;
@@ -86,14 +88,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
 
     @Override
-    public com.legs.unijet.smartphone.GroupAdapter.GroupViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public GroupAdapter.GroupViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
-        com.legs.unijet.smartphone.GroupAdapter.GroupViewHolder cvh = new com.legs.unijet.smartphone.GroupAdapter.GroupViewHolder (v);
+        GroupAdapter.GroupViewHolder cvh = new GroupAdapter.GroupViewHolder (v);
         return cvh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final com.legs.unijet.smartphone.GroupAdapter.GroupViewHolder groupViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final GroupAdapter.GroupViewHolder groupViewHolder, int i) {
         final CourseSample currentItem = groupsList.get(i);
         groupViewHolder.mGroups.setText(groupsList.get(i).getText1());
         groupViewHolder.mOwners.setText(groupsList.get(i).getText2());

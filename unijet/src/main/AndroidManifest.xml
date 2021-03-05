@@ -32,11 +32,11 @@
             android:name=".MainActivity"
             android:exported="true" />
         <activity android:name=".createGroupActivity.CreateGroup" />
-        <activity android:name=".CreateCourse" />
-        <activity android:name=".CreateProject" />
-        <activity android:name=".AuthorCourseManageActivity" />
+        <activity android:name=".course.CreateCourse" />
+        <activity android:name=".project.CreateProject" />
+        <activity android:name=".courseDetailsAcitivity.AuthorCourseManageActivity" />
         <activity android:name=".EditProfile" />
-        <activity android:name=".CourseDetailsActivity" />
+        <activity android:name=".courseDetailsAcitivity.CourseDetailsActivity" />
         <activity android:name=".groupDetailsActivity.GroupActivity" />
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
         <activity android:name=".ProjectDetailsActivity" />

@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.course;
 
 public class CourseSample {
     private String mText1;

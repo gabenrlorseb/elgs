@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.courseDetailsAcitivity;
 
 
 import android.app.Activity;
@@ -22,6 +22,11 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.legs.unijet.smartphone.MainActivity;
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.User;
+import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;

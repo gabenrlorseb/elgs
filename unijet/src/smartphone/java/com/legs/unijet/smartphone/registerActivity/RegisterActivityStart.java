@@ -19,7 +19,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.legs.unijet.smartphone.BaseActivity;
-import com.legs.unijet.smartphone.CreateCourse;
 import com.legs.unijet.smartphone.MainActivity;
 import com.legs.unijet.smartphone.R;
 

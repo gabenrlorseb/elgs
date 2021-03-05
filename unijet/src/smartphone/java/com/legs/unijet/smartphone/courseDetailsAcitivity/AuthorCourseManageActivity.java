@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.courseDetailsAcitivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,11 +24,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroup;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.smartphone.createGroupActivity.MemberCheckListAdapter;
+import com.legs.unijet.smartphone.AuthorCourseManageAdapter;
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
-import com.legs.unijet.smartphone.groupDetailsActivity.AuthorGroupManageActivity;
 
 import java.util.ArrayList;
 
