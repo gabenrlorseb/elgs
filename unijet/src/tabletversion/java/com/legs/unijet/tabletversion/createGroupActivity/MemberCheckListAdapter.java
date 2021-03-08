@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.groupDetailsActivity;
+package com.legs.unijet.tabletversion.createGroupActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.smartphone.AuthorCourseManageAdapter;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupManageAdapter.ExampleViewHolder> implements Filterable {
+
+public class MemberCheckListAdapter extends RecyclerView.Adapter<MemberCheckListAdapter.ExampleViewHolder> implements Filterable {
     private ArrayList<UserChecklistSample> sampleList;
     private ArrayList<UserChecklistSample> fullSampleList;
 
@@ -33,7 +32,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
             super(itemView);
             mImageView = itemView.findViewById(R.id.member_icon);
             mTextView1 = itemView.findViewById(R.id.member_name);
-            mTextView2 = itemView.findViewById(R.id.post_content);
+            mTextView2 = itemView.findViewById(R.id.post_text);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
         }
 
@@ -43,7 +42,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
 
     }
 
-    public AuthorGroupManageAdapter(ArrayList<UserChecklistSample> exampleList) {
+    public MemberCheckListAdapter(ArrayList<UserChecklistSample> exampleList) {
         this.sampleList = exampleList;
         fullSampleList = new ArrayList<>(exampleList);
     }
@@ -91,13 +90,13 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
 
     @NonNull
     @Override
-    public AuthorGroupManageAdapter.ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_sample_layout, parent, false);
-        return new AuthorGroupManageAdapter.ExampleViewHolder(v);
+        return new ExampleViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final AuthorGroupManageAdapter.ExampleViewHolder holder, final int position) {
+    public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
         final UserChecklistSample currentItem = sampleList.get(position);
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());
@@ -113,7 +112,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
 
     }
 
-    public ArrayList<UserChecklistSample> removeCheckedUsers() {
+    public ArrayList<UserChecklistSample> getCheckedUsers() {
         ArrayList<UserChecklistSample> addedMemberList = new ArrayList<>();
         for (UserChecklistSample user : fullSampleList) {
             if (user.getChecked()){
@@ -123,7 +122,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
         return  addedMemberList;
     }
 
-    public ArrayList<String> removeCheckedMails() {
+    public ArrayList<String> getCheckedMails() {
         ArrayList<String> addedMemberList = new ArrayList<>();
         for (UserChecklistSample user : fullSampleList) {
             if (user.getChecked()){
@@ -132,6 +131,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
         }
         return addedMemberList;
     }
+
 
 
 }
