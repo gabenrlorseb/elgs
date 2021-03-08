@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.legs.unijet.smartphone.course.CourseSample;
+import com.legs.unijet.smartphone.group.GroupAdapter;
+import com.legs.unijet.smartphone.group.Group;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -130,7 +133,7 @@ public class GroupsFragment extends Fragment {
                                 //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                 String mail = group.getAuthor();
 
-                                fullSampleList.add(new CourseSample(namesString, mail));
+                                fullSampleList.add(new CourseSample (namesString, mail));
                             }
 
                         }

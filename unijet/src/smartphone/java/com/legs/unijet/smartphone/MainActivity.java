@@ -21,7 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.smartphone.course.CreateCourse;
 import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.smartphone.project.CreateProject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     loadFragment(fragment);
                     return true;
                 case R.id.courses_tab:
-                    fragment = new CoursesFragment();
+                    fragment = new CoursesFragment ();
                     loadFragment(fragment);
                     return true;
                 case R.id.groups_tab:
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         secondButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (MainActivity.this,CreateProject.class));
+                startActivity(new Intent (MainActivity.this, CreateProject.class));
             }
         });
 
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         secondButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (MainActivity.this,CreateCourse.class);
+                Intent intent = new Intent (MainActivity.this, CreateCourse.class);
                 intent.putExtra ("email", email);
                 startActivity (intent);
             }
