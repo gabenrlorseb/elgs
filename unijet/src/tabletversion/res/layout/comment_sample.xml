@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/member_icon_placeholder"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="7dp"
+            card_view:cardCornerRadius="14dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp">
+            <ImageView
+                android:id="@+id/member_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
+            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
+            card_view:layout_constraintStart_toEndOf="@id/member_icon_placeholder"
+            android:layout_marginStart="15dp"
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Placeholder Text"
+            android:textSize="@dimen/common_default_title_text_size" />
+
+        <TextView
+            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
+            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/post_time_elapsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XXX min"
+            android:textSize="@dimen/common_default_subtitle_text_size" />
+
+
+
+        <TextView
+            android:id="@+id/post_text"
+            android:layout_marginTop="7dp"
+            android:layout_marginHorizontal="11dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintStart_toStartOf="@id/member_icon_placeholder"
+            card_view:layout_constraintTop_toBottomOf="@id/member_icon_placeholder"
+            android:text="prova prova"/>
+
+        <TextView
+            android:id="@+id/likes_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textSize="@dimen/common_default_subtitle_text_size"
+            android:textStyle="bold"
+            android:layout_margin="14dp"
+            card_view:layout_constraintTop_toBottomOf="@id/post_text"
+            card_view:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            card_view:layout_constraintEnd_toStartOf="@id/likes_number"
+            card_view:layout_constraintTop_toTopOf="@id/likes_number"
+            android:src="@drawable/ic_heart"
+            card_view:layout_constraintBottom_toBottomOf="@id/likes_number"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

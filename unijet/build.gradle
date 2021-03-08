@@ -37,12 +37,12 @@ android {
     productFlavors {
         smartphone {
             dimension 'multiproduct'
-            applicationIdSuffix 'smartphone'
+            applicationIdSuffix '.smartphone'
             versionNameSuffix '-smartphone'
         }
         tabletversion {
             dimension 'multiproduct'
-            applicationIdSuffix 'tabletversion'
+            applicationIdSuffix = '.tabletversion'
             versionNameSuffix '-tablet'
         }
     }

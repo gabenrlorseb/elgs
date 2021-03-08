@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.groupDetailsActivity;
+package com.legs.unijet.tabletversion.groupDetailsActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,15 +24,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.AuthorCourseManageActivity;
-import com.legs.unijet.smartphone.Group;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroup;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.smartphone.groupDetailsActivity.AuthorGroupManageAdapter;
-import com.legs.unijet.smartphone.Course;
-import com.legs.unijet.smartphone.CourseDetailsActivity;
+import com.legs.unijet.tabletversion.AuthorCourseManageActivity;
+import com.legs.unijet.tabletversion.Group;
+import com.legs.unijet.tabletversion.createGroupActivity.CreateGroup;
+import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.tabletversion.groupDetailsActivity.AuthorGroupManageAdapter;
+import com.legs.unijet.tabletversion.Course;
+import com.legs.unijet.tabletversion.CourseDetailsActivity;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 
