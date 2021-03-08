@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.groupDetailsActivity;
+package com.legs.unijet.tabletversion.groupDetailsActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.smartphone.AuthorCourseManageAdapter;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupManageAdapter.ExampleViewHolder> implements Filterable {
+
+public class MemberNoChecklistAdapter extends RecyclerView.Adapter<MemberNoChecklistAdapter.ExampleViewHolder> implements Filterable {
     private ArrayList<UserChecklistSample> sampleList;
     private ArrayList<UserChecklistSample> fullSampleList;
 
@@ -33,17 +33,13 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
             super(itemView);
             mImageView = itemView.findViewById(R.id.member_icon);
             mTextView1 = itemView.findViewById(R.id.member_name);
-            mTextView2 = itemView.findViewById(R.id.post_content);
+            mTextView2 = itemView.findViewById(R.id.post_text);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
-        }
-
-        public interface ClickInterface {
-            public void recyclerviewOnItemClick(int position);
         }
 
     }
 
-    public AuthorGroupManageAdapter(ArrayList<UserChecklistSample> exampleList) {
+    public MemberNoChecklistAdapter(ArrayList<UserChecklistSample> exampleList) {
         this.sampleList = exampleList;
         fullSampleList = new ArrayList<>(exampleList);
     }
@@ -91,46 +87,20 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
 
     @NonNull
     @Override
-    public AuthorGroupManageAdapter.ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_sample_layout, parent, false);
-        return new AuthorGroupManageAdapter.ExampleViewHolder(v);
+        return new ExampleViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final AuthorGroupManageAdapter.ExampleViewHolder holder, final int position) {
+    public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
         final UserChecklistSample currentItem = sampleList.get(position);
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
-        holder.mCheckBox1.setChecked(currentItem.getChecked());
+        holder.mCheckBox1.setVisibility(View.GONE);
 
-        holder.mCheckBox1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentItem.setChecked(holder.mCheckBox1.isChecked());
-            }
-        });
 
-    }
-
-    public ArrayList<UserChecklistSample> removeCheckedUsers() {
-        ArrayList<UserChecklistSample> addedMemberList = new ArrayList<>();
-        for (UserChecklistSample user : fullSampleList) {
-            if (user.getChecked()){
-                addedMemberList.add(user);
-            }
-        }
-        return  addedMemberList;
-    }
-
-    public ArrayList<String> removeCheckedMails() {
-        ArrayList<String> addedMemberList = new ArrayList<>();
-        for (UserChecklistSample user : fullSampleList) {
-            if (user.getChecked()){
-                addedMemberList.add(user.getText2());
-            }
-        }
-        return addedMemberList;
     }
 
 

@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.groupDetailsActivity;
+package com.legs.unijet.tabletversion.groupDetailsActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.smartphone.AuthorCourseManageAdapter;
+import com.legs.unijet.tabletversion.AuthorCourseManageAdapter;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 import java.util.List;
