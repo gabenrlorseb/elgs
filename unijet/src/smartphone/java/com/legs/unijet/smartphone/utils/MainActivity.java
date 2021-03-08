@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.utils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CreateCourse;
 import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.smartphone.fragment.CoursesFragment;
+import com.legs.unijet.smartphone.fragment.GroupsFragment;
+import com.legs.unijet.smartphone.fragment.MyUnijetFragment;
+import com.legs.unijet.smartphone.fragment.ProjectsFragment;
 import com.legs.unijet.smartphone.project.CreateProject;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new MyUnijetFragment());
+        loadFragment(new MyUnijetFragment ());
         navigation.setSelectedItemId(R.id.myunijet_tab);
 
         /*loadFragment(new ProjectsFragment());
@@ -110,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     loadFragment(fragment);
                     return true;
                 case R.id.projects_tab:
-                    fragment = new ProjectsFragment();
+                    fragment = new ProjectsFragment ();
                     loadFragment(fragment);
                     return true;
                 case R.id.courses_tab:
@@ -118,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     loadFragment(fragment);
                     return true;
                 case R.id.groups_tab:
-                    fragment = new GroupsFragment();
+                    fragment = new GroupsFragment ();
                     loadFragment(fragment);
                     return true;
 

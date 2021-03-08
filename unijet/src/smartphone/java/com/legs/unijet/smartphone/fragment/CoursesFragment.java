@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;

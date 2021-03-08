@@ -23,9 +23,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.smartphone.courseDetailsAcitivity.AuthorCourseManageActivity;
+import com.legs.unijet.smartphone.groupDetailsActivity.AuthorGroupManageAdapter;
 import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;

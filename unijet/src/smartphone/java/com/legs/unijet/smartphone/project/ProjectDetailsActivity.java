@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.project;
 
 
 
@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.legs.unijet.smartphone.Group;
+import com.legs.unijet.smartphone.project.Project;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
@@ -38,7 +41,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.legs.unijet.smartphone.group.Group;
+import com.legs.unijet.smartphone.profile.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

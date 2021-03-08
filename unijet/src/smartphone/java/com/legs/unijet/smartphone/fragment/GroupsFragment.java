@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.legs.unijet.smartphone.course.CourseSample;
-import com.legs.unijet.smartphone.group.GroupAdapter;
-import com.legs.unijet.smartphone.group.Group;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +23,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.smartphone.Group;
+import com.legs.unijet.smartphone.group.GroupAdapter;
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
@@ -133,7 +134,7 @@ public class GroupsFragment extends Fragment {
                                 //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                 String mail = group.getAuthor();
 
-                                fullSampleList.add(new CourseSample (namesString, mail));
+                                fullSampleList.add(new CourseSample(namesString, mail));
                             }
 
                         }

@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +33,10 @@ import com.google.firebase.database.core.view.View;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.legs.unijet.smartphone.BaseActivity;
+import com.legs.unijet.smartphone.profile.EditProfile;
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.utils.GsonParser;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.post;
 
 import com.google.firebase.database.FirebaseDatabase;
 

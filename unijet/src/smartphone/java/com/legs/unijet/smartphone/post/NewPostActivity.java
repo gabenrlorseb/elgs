@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.post;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -36,6 +37,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.legs.unijet.smartphone.post.Post;
+import com.legs.unijet.smartphone.R;
 
 import org.w3c.dom.Text;
 
@@ -80,6 +83,7 @@ public class NewPostActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String reference = "posts/" + args.getString("key");
+        Log.v("Reference", reference);
         final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference(reference);
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference(reference);
 
@@ -225,7 +229,7 @@ public class NewPostActivity extends AppCompatActivity {
                             numberOfImages = Images.size();
                             for (int counter2 = 0; counter2 < Images.size(); counter2++) {
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                Images.get(counter2).compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                Images.get(counter2).compress(Bitmap.CompressFormat.JPEG, 85, baos);
                                 byte[] data = baos.toByteArray();
                                 fileDatabase2.child(uniqueId + "/pic" + counter2).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -253,6 +257,7 @@ public class NewPostActivity extends AppCompatActivity {
                                     Toast.makeText (NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show ();
                                 } else {
                                     Toast.makeText (NewPostActivity.this, "Success", Toast.LENGTH_SHORT).show ();
+                                    finish();
                                 }
                             }
                         });
@@ -265,7 +270,7 @@ public class NewPostActivity extends AppCompatActivity {
                     }
                 });
                 
-                finish();
+
             }
         });
 

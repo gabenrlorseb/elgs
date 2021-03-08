@@ -21,8 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.MainActivity;
-import com.legs.unijet.smartphone.Project;
+import com.legs.unijet.smartphone.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.Course;
 

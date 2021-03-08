@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.legs.unijet.smartphone.registerActivity.RegisterActivityStart;
+import com.legs.unijet.smartphone.utils.MainActivity;
 
 public class BaseActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword;
