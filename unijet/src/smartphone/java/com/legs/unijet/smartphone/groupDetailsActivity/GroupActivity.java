@@ -47,7 +47,7 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+ import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
  import com.legs.unijet.smartphone.Group;
  import com.legs.unijet.smartphone.post.NewPostActivity;
  import com.legs.unijet.smartphone.post.Post;

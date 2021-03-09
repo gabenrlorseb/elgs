@@ -26,7 +26,7 @@ import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CourseAdapter;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
