@@ -34,9 +34,9 @@
         <activity android:name=".createGroupActivity.CreateGroup" />
         <activity android:name=".course.CreateCourse" />
         <activity android:name=".project.CreateProject" />
-        <activity android:name=".courseDetailsAcitivity.AuthorCourseManageActivity" />
+        <activity android:name=".courseDetailsActivity.AuthorCourseManageActivity" />
         <activity android:name=".profile.EditProfile" />
-        <activity android:name=".courseDetailsAcitivity.CourseDetailsActivity" />
+        <activity android:name=".courseDetailsActivity.CourseDetailsActivity" />
         <activity android:name=".groupDetailsActivity.GroupActivity" />
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
         <activity android:name=".project.ProjectDetailsActivity" />

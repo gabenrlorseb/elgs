@@ -47,15 +47,15 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.tabletversion.CourseDetailsActivity;
- import com.legs.unijet.tabletversion.Group;
- import com.legs.unijet.tabletversion.NewPostActivity;
- import com.legs.unijet.tabletversion.Post;
- import com.legs.unijet.tabletversion.PostAdapter;
- import com.legs.unijet.tabletversion.PostSample;
- import com.legs.unijet.tabletversion.MainActivity;
+ import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+ import com.legs.unijet.tabletversion.group.Group;
+ import com.legs.unijet.tabletversion.post.NewPostActivity;
+ import com.legs.unijet.tabletversion.post.Post;
+ import com.legs.unijet.tabletversion.post.PostAdapter;
+ import com.legs.unijet.tabletversion.post.PostSample;
+ import com.legs.unijet.tabletversion.utils.MainActivity;
  import com.legs.unijet.smartphone.R;
- import com.legs.unijet.tabletversion.User;
+ import com.legs.unijet.tabletversion.profile.User;
 
  import java.io.ByteArrayOutputStream;
  import java.io.File;
@@ -111,8 +111,6 @@
 
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        fetchedPosts = new ArrayList<>();
-
 
         database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -163,6 +161,7 @@
 
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    fetchedPosts = new ArrayList<>();
                                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                                         final Post newPost = postSnapshot.getValue(Post.class);
 
@@ -200,7 +199,7 @@
                                         if (numberOfDocs != 0) {
                                             hasDocuments = true;
                                             for (int i = 0; i < numberOfDocs; i++) {
-                                                final ArrayList<Uri> newArrayList = null;
+                                                final ArrayList<Uri> newArrayList = new ArrayList<>();
                                                 reference1.child(groupUID + "/" + PostID + "document" + numberOfDocs).getFile(newArrayList.get(numberOfDocs)).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                                     @Override
                                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -275,8 +274,6 @@
                                                     database.child("comments").orderByKey().equalTo(newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                                                             numberOfComments[0] = (int) snapshot.getChildrenCount();
                                                         }
 

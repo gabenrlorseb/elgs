@@ -1,4 +1,4 @@
-package com.legs.unijet.tabletversion.groupDetailsActivity;
+package com.legs.unijet.smartphone.courseDetailsActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,20 +24,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.tabletversion.courseDetailsActivity.AuthorCourseManageActivity;
-import com.legs.unijet.tabletversion.group.Group;
-import com.legs.unijet.tabletversion.course.Course;
-import com.legs.unijet.tabletversion.createGroupActivity.CreateGroup;
-import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.tabletversion.groupDetailsActivity.AuthorGroupManageAdapter;
-import com.legs.unijet.tabletversion.course.Course;
-import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.smartphone.course.Course;
+import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 
-public class AuthorGroupManageActivity extends AppCompatActivity {
+public class AuthorCourseManageActivity extends AppCompatActivity {
+
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
@@ -49,7 +43,7 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
     final StringBuilder membersEmailList = new StringBuilder();
 
     RecyclerView mRecyclerView;
-    private AuthorGroupManageAdapter mAdapter;
+    private AuthorCourseManageAdapter mAdapter;
 
     EditText searchEditText;
 
@@ -62,7 +56,7 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
         Toolbar actionBar = findViewById(R.id.toolbar);
         actionBar.setTitle("Members");
 
-        Bundle args = getIntent().getExtras();
+        final Bundle args = getIntent().getExtras();
 
         passed_names =  (ArrayList<String>) args.getSerializable("groupRecipients");
         authorName = args.getString("author_name");
@@ -109,51 +103,49 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
             }
         });
-        mRecyclerView = findViewById(R.id.possible_members_list);
+        Button fab = findViewById(R.id.remove_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.child("courses").orderByChild("name").equalTo(args.getString("name")).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            final String courseUID = childSnapshot.getKey();
+                            Course course;
+                            course = childSnapshot.getValue(Course.class);
+                            ArrayList<String> courseSubscribers = course.getMembers();
+                            //fab.setVisibility(View.GONE);
+                            //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
+                            //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
 
-db.child("groups").addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            Button fab = findViewById(R.id.remove_button);
-            Group group;
-            group = childSnapshot.getValue(Group.class);
-            final ArrayList<String> groupSubscribers = group.getRecipients();
-            //fab.setVisibility(View.GONE);
-            //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
-            //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
+                            mRecyclerView = findViewById(R.id.possible_members_list);
+                            if (mAdapter.getCheckedUsers().isEmpty()) {
+                                Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
+                            } else {
+                                ArrayList<String> removeMail = mAdapter.getCheckedMails();
+                                for (String string: removeMail) {
+                                    courseSubscribers.remove(string);
 
+                                db.child("courses").child(courseUID).child("members").setValue(courseSubscribers);
+                                Intent i = new Intent(AuthorCourseManageActivity.this, CourseDetailsActivity.class);
+                                startActivity(i);
+                                //finish();
+                                }
+                            }
+                        }
 
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mAdapter.removeCheckedUsers().isEmpty()) {
-                        Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
-                    } else {
-                        ArrayList<UserChecklistSample> addedMembersSendList;
-                        addedMembersSendList = mAdapter.removeCheckedUsers();
-
-                        ArrayList<String> membersMails;
-                        membersMails = mAdapter.removeCheckedMails();
-
-                        groupSubscribers.remove(membersMails);
-
-                        Intent i = new Intent(AuthorGroupManageActivity.this, CourseDetailsActivity.class);
-                        startActivity(i);
-                        finish();
                     }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                }
+                    }
+                });
 
-            });
-        }
-    }
+            }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
+        });
 
-    }
-});
 
 
     /* private ArrayList<String> getNamesToBeAdded() {
@@ -161,6 +153,10 @@ db.child("groups").addValueEventListener(new ValueEventListener() {
 
         return uuidList;
     }*/
+    }
+
+    private void removeMembers(){
+
     }
 
     private void populateList() {
@@ -184,6 +180,8 @@ db.child("groups").addValueEventListener(new ValueEventListener() {
                 buildRecyclerView();
             }
 
+
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -195,9 +193,11 @@ db.child("groups").addValueEventListener(new ValueEventListener() {
         mRecyclerView = findViewById(R.id.possible_members_list);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new AuthorGroupManageAdapter(names);
+        mAdapter = new AuthorCourseManageAdapter(names);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 
+
 }
+

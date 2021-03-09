@@ -21,6 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.legs.unijet.tabletversion.registerActivity.RegisterActivityStart;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 
 
 public class BaseActivity extends AppCompatActivity {
