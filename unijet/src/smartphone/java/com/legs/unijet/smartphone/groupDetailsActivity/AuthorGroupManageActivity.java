@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +24,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.smartphone.courseDetailsAcitivity.AuthorCourseManageActivity;
+import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.createGroupActivity.CreateGroup;
+import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.smartphone.groupDetailsActivity.AuthorGroupManageAdapter;
+import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
@@ -102,23 +109,52 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
             }
         });
-
-        Button fab = findViewById(R.id.remove_button);
-        //fab.setVisibility(View.GONE);
-        //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
-        //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
-
         mRecyclerView = findViewById(R.id.possible_members_list);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(AuthorGroupManageActivity.this, CourseDetailsActivity.class);
-                startActivity(i);
-                finish();
-            }
+db.child("groups").addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+            Button fab = findViewById(R.id.remove_button);
+            Group group;
+            group = childSnapshot.getValue(Group.class);
+            final ArrayList<String> groupSubscribers = group.getRecipients();
+            //fab.setVisibility(View.GONE);
+            //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
+            //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
 
-        });
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mAdapter.removeCheckedUsers().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
+                    } else {
+                        ArrayList<UserChecklistSample> addedMembersSendList;
+                        addedMembersSendList = mAdapter.removeCheckedUsers();
+
+                        ArrayList<String> membersMails;
+                        membersMails = mAdapter.removeCheckedMails();
+
+                        groupSubscribers.remove(membersMails);
+
+                        Intent i = new Intent(AuthorGroupManageActivity.this, CourseDetailsActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+
+                }
+
+            });
+        }
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError error) {
+
+    }
+});
+
 
     /* private ArrayList<String> getNamesToBeAdded() {
         ArrayList<String> uuidList;

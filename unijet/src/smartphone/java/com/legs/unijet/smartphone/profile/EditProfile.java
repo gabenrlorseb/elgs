@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.profile;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -31,6 +31,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.utils.GsonParser;
 
 import java.io.ByteArrayOutputStream;

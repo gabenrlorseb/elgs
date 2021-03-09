@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.smartphone.BaseActivity;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.User;
+import com.legs.unijet.smartphone.profile.User;
 
 import java.text.DateFormat;
 import java.util.Calendar;

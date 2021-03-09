@@ -1,8 +1,10 @@
  package com.legs.unijet.smartphone.groupDetailsActivity;
 
  import android.app.Activity;
+ import android.app.AlertDialog;
  import android.content.ActivityNotFoundException;
  import android.content.Context;
+ import android.content.DialogInterface;
  import android.content.Intent;
  import android.graphics.Bitmap;
  import android.graphics.BitmapFactory;
@@ -18,11 +20,13 @@
  import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
+ import android.widget.LinearLayout;
  import android.widget.RelativeLayout;
  import android.widget.TextView;
  import android.widget.Toast;
 
  import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
  import androidx.appcompat.app.AppCompatActivity;
  import androidx.recyclerview.widget.LinearLayoutManager;
  import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +37,7 @@
  import com.google.android.material.floatingactionbutton.FloatingActionButton;
  import com.google.firebase.auth.FirebaseAuth;
  import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.database.ChildEventListener;
  import com.google.firebase.database.DataSnapshot;
  import com.google.firebase.database.DatabaseError;
  import com.google.firebase.database.DatabaseReference;
@@ -42,14 +47,15 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.smartphone.group.Group;
- import com.legs.unijet.smartphone.NewPostActivity;
- import com.legs.unijet.smartphone.Post;
- import com.legs.unijet.smartphone.PostAdapter;
- import com.legs.unijet.smartphone.PostSample;
- import com.legs.unijet.smartphone.MainActivity;
+ import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+ import com.legs.unijet.smartphone.Group;
+ import com.legs.unijet.smartphone.post.NewPostActivity;
+ import com.legs.unijet.smartphone.post.Post;
+ import com.legs.unijet.smartphone.post.PostAdapter;
+ import com.legs.unijet.smartphone.post.PostSample;
+ import com.legs.unijet.smartphone.utils.MainActivity;
  import com.legs.unijet.smartphone.R;
- import com.legs.unijet.smartphone.User;
+ import com.legs.unijet.smartphone.profile.User;
 
  import java.io.ByteArrayOutputStream;
  import java.io.File;
@@ -58,6 +64,7 @@
  import java.io.FileOutputStream;
  import java.io.IOException;
  import java.util.ArrayList;
+ import java.util.Objects;
 
  public class  GroupActivity extends AppCompatActivity {
 

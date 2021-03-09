@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    card_view:cardCornerRadius="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/button_with_stroke"
+        android:elevation="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/member_icon_placeholder"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="7dp"
+            card_view:cardCornerRadius="14dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp">
+            <ImageView
+                android:id="@+id/member_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
+            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
+            card_view:layout_constraintStart_toEndOf="@id/member_icon_placeholder"
+            android:layout_marginStart="15dp"
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Placeholder Text"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_default_title_text_size" />
+
+
+        <HorizontalScrollView
+            android:id="@+id/post_images"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="14dp"
+            card_view:layout_constraintStart_toStartOf="@id/member_icon_placeholder"
+            card_view:layout_constraintTop_toBottomOf="@id/post_text"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHeight_max="300dp">
+
+        <LinearLayout
+            android:layout_margin="11dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_cubes"
+            android:elevation="3dp"/>
+
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/documents_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:layout_constraintTop_toBottomOf="@+id/post_images"
+            card_view:layout_constraintStart_toStartOf="@id/post_images"
+            card_view:layout_constraintEnd_toEndOf="@id/post_images">
+
+        </LinearLayout>
+
+
+        <TextView
+            android:textSize="29sp"
+            android:id="@+id/post_text"
+            android:layout_marginTop="7dp"
+            android:layout_marginHorizontal="11dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintStart_toStartOf="@id/member_icon_placeholder"
+            card_view:layout_constraintTop_toBottomOf="@id/member_icon_placeholder"
+            android:text="prova prova"/>
+
+        <TextView
+            android:id="@+id/comments_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="14dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_default_subtitle_text_size"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/documents_area"
+            android:text="9"/>
+
+        <ImageView
+            android:id="@+id/comments_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            card_view:layout_constraintEnd_toStartOf="@id/comments_number"
+            card_view:layout_constraintTop_toTopOf="@id/comments_number"
+            android:src="@drawable/ic_comment"
+            card_view:layout_constraintBottom_toBottomOf="@id/comments_number"/>
+
+        <TextView
+            android:id="@+id/likes_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_default_subtitle_text_size"
+            card_view:layout_constraintEnd_toStartOf="@id/comments_image"
+            card_view:layout_constraintTop_toTopOf="@id/comments_image"
+            android:text="9"/>
+
+        <TextView
+            android:id="@+id/date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_default_subtitle_text_size"
+            card_view:layout_constraintStart_toStartOf="@id/post_text"
+            card_view:layout_constraintTop_toTopOf="@id/comments_image"
+            android:text="12/12/2012 19:38"/>
+
+        <ImageView
+            android:id="@+id/like_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            card_view:layout_constraintEnd_toStartOf="@id/likes_number"
+            card_view:layout_constraintTop_toTopOf="@id/likes_number"
+            android:src="@drawable/ic_heart"
+            card_view:layout_constraintBottom_toBottomOf="@id/likes_number"/>
+
+        <EditText
+            android:id="@+id/comment_compose_box"
+            android:elevation="3dp"
+            android:hint="@string/write_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            card_view:layout_constraintTop_toBottomOf="@id/comments_image"
+            card_view:layout_constraintBottom_toTopOf="@id/comment_send_button"
+            android:clickable="false"
+            android:focusable="false"
+            android:inputType="none"/>
+        
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_paper_plane"
+            card_view:backgroundTint="@color/colorPrimaryDark"
+            card_view:tint="#FFFFFF"
+            android:visibility="visible"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/comment_send_button"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/comment_compose_box"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

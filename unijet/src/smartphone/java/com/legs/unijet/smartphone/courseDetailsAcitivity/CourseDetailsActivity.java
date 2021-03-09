@@ -23,9 +23,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.legs.unijet.smartphone.MainActivity;
+import com.legs.unijet.smartphone.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.User;
+import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 

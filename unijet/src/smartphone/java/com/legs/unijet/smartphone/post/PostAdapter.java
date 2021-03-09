@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.post;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.legs.unijet.smartphone.post.PostSample;
+import com.legs.unijet.smartphone.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

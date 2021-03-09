@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.smartphone.AuthorCourseManageAdapter;
+import com.legs.unijet.smartphone.courseDetailsAcitivity.AuthorCourseManageAdapter;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
@@ -117,7 +117,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
         ArrayList<UserChecklistSample> addedMemberList = new ArrayList<>();
         for (UserChecklistSample user : fullSampleList) {
             if (user.getChecked()){
-                addedMemberList.remove(user);
+                addedMemberList.add(user);
             }
         }
         return  addedMemberList;
@@ -127,12 +127,11 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
         ArrayList<String> addedMemberList = new ArrayList<>();
         for (UserChecklistSample user : fullSampleList) {
             if (user.getChecked()){
-                addedMemberList.remove(user.getText2());
+                addedMemberList.add(user.getText2());
             }
         }
         return addedMemberList;
     }
-
 
 
 }

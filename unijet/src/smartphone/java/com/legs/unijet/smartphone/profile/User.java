@@ -1,9 +1,16 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.smartphone.profile;
 
 import java.util.Objects;
 
 public class User   {
-    String name,surname,ID,department,universityCampus,gender,dateBorn,email;
+    public String name;
+    public String surname;
+    String ID;
+    String department;
+    String universityCampus;
+    String gender;
+    String dateBorn;
+    String email;
 
     //User sb;
 

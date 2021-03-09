@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.group;
+package com.legs.unijet.smartphone;
 
 import java.util.ArrayList;
 

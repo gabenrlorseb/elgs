@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.User;
+import com.legs.unijet.smartphone.profile.User;
 
 import java.util.ArrayList;
 
