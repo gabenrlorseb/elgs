@@ -29,19 +29,19 @@
         <activity android:name=".registerActivity.RegStudentActivity" />
         <activity android:name=".registerActivity.RegProfActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".utils.MainActivity"
             android:exported="true" />
         <activity android:name=".createGroupActivity.CreateGroup" />
-        <activity android:name=".CreateCourse" />
-        <activity android:name=".CreateProject" />
-        <activity android:name=".AuthorCourseManageActivity" />
-        <activity android:name=".EditProfile" />
-        <activity android:name=".CourseDetailsActivity" />
+        <activity android:name=".course.CreateCourse" />
+        <activity android:name=".project.CreateProject" />
+        <activity android:name=".courseDetailsAcitivity.AuthorCourseManageActivity" />
+        <activity android:name=".profile.EditProfile" />
+        <activity android:name=".courseDetailsAcitivity.CourseDetailsActivity" />
         <activity android:name=".groupDetailsActivity.GroupActivity" />
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
-        <activity android:name=".ProjectDetailsActivity" />
+        <activity android:name=".project.ProjectDetailsActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
-        <activity android:name=".NewPostActivity" />
+        <activity android:name=".post.NewPostActivity" />
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>
 
         <meta-data
@@ -50,3 +50,4 @@
     </application>
 
 </manifest>
+
