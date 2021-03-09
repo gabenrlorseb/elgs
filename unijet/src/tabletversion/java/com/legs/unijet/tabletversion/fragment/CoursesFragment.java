@@ -1,19 +1,24 @@
-package com.legs.unijet.smartphone.fragment;
+package com.legs.unijet.tabletversion.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,12 +27,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.tabletversion.course.Course;
+import com.legs.unijet.tabletversion.course.CourseAdapter;
+import com.legs.unijet.tabletversion.course.CourseSample;
+import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.tabletversion.createGroupActivity.MemberCheckListAdapter;
+import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.course.CourseAdapter;
-import com.legs.unijet.smartphone.course.CourseSample;
-import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
-import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
@@ -193,7 +201,7 @@ private void fragmentStudent(){
         mRecyclerView = getView().findViewById(R.id.courses_list);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getContext());
-        mAdapter = new CourseAdapter (courseList);
+        mAdapter = new CourseAdapter(courseList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(

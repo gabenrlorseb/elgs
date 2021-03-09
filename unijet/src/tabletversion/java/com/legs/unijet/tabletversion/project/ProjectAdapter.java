@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.course;
+package com.legs.unijet.tabletversion.project;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -28,51 +28,42 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.smartphone.createGroupActivity.MemberCheckListAdapter;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
-import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> implements Filterable {
-    private ArrayList<CourseSample> coursesList;
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> implements Filterable {
+    private ArrayList<ProjectSample> projectList;
+
     Bundle bundle;
     Intent intent;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private Context context;
 
 
-    public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        public TextView mCourses;
-        public TextView mProfessors;
+    public static class ProjectViewHolder extends RecyclerView.ViewHolder {
+        public TextView mNameProjects;
+        public TextView mTitle;
 
 
 
 
-        public CourseViewHolder(View itemView) {
+
+        public ProjectViewHolder(View itemView) {
             super(itemView);
-            mCourses = itemView.findViewById(R.id.course_name);
-            mProfessors = itemView.findViewById(R.id.course_professor);
+            mNameProjects = itemView.findViewById(R.id.project_name);
+            mTitle = itemView.findViewById(R.id.project_subtitle);
         }
     }
 
-    public CourseAdapter(ArrayList<CourseSample> coursesList){
-        this.coursesList = coursesList;
+    public ProjectAdapter(ArrayList<ProjectSample> projectList){
+        this.projectList = projectList;
     }
 
 
-
-    @Override
-    public int getItemCount() {
-        return coursesList.size();
-    }
-
-    @Override
     public Filter getFilter() {
         return mFilter;
     }
@@ -80,13 +71,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<CourseSample> filteredList = new ArrayList<>();
+            List<ProjectSample> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 filteredList.clear();
-                filteredList.addAll(coursesList);
+                filteredList.addAll(projectList);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (CourseSample item : coursesList) {
+                for (ProjectSample item : projectList) {
                     if (item.getText1().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -100,8 +91,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            coursesList.clear();
-            coursesList.addAll((List)results.values);
+            projectList.clear();
+            projectList.addAll((List)results.values);
             notifyDataSetChanged();
         }
     };
@@ -110,38 +101,48 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
 
     @Override
-    public CourseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
-        CourseViewHolder svh = new CourseViewHolder(v);
-        return svh;
+    public ProjectViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.project_list_card, viewGroup, false);
+        ProjectViewHolder cvh = new ProjectViewHolder(v);
+        return cvh;
     }
+
+    @Override
+    public int getItemCount() {
+        return projectList.size();
+    }
+
 
 
     @Override
-    public void onBindViewHolder(@NonNull final CourseViewHolder courseViewHolder, int i) {
-        final CourseSample currentItem = coursesList.get(i);
-        courseViewHolder.mCourses.setText(coursesList.get(i).getText1());
-        courseViewHolder.mProfessors.setText(coursesList.get(i).getText2());
+    public void onBindViewHolder(@NonNull final ProjectViewHolder projectViewHolder, int i) {
 
-        courseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        projectViewHolder.mNameProjects.setText(projectList.get(i).getText1());
+        projectViewHolder.mTitle.setText(projectList.get(i).getText2());
+        projectViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
-                i.putExtra("CName", courseViewHolder.mCourses.getText());
-                i.putExtra("professor", courseViewHolder.mProfessors.getText());
-                view.getContext().startActivity(i);
+            public void onClick(View v) {
+
+                        Intent i = new Intent (v.getContext(), ProjectDetailsActivity.class);
+                        i.putExtra("PName", projectViewHolder.mNameProjects.getText());
+                        i.putExtra("group", projectViewHolder.mTitle.getText());
+                        v.getContext().startActivity(i);
+
             }
         });
-
     }
+
+
+
+
 
 
     public String returnTitle (int position) {
-        return coursesList.get(position).getText1();
+        return projectList.get(position).getText1();
     }
 
-    public String returnProfessor (int position) {
-        return coursesList.get(position).getText2();
+    public String returnGroup (int position) {
+        return projectList.get(position).getText2();
     }
 
     @Override

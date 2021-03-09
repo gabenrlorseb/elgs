@@ -23,10 +23,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.tabletversion.Group;
-import com.legs.unijet.tabletversion.MainActivity;
+import com.legs.unijet.tabletversion.group.Group;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.tabletversion.User;
+import com.legs.unijet.tabletversion.profile.User;
 
 import java.util.ArrayList;
 
