@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.project.ProjectAdapter;
 import com.legs.unijet.tabletversion.project.ProjectDetailsActivity;
@@ -59,7 +61,7 @@ EditText searchEditText;
 
         searchEditText = (EditText) view.findViewById(R.id.projects_search_edit_text);
 
-        item.setOnClickListener(new View.OnClickListener() {
+        /*item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchEditText.setVisibility(View.VISIBLE);
@@ -81,7 +83,7 @@ EditText searchEditText;
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });
+        });*/
 
         return view;
 
@@ -122,10 +124,13 @@ EditText searchEditText;
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), ProjectDetailsActivity.class);
-                        i.putExtra("PName", mAdapter.returnTitle(position));
-                        i.putExtra("group", mAdapter.returnGroup(position));
-                        view.getContext().startActivity(i);
+                        Bundle bundle = new Bundle();
+                        Fragment fragment;
+                        fragment = new ProjectDetailsActivity();
+                        bundle.putString("PName", mAdapter.returnTitle(position));
+                        bundle.putString("group", mAdapter.returnGroup(position));
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
                     }
 
                     @Override
@@ -135,6 +140,14 @@ EditText searchEditText;
 
                 })
         );
+    }
+
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
 

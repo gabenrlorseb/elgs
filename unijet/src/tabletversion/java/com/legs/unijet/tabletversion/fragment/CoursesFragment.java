@@ -1,24 +1,21 @@
 package com.legs.unijet.tabletversion.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,15 +24,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.tabletversion.course.Course;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.course.CourseAdapter;
 import com.legs.unijet.tabletversion.course.CourseSample;
+import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
-import com.legs.unijet.tabletversion.createGroupActivity.MemberCheckListAdapter;
-import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
-import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
-import com.legs.unijet.smartphone.R;
 
 
 import java.util.ArrayList;
@@ -53,7 +47,7 @@ public class CoursesFragment extends Fragment {
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-
+static boolean isSinglePane;
     RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
 
@@ -70,7 +64,7 @@ public class CoursesFragment extends Fragment {
         populateList();
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
-        searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
+        /*searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +88,7 @@ public class CoursesFragment extends Fragment {
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });
+        });*/
 
         return view;
 
@@ -109,14 +103,14 @@ public class CoursesFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                String name = childSnapshot.child("name").getValue(String.class);
-                                String department = childSnapshot.child("department").getValue(String.class);
-                                String academicYear=  childSnapshot.child("academicYear").getValue(String.class);
-                                String email = childSnapshot.child("email").getValue(String.class);
-                                courses.add(new Course (name, academicYear, department, email, members));
-                                //courseList.add(new CourseSample(namesString, mail));
-                            }
-buildRecyclerView();
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String department = childSnapshot.child("department").getValue(String.class);
+                    String academicYear = childSnapshot.child("academicYear").getValue(String.class);
+                    String email = childSnapshot.child("email").getValue(String.class);
+                    courses.add(new Course(name, academicYear, department, email, members));
+                    //courseList.add(new CourseSample(namesString, mail));
+                }
+                buildRecyclerView();
             }
 
             @Override
@@ -124,93 +118,99 @@ buildRecyclerView();
 
             }
         });
-        if (user.getEmail().contains("@studenti.uniba.it")){
-        fragmentStudent();
-        } else if (user.getEmail().contains("@uniba.it")){
-        fragmentProfessor();
+        if (user.getEmail().contains("@studenti.uniba.it")) {
+            fragmentStudent();
+        } else if (user.getEmail().contains("@uniba.it")) {
+            fragmentProfessor();
         }
 
 
-        }
+    }
 
 
-private void fragmentProfessor(){
-    courseList = new ArrayList();
-    db.child("teachers").addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            courseList.clear();
-            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+    private void fragmentProfessor() {
+        courseList = new ArrayList();
+        db.child("teachers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                courseList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
 
-                if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                    for (Course course : courses) {
-                        if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
-                                || user.getEmail().equals(course.getEmail())) {
-                            String namesString = course.getName();
-                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
-                            String mail = course.getEmail();
+                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        for (Course course : courses) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
+                                    || user.getEmail().equals(course.getEmail())) {
+                                String namesString = course.getName();
+                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                                String mail = course.getEmail();
 
-                            courseList.add(new CourseSample(namesString, mail));
+                                courseList.add(new CourseSample(namesString, mail));
+                            }
+
                         }
-
                     }
+                    buildRecyclerView();
                 }
-                buildRecyclerView();
             }
-        }
-        @Override
-        public void onCancelled (@NonNull DatabaseError error){
 
-        }
-    });
-}
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-private void fragmentStudent(){
-    courseList = new ArrayList();
-    db.child("students").addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            courseList.clear();
-            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+            }
+        });
+    }
 
-                if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                    for (Course course : courses) {
-                        if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
-                            String namesString = course.getName();
-                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
-                            String mail = course.getEmail();
+    private void fragmentStudent() {
+        courseList = new ArrayList();
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                courseList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
 
-                            courseList.add(new CourseSample(namesString, mail));
+                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        for (Course course : courses) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
+                                String namesString = course.getName();
+                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                                String mail = course.getEmail();
+
+                                courseList.add(new CourseSample(namesString, mail));
+                            }
+
                         }
-
                     }
+                    buildRecyclerView();
                 }
-                buildRecyclerView();
             }
-        }
-        @Override
-        public void onCancelled (@NonNull DatabaseError error){
 
-        }
-    });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-}
+            }
+        });
+
+    }
 
 
     private void buildRecyclerView() {
         mRecyclerView = getView().findViewById(R.id.courses_list);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new CourseAdapter(courseList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
-                        i.putExtra("CName", mAdapter.returnTitle(position));
-                        i.putExtra("professor", mAdapter.returnProfessor(position));
-                        view.getContext().startActivity(i);
+                new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Bundle bundle = new Bundle();
+                        Fragment fragment;
+                        fragment = new CourseDetailsActivity();
+                        bundle.putString("CName", mAdapter.returnTitle(position));
+                        bundle.putString("professor", mAdapter.returnProfessor(position));
+                        fragment.setArguments(bundle);
+                        loadFragment(fragment);
                     }
 
                     @Override
@@ -219,14 +219,27 @@ private void fragmentStudent(){
                     }
 
                 })
+
+
         );
     }
 
 
+    private void loadFragment(Fragment fragment) {
 
-
-
-
+if (isSinglePane){
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+else{
+    getChildFragmentManager().findFragmentById(R.id.detail_fragment);
+}
+    }
 
 }
+
+
+
 
