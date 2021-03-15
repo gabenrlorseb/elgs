@@ -36,10 +36,7 @@
         <activity android:name=".project.CreateProject" />
         <activity android:name=".courseDetailsActivity.AuthorCourseManageActivity" />
         <activity android:name=".profile.EditProfile" />
-        <activity android:name=".courseDetailsActivity.CourseDetailsActivity" />
-        <activity android:name=".groupDetailsActivity.GroupActivity" />
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
-        <activity android:name=".project.ProjectDetailsActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
         <activity android:name=".post.NewPostActivity" />
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>

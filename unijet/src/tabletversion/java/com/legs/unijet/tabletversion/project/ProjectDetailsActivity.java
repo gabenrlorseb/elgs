@@ -13,7 +13,9 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import com.legs.unijet.tabletversion.groupDetailsActivity.MembersDetailsActivity
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +55,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ProjectDetailsActivity extends AppCompatActivity {
+public class ProjectDetailsActivity extends Fragment {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -67,14 +70,18 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate (Bundle savedInstance) {
+    public void onCreate (Bundle savedInstance) {
 
         super.onCreate(savedInstance);
-        setContentView(R.layout.collapsing_toolbar_layout_sample);
+    }
 
-        final Bundle args = getIntent().getExtras();
+    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                          Bundle savedInstanceState) {
+        final android.view.View view = inflater.inflate(R.layout.collapsing_toolbar_layout_sample, container, false);
+        final Bundle args = this.getArguments();
 
-        final ImageView groupPic = findViewById(R.id.header);
+
+        final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
 
         final int[] NumberOfMembers = new int[1];
 
@@ -122,7 +129,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                                             User user;
                                             user = childSnapshot.getValue(User.class);
                                             groupAuthorName[0] = user.getName() + " " + user.getSurname();
-                                            TextView groupIndication = findViewById(R.id.toolbar_subtitle);
+                                            TextView groupIndication = (TextView) view.findViewById(R.id.toolbar_subtitle);
                                             groupIndication.setText(groupName[0]);
                                             groupIndication.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -131,7 +138,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                                                     Bundle b = new Bundle();
                                                     b.putSerializable("groupRecipients", group.getRecipients());
 
-                                                    Intent intent = new Intent(ProjectDetailsActivity.this, MembersDetailsActivity.class);
+                                                    Intent intent = new Intent(getActivity(), MembersDetailsActivity.class);
                                                     intent.putExtras(b);
                                                     if (!isAuthor) {
                                                         intent.putExtra("author", group.getAuthor());
@@ -163,7 +170,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                     });
 
 
-                    CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+                    CollapsingToolbarLayout collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(project.getName());
 
 
@@ -180,7 +187,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
         final StorageReference fileRef = storageReference.child(projectUID + ".jpg");
 
-        File cachedProPic = getBaseContext().getFilesDir();
+        File cachedProPic = getActivity().getBaseContext().getFilesDir();
         final File f = new File(cachedProPic, projectUID + ".jpg");
         FileInputStream fis = null;
         try {
@@ -191,7 +198,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (fis != null) {
-            ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
                 Log.v("AVVISO", "File has been found in cache");
@@ -214,7 +221,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.v("AVVISO", "File could not be fetched from database");
-                        Toast.makeText(ProjectDetailsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
@@ -233,7 +240,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton setProPicFab = findViewById(R.id.common_fab);
+        FloatingActionButton setProPicFab = view.findViewById(R.id.common_fab);
         setProPicFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,11 +251,11 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                         "Select Picture"), SELECT_PICTURE);
             }
         });
-
+return view;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
@@ -290,7 +297,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         catch (ActivityNotFoundException e) {
             // display an error message
             String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -310,10 +317,10 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         fileRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(ProjectDetailsActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
-                headerProPic = findViewById(R.id.header);
+                Toast.makeText(getContext(), getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
+                headerProPic = (ImageView) getActivity().findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
-                final File f = new File(getBaseContext().getFilesDir(), projectUID + "jpg");
+                final File f = new File(getActivity().getBaseContext().getFilesDir(), projectUID + "jpg");
                 FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(f);
@@ -327,7 +334,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ProjectDetailsActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
             }
         });
 
