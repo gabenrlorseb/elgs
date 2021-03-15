@@ -3,9 +3,9 @@ package com.legs.unijet.tabletversion.createGroupActivity;
 import java.io.Serializable;
 
 public class UserChecklistSample implements Serializable {
-    private int mImageResource;
-    private String mText1;
-    private String mailText;
+    private final int mImageResource;
+    private final String mText1;
+    private final String mailText;
     private Boolean isChecked;
 
 

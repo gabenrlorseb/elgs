@@ -23,9 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.course.CourseAdapter;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
@@ -46,7 +47,7 @@ public class CoursesFragment extends Fragment {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
     RecyclerView mRecyclerView;
-    private Course.CourseAdapter mAdapter;
+    private CourseAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -192,7 +193,7 @@ private void fragmentStudent(){
         mRecyclerView = getView().findViewById(R.id.courses_list);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getContext());
-        mAdapter = new Course.CourseAdapter (courseList);
+        mAdapter = new CourseAdapter (courseList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(

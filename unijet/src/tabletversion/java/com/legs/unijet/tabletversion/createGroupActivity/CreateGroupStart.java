@@ -24,9 +24,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.tabletversion.Course;
+import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.tabletversion.User;
+import com.legs.unijet.tabletversion.profile.User;
 
 import java.util.ArrayList;
 

@@ -24,13 +24,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.tabletversion.AuthorCourseManageActivity;
-import com.legs.unijet.tabletversion.Group;
+import com.legs.unijet.tabletversion.courseDetailsActivity.AuthorCourseManageActivity;
+import com.legs.unijet.tabletversion.group.Group;
+import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.createGroupActivity.CreateGroup;
 import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
 import com.legs.unijet.tabletversion.groupDetailsActivity.AuthorGroupManageAdapter;
-import com.legs.unijet.tabletversion.Course;
-import com.legs.unijet.tabletversion.CourseDetailsActivity;
+import com.legs.unijet.tabletversion.course.Course;
+import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
 

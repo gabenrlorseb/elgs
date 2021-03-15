@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.courseDetailsAcitivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
 import com.legs.unijet.smartphone.createGroupActivity.MemberCheckListAdapter;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
@@ -61,7 +61,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 
-    CourseAdapter( ArrayList<CourseSample> coursesList){
+    public CourseAdapter(ArrayList<CourseSample> coursesList){
         this.coursesList = coursesList;
     }
 

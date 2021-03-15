@@ -19,8 +19,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.legs.unijet.tabletversion.BaseActivity;
-import com.legs.unijet.tabletversion.CreateCourse;
-import com.legs.unijet.tabletversion.MainActivity;
 import com.legs.unijet.smartphone.R;
 
 public class RegisterActivityStart extends AppCompatActivity {

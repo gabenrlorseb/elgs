@@ -14,9 +14,11 @@
  import android.net.Uri;
  import android.os.Bundle;
  import android.util.Log;
+ import android.view.LayoutInflater;
  import android.view.MenuInflater;
  import android.view.MenuItem;
  import android.view.View;
+ import android.view.ViewGroup;
  import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
@@ -28,6 +30,7 @@
  import androidx.annotation.NonNull;
  import androidx.annotation.Nullable;
  import androidx.appcompat.app.AppCompatActivity;
+ import androidx.fragment.app.Fragment;
  import androidx.recyclerview.widget.LinearLayoutManager;
  import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,15 +50,15 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.tabletversion.CourseDetailsActivity;
- import com.legs.unijet.tabletversion.Group;
- import com.legs.unijet.tabletversion.NewPostActivity;
- import com.legs.unijet.tabletversion.Post;
- import com.legs.unijet.tabletversion.PostAdapter;
- import com.legs.unijet.tabletversion.PostSample;
- import com.legs.unijet.tabletversion.MainActivity;
+ import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+ import com.legs.unijet.tabletversion.group.Group;
+ import com.legs.unijet.tabletversion.post.NewPostActivity;
+ import com.legs.unijet.tabletversion.post.Post;
+ import com.legs.unijet.tabletversion.post.PostAdapter;
+ import com.legs.unijet.tabletversion.post.PostSample;
+ import com.legs.unijet.tabletversion.utils.MainActivity;
  import com.legs.unijet.smartphone.R;
- import com.legs.unijet.tabletversion.User;
+ import com.legs.unijet.tabletversion.profile.User;
 
  import java.io.ByteArrayOutputStream;
  import java.io.File;
@@ -66,7 +69,7 @@
  import java.util.ArrayList;
  import java.util.Objects;
 
- public class  GroupActivity extends AppCompatActivity {
+ public class  GroupActivity extends Fragment {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -88,14 +91,18 @@
 
 
     @Override
-    protected void onCreate (Bundle savedInstance) {
+    public void onCreate(Bundle savedInstance) {
 
         super.onCreate(savedInstance);
-        setContentView(R.layout.collapsing_toolbar_layout_sample);
+    }
 
-        final Bundle args = getIntent().getExtras();
+     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                           Bundle savedInstanceState) {
+         final android.view.View view = inflater.inflate(R.layout.collapsing_toolbar_layout_sample, container, false);
+         final Bundle args = this.getArguments();
 
-        final ImageView groupPic = findViewById(R.id.header);
+
+        final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
 
         final int[] NumberOfMembers = new int[1];
 
@@ -110,8 +117,6 @@
         final StorageReference reference1 = FirebaseStorage.getInstance().getReference("posts");
 
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        fetchedPosts = new ArrayList<>();
 
 
         database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -136,7 +141,7 @@
                                     User user;
                                     user = childSnapshot.getValue(User.class);
                                     groupAuthorName[0] = user.getName() + " " + user.getSurname();
-                                TextView memberIndication = findViewById(R.id.toolbar_subtitle);
+                                TextView memberIndication = (TextView) view.findViewById(R.id.toolbar_subtitle);
                                 memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -145,7 +150,7 @@
                                         Bundle b = new Bundle();
                                         b.putSerializable("groupRecipients", group.getRecipients());
 
-                                        Intent intent = new Intent(GroupActivity.this, MembersDetailsActivity.class);
+                                        Intent intent = new Intent(getActivity(), MembersDetailsActivity.class);
                                         intent.putExtras(b);
                                         if (!isAuthor) {
                                             intent.putExtra("author", group.getAuthor());
@@ -163,6 +168,7 @@
 
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    fetchedPosts = new ArrayList<>();
                                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                                         final Post newPost = postSnapshot.getValue(Post.class);
 
@@ -200,7 +206,7 @@
                                         if (numberOfDocs != 0) {
                                             hasDocuments = true;
                                             for (int i = 0; i < numberOfDocs; i++) {
-                                                final ArrayList<Uri> newArrayList = null;
+                                                final ArrayList<Uri> newArrayList = new ArrayList<>();
                                                 reference1.child(groupUID + "/" + PostID + "document" + numberOfDocs).getFile(newArrayList.get(numberOfDocs)).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                                     @Override
                                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -231,7 +237,7 @@
                                                     newSB.append(user.getSurname());
                                                     authorName[0] = newSB.toString();
 
-                                                    File cachedProPic = getBaseContext().getFilesDir();
+                                                    File cachedProPic = getActivity().getBaseContext().getFilesDir();
                                                     final File f = new File(cachedProPic, authorKey[0] + ".jpg");
                                                     FileInputStream fis = null;
                                                     try {
@@ -261,7 +267,7 @@
                                                             @Override
                                                             public void onFailure(@NonNull Exception e) {
                                                                 Log.v("AVVISO", "File could not be fetched from database");
-                                                                Toast.makeText(GroupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                                                                 authorBitmap[0] = BitmapFactory.decodeResource(getResources(), R.drawable.ic_generic_user_avatar);
                                                             }
                                                         });
@@ -275,8 +281,6 @@
                                                     database.child("comments").orderByKey().equalTo(newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                                                             numberOfComments[0] = (int) snapshot.getChildrenCount();
                                                         }
 
@@ -321,7 +325,7 @@
 
 
 
-                    CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+                    CollapsingToolbarLayout collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(group.getName());
 
 
@@ -329,7 +333,7 @@
                     database3.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
-                        final FloatingActionButton fab = findViewById(R.id.common_fab);
+                        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.common_fab);
                         public void onDataChange(@NonNull final DataSnapshot snapshot) {
                             for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                                 final Group group;
@@ -341,7 +345,7 @@
                                         @Override
                                         public void onClick(View v) {
                                             final PopupMenu authorMenu;
-                                            authorMenu = new PopupMenu(GroupActivity.this, fab);
+                                            authorMenu = new PopupMenu(view.getContext(), fab);
                                             MenuInflater inflater = authorMenu.getMenuInflater();
                                             inflater.inflate(R.menu.group_author_menu, authorMenu.getMenu());
                                             authorMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -359,7 +363,7 @@
                                                                     "Select Picture"), SELECT_PICTURE);
                                                             return true;
                                                         case R.id.members_tab:
-                                                            Intent intent2 = new Intent(GroupActivity.this, AuthorGroupManageActivity.class);
+                                                            Intent intent2 = new Intent(getActivity(), AuthorGroupManageActivity.class);
                                                             Bundle b = new Bundle();
                                                             b.putSerializable("groupRecipients", group.getRecipients());
                                                             intent2.putExtras(b);
@@ -374,7 +378,7 @@
                                                             startActivity(intent2);
                                                             return true;
                                                         case R.id.remove_group_tab:
-                                                            Intent intent3 = new Intent(GroupActivity.this, MainActivity.class);
+                                                            Intent intent3 = new Intent(getActivity(), MainActivity.class);
                                                             String groupUID = postSnapshot.getKey();
                                                             database3.child("groups").child(groupUID).removeValue();
                                                             startActivity(intent3);
@@ -400,7 +404,7 @@
                                         @Override
                                         public void onClick(View v) {
                                             final PopupMenu componentMenu;
-                                            componentMenu = new PopupMenu(GroupActivity.this, fab);
+                                            componentMenu = new PopupMenu(view.getContext(), fab);
                                             MenuInflater inflater = componentMenu.getMenuInflater();
                                             inflater.inflate(R.menu.group_component_menu, componentMenu.getMenu());
                                             componentMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -408,7 +412,7 @@
                                                 public boolean onMenuItemClick(MenuItem item) {
                                                     switch (item.getItemId()) {
                                                         case R.id.leave_group:
-                                                            Intent intent = new Intent (GroupActivity.this, MainActivity.class);
+                                                            Intent intent = new Intent (getActivity(), MainActivity.class);
                                                             String groupUID = postSnapshot.getKey();
                                                             ArrayList<String> courseSubscribers = group.getRecipients();
                                                             if(courseSubscribers.contains(user.getEmail())){
@@ -437,7 +441,7 @@
                                         public void onClick(View v) {
 
                                             PopupMenu studentMenu;
-                                            studentMenu = new PopupMenu(GroupActivity.this, fab);
+                                            studentMenu = new PopupMenu(view.getContext(), fab);
                                             MenuInflater inflater = studentMenu.getMenuInflater();
                                             inflater.inflate(R.menu.group_student_menu, studentMenu.getMenu());
                                             studentMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -485,21 +489,21 @@
 
 
 
-        RelativeLayout postLayout = findViewById(R.id.area_post);
+        RelativeLayout postLayout = (RelativeLayout) view.findViewById(R.id.area_post);
         postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent (GroupActivity.this, NewPostActivity.class);
+                Intent i = new Intent (getActivity(), NewPostActivity.class);
                 i.putExtra("key", groupUID);
                 startActivity(i);
             }
         });
 
-        EditText postNow = findViewById(R.id.post_update_editText);
+        EditText postNow = (EditText) view.findViewById(R.id.post_update_editText);
         postNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent (GroupActivity.this, NewPostActivity.class);
+                Intent i = new Intent (getActivity(), NewPostActivity.class);
                 i.putExtra("key", groupUID);
                 startActivity(i);
             }
@@ -508,7 +512,7 @@
 
         final StorageReference fileRef = storageReference.child(groupUID + ".jpg");
 
-        File cachedProPic = getBaseContext().getFilesDir();
+        File cachedProPic = getActivity().getBaseContext().getFilesDir();
         final File f = new File(cachedProPic, groupUID + ".jpg");
         FileInputStream fis = null;
         try {
@@ -519,7 +523,7 @@
             e.printStackTrace();
         }
         if (fis != null) {
-            ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
                 Log.v("AVVISO", "File has been found in cache");
@@ -542,7 +546,7 @@
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.v("AVVISO", "File could not be fetched from database");
-                        Toast.makeText(GroupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
@@ -561,7 +565,7 @@
 
 
 
-        FloatingActionButton setProPicFab = findViewById(R.id.common_fab);
+        FloatingActionButton setProPicFab = (FloatingActionButton) view.findViewById(R.id.common_fab);
         setProPicFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -572,20 +576,21 @@
                         "Select Picture"), SELECT_PICTURE);
             }
         });
+        return view;
 
     }
 
     protected void buildBacheca () {
-        recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
+        recyclerViewBacheca = getActivity().findViewById(R.id.recyclerview_posts);
         recyclerViewBacheca.setHasFixedSize(false);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         postAdapter = new PostAdapter(fetchedPosts);
         recyclerViewBacheca.setLayoutManager(mLayoutManager);
         recyclerViewBacheca.setAdapter(postAdapter);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
@@ -627,7 +632,7 @@
         catch (ActivityNotFoundException e) {
             // display an error message
             String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -647,10 +652,10 @@
         fileRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(GroupActivity.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
-                headerProPic = findViewById(R.id.header);
+                Toast.makeText(getContext(), getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
+                headerProPic = getActivity().findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
-                final File f = new File(getBaseContext().getFilesDir(), groupUID + "jpg");
+                final File f = new File(getActivity().getBaseContext().getFilesDir(), groupUID + "jpg");
                 FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(f);
@@ -664,7 +669,7 @@
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(GroupActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
             }
         });
 
