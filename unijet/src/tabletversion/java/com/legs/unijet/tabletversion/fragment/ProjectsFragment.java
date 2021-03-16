@@ -36,26 +36,27 @@ import com.legs.unijet.smartphone.R;
 import java.util.ArrayList;
 
 public class ProjectsFragment extends Fragment {
-ImageView item;
-EditText searchEditText;
+    ImageView item;
+    EditText searchEditText;
     FirebaseUser project;
     String userId;
     FirebaseUser auth;
     DatabaseReference reference;
+    static boolean isSinglePane = true;
     private ArrayList<ProjectSample> projectList;
-    DatabaseReference db = FirebaseDatabase.getInstance ().getReference ();
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     RecyclerView mRecyclerView;
     private ProjectAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate (savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
-        final android.view.View view = inflater.inflate (R.layout.projects_page, container, false);
-        populateList ();
+        final android.view.View view = inflater.inflate(R.layout.projects_page, container, false);
+        populateList();
 
         item = (ImageView) view.findViewById(R.id.projects_search_button);
 
@@ -90,21 +91,21 @@ EditText searchEditText;
     }
 
     private void populateList() {
-        projectList = new ArrayList<ProjectSample> ();
+        projectList = new ArrayList<ProjectSample>();
 
 
-        db.child ("projects").addValueEventListener (new ValueEventListener () {
+        db.child("projects").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-              projectList.clear();
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren ()) {
-                                String name = childSnapshot.child ("name").getValue (String.class);
-                                String group = childSnapshot.child ("group").getValue (String.class);
-                                projectList.add (new ProjectSample (name, group));
+                projectList.clear();
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String group = childSnapshot.child("group").getValue(String.class);
+                    projectList.add(new ProjectSample(name, group));
 
                 }
 
-                buildRecyclerView ();
+                buildRecyclerView();
             }
 
             @Override
@@ -115,22 +116,31 @@ EditText searchEditText;
     }
 
     private void buildRecyclerView() {
-        mRecyclerView = getView ().findViewById (R.id.projects_list);
-        mRecyclerView.setHasFixedSize (true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getContext ());
-        mAdapter = new ProjectAdapter (projectList);
-        mRecyclerView.setLayoutManager (mLayoutManager);
-        mRecyclerView.setAdapter (mAdapter);
+        mRecyclerView = getView().findViewById(R.id.projects_list);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new ProjectAdapter(projectList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
                         Bundle bundle = new Bundle();
-                        Fragment fragment;
-                        fragment = new ProjectDetailsActivity();
                         bundle.putString("PName", mAdapter.returnTitle(position));
                         bundle.putString("group", mAdapter.returnGroup(position));
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
+
+                        if (isSinglePane) {
+                            Fragment fragment;
+                            fragment = new ProjectDetailsActivity();
+                            fragment.setArguments(bundle);
+                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, fragment);
+                            transaction.commit();
+                        } else {
+                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
+
+                        }
                     }
 
                     @Override
@@ -142,12 +152,7 @@ EditText searchEditText;
         );
     }
 
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+
     }
-}
+
 

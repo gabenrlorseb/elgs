@@ -47,7 +47,7 @@ public class CoursesFragment extends Fragment {
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-static boolean isSinglePane;
+static boolean isSinglePane = true;
     RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
 
@@ -60,7 +60,7 @@ static boolean isSinglePane;
 
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
-        final android.view.View view = inflater.inflate(R.layout.courses_page, container, false);
+        View view = inflater.inflate(R.layout.courses_page, container, false);
         populateList();
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
@@ -90,8 +90,8 @@ static boolean isSinglePane;
             }
         });*/
 
-        return view;
 
+        return view;
     }
 
     private void populateList() {
@@ -204,13 +204,23 @@ static boolean isSinglePane;
                 new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Bundle bundle = new Bundle();
-                        Fragment fragment;
-                        fragment = new CourseDetailsActivity();
-                        bundle.putString("CName", mAdapter.returnTitle(position));
-                        bundle.putString("professor", mAdapter.returnProfessor(position));
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("CName", mAdapter.returnTitle(position));
+                            bundle.putString("professor", mAdapter.returnProfessor(position));
+
+                        if (isSinglePane) {
+                            Fragment fragment;
+                            fragment = new CourseDetailsActivity();
+                            fragment.setArguments(bundle);
+                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, fragment);
+                            transaction.commit();
+                        }
+                        else{
+                             getChildFragmentManager().findFragmentById(R.id.fragment_container);
+
+                        }
                     }
 
                     @Override
@@ -225,18 +235,6 @@ static boolean isSinglePane;
     }
 
 
-    private void loadFragment(Fragment fragment) {
-
-if (isSinglePane){
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-else{
-    getChildFragmentManager().findFragmentById(R.id.detail_fragment);
-}
-    }
 
 }
 

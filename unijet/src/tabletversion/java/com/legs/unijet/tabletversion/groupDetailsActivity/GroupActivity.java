@@ -100,7 +100,10 @@
                                            Bundle savedInstanceState) {
          final android.view.View view = inflater.inflate(R.layout.collapsing_toolbar_layout_sample, container, false);
          final Bundle args = this.getArguments();
-
+         if (args != null) {
+             String name = args.getString("CName");
+             String professor = args.getString("professor");
+         }
 
         final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
 
