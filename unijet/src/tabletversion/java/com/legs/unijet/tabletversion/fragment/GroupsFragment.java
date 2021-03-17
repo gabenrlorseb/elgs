@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -175,6 +176,12 @@ public class GroupsFragment extends Fragment {
                             Fragment fragment;
                             fragment = new GroupActivity();
                             fragment.setArguments(bundle);
+                            if (searchEditText.getVisibility() == View.VISIBLE) {
+                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                        getContext().INPUT_METHOD_SERVICE);
+                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
                             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                             transaction.replace(R.id.fragment_container, fragment);
                             transaction.commit();
