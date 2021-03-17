@@ -8,15 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +49,7 @@ import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.tabletversion.group.Group;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.profile.User;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -175,6 +180,76 @@ public class ProjectDetailsActivity extends Fragment {
 
                     CollapsingToolbarLayout collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(project.getName());
+                    final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                    final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
+                    database3.child("projects").orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        final FloatingActionButton fab = view.findViewById(R.id.common_fab);
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                project = postSnapshot.getValue(Project.class);
+                                projectUID = postSnapshot.getKey();
+                                database4.child("groups").orderByChild("name").equalTo(project.getGroup()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                        for (final DataSnapshot postSnapshot : snapshot2.getChildren()) {
+                                            Group group;
+                                            group = postSnapshot.getValue(Group.class);
+                                            ArrayList<String> groupMembers = group.getRecipients();
+                                            if (groupMembers.contains(user.getEmail()) || user.getEmail().equals(group.getAuthor())){
+                                                Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
+                                                fab.setImageDrawable(myDrawable);
+                                                fab.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        final PopupMenu authorMenu;
+                                                        authorMenu = new PopupMenu(getActivity(), fab);
+                                                        MenuInflater inflater = authorMenu.getMenuInflater();
+                                                        inflater.inflate(R.menu.project_author_menu, authorMenu.getMenu());
+                                                        authorMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                            @Override
+                                                            public boolean onMenuItemClick(MenuItem item) {
+                                                                switch (item.getItemId()) {
+                                                                    case R.id.settings_tab:
+                                                                        //impostazioni
+                                                                        return true;
+                                                                    case R.id.change_pic_tab:
+                                                                        Intent intent = new Intent();
+                                                                        intent.setType("image/*");
+                                                                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                                                                        startActivityForResult(Intent.createChooser(intent,
+                                                                                "Select Picture"), SELECT_PICTURE);
+                                                                        return true;
+                                                                    case R.id.remove_project_tab:
+                                                                        Intent intent3 = new Intent(getActivity(), MainActivity.class);
+                                                                        //String courseUID = postSnapshot.getKey();
+                                                                        database3.child("projects").child(projectUID).removeValue();
+                                                                        startActivity(intent3);
+                                                                    default:
+                                                                        return false;
+                                                                }
+                                                            }
+                                                        });
+                                                        authorMenu.show();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
 
 
@@ -239,21 +314,6 @@ public class ProjectDetailsActivity extends Fragment {
         }
 
 
-
-
-
-
-        FloatingActionButton setProPicFab = view.findViewById(R.id.common_fab);
-        setProPicFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE);
-            }
-        });
 return view;
     }
 
