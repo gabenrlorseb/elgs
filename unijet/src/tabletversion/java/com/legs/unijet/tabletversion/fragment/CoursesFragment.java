@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -215,7 +216,7 @@ static boolean isSinglePane = true;
                             bundle.putString("professor", mAdapter.returnProfessor(position));
 
                         if (isSinglePane) {
-                            Fragment fragment;
+                            Fragment fragment;;
                             fragment = new CourseDetailsActivity();
                             fragment.setArguments(bundle);
                             if (searchEditText.getVisibility() == View.VISIBLE) {
@@ -224,10 +225,8 @@ static boolean isSinglePane = true;
                                 inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                                         InputMethodManager.HIDE_NOT_ALWAYS);
                             }
-
                             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                             transaction.replace(R.id.fragment_container, fragment);
-                            transaction.addToBackStack(null);
                             transaction.commit();
                         }
                         else{
