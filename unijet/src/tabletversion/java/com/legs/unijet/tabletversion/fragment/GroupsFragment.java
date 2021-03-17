@@ -64,7 +64,7 @@ public class GroupsFragment extends Fragment {
 
         searchEditText = (EditText) view.findViewById(R.id.groups_search_edit_text);
 
-        /*item.setOnClickListener(new View.OnClickListener() {
+        item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchEditText.setVisibility(View.VISIBLE);
@@ -86,7 +86,7 @@ public class GroupsFragment extends Fragment {
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });*/
+        });
 
         return view;
 

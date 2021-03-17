@@ -62,7 +62,7 @@ public class ProjectsFragment extends Fragment {
 
         searchEditText = (EditText) view.findViewById(R.id.projects_search_edit_text);
 
-        /*item.setOnClickListener(new View.OnClickListener() {
+        item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchEditText.setVisibility(View.VISIBLE);
@@ -84,7 +84,7 @@ public class ProjectsFragment extends Fragment {
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });*/
+        });
 
         return view;
 

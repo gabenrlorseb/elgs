@@ -64,7 +64,7 @@ static boolean isSinglePane = true;
         populateList();
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
-        /*searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
+        searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,7 @@ static boolean isSinglePane = true;
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });*/
+        });
 
 
         return view;
