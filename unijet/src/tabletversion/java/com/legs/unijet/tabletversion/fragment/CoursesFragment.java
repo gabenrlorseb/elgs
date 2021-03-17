@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +31,7 @@ import com.legs.unijet.tabletversion.course.CourseAdapter;
 import com.legs.unijet.tabletversion.course.CourseSample;
 import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
 
@@ -38,6 +41,7 @@ public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ImageView item;
     EditText searchEditText;
+    FloatingActionButton fab;
     String userId;
     FirebaseUser auth;
     Bundle bundle;
@@ -65,6 +69,7 @@ static boolean isSinglePane = true;
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
         searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
+        fab = getActivity().findViewById(R.id.fab);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,8 +218,16 @@ static boolean isSinglePane = true;
                             Fragment fragment;
                             fragment = new CourseDetailsActivity();
                             fragment.setArguments(bundle);
+                            if (searchEditText.getVisibility() == View.VISIBLE) {
+                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                        getContext().INPUT_METHOD_SERVICE);
+                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
+
                             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                             transaction.replace(R.id.fragment_container, fragment);
+                            transaction.addToBackStack(null);
                             transaction.commit();
                         }
                         else{
