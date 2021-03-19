@@ -102,7 +102,7 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                     courseUID = snapshot.getKey();
                     ArrayList<String> addedMails = course.getMembers();
 
-                    NumberOfMembers[0] = addedMails.size() + 1;
+                    NumberOfMembers[0] = addedMails.size();
 
 
 
@@ -196,13 +196,6 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                                                             Bundle b = new Bundle();
                                                             b.putSerializable("groupRecipients", course.getMembers());
                                                             intent2.putExtras(b);
-                                                            if (!isAuthor) {
-                                                                intent2.putExtra("author", course.getEmail());
-                                                                intent2.putExtra("author_name", courseAuthorName[0]);
-                                                            } else {
-                                                                intent2.putExtra("author", getString(R.string.you));
-                                                                intent2.putExtra("author_name", "you");
-                                                            }
                                                             intent2.putExtra("name", course.getName());
                                                             startActivity(intent2);
                                                             return true;

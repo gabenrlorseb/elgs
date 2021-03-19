@@ -1,6 +1,8 @@
 package com.legs.unijet.tabletversion.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +36,7 @@ import com.legs.unijet.tabletversion.course.CourseAdapter;
 import com.legs.unijet.tabletversion.course.CourseSample;
 import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
@@ -44,7 +49,6 @@ public class CoursesFragment extends Fragment {
     EditText searchEditText;
     FloatingActionButton fab;
     String userId;
-    FirebaseUser auth;
     Bundle bundle;
     Intent intent;
     DatabaseReference reference;
@@ -66,6 +70,8 @@ static boolean isSinglePane = true;
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.courses_page, container, false);
+
+
         populateList();
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
@@ -99,6 +105,7 @@ static boolean isSinglePane = true;
 
         return view;
     }
+
 
     private void populateList() {
         //members = new ArrayList<>();
@@ -211,12 +218,12 @@ static boolean isSinglePane = true;
                     @Override
                     public void onItemClick(View view, int position) {
 
-                            Bundle bundle = new Bundle();
-                            bundle.putString("CName", mAdapter.returnTitle(position));
-                            bundle.putString("professor", mAdapter.returnProfessor(position));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("CName", mAdapter.returnTitle(position));
+                        bundle.putString("professor", mAdapter.returnProfessor(position));
 
                         if (isSinglePane) {
-                            Fragment fragment;;
+                            Fragment fragment;
                             fragment = new CourseDetailsActivity();
                             fragment.setArguments(bundle);
                             if (searchEditText.getVisibility() == View.VISIBLE) {
@@ -228,10 +235,8 @@ static boolean isSinglePane = true;
                             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                             transaction.replace(R.id.fragment_container, fragment);
                             transaction.commit();
-                        }
-                        else{
-                             getChildFragmentManager().findFragmentById(R.id.fragment_container);
-
+                        } else {
+                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
                         }
                     }
 
@@ -244,9 +249,27 @@ static boolean isSinglePane = true;
 
 
         );
+
+
     }
 
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            new CoursesFragment();
+        }else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            new CoursesFragment();
+        }
+    }
+
+    public static boolean isPortrait(Context context) {
+
+        return context.getResources().getBoolean(R.bool.is_portrait);
+    }
 
 }
 

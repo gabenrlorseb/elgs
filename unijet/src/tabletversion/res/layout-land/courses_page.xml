@@ -12,6 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/dual_pane"
             android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,9 +60,8 @@
                     />
 
 
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <FrameLayout
                 android:name="com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity"

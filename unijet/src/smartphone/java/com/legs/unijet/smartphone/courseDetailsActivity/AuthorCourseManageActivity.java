@@ -58,19 +58,10 @@ public class AuthorCourseManageActivity extends AppCompatActivity {
 
         final Bundle args = getIntent().getExtras();
 
-        passed_names =  (ArrayList<String>) args.getSerializable("groupRecipients");
-        authorName = args.getString("author_name");
+        passed_names = (ArrayList<String>) args.getSerializable("groupRecipients");
 
-        if (authorName.equals("you")) {
-            authorName = getString(R.string.you);
-            authorMail = getString(R.string.admin);
-        } else {
-            authorName = args.getString("author_name");
-            authorMail = args.getString("author");
-        }
 
         populateList();
-
 
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -103,6 +94,8 @@ public class AuthorCourseManageActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
             }
         });
+
+
         Button fab = findViewById(R.id.remove_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,18 +117,19 @@ public class AuthorCourseManageActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
                             } else {
                                 ArrayList<String> removeMail = mAdapter.getCheckedMails();
-                                for (String string: removeMail) {
+                                for (String string : removeMail) {
                                     courseSubscribers.remove(string);
 
-                                db.child("courses").child(courseUID).child("members").setValue(courseSubscribers);
-                                Intent i = new Intent(AuthorCourseManageActivity.this, CourseDetailsActivity.class);
-                                startActivity(i);
-                                //finish();
+                                    db.child("courses").child(courseUID).child("members").setValue(courseSubscribers);
+                                    Intent i = new Intent(AuthorCourseManageActivity.this, CourseDetailsActivity.class);
+                                    startActivity(i);
+                                    //finish();
                                 }
                             }
                         }
 
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -146,22 +140,11 @@ public class AuthorCourseManageActivity extends AppCompatActivity {
 
         });
 
-
-
-    /* private ArrayList<String> getNamesToBeAdded() {
-        ArrayList<String> uuidList;
-
-        return uuidList;
-    }*/
-    }
-
-    private void removeMembers(){
-
     }
 
     private void populateList() {
         names = new ArrayList<>();
-        names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
+        //names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
         db.child("students").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
