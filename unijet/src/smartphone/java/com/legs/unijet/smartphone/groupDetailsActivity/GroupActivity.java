@@ -329,7 +329,7 @@
                         final FloatingActionButton fab = findViewById(R.id.common_fab);
                         public void onDataChange(@NonNull final DataSnapshot snapshot) {
                             for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                final Group group;
+
                                 group = postSnapshot.getValue(Group.class);
                                 if (user.getEmail().equals(group.getAuthor())) {
                                     Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
@@ -360,13 +360,6 @@
                                                             Bundle b = new Bundle();
                                                             b.putSerializable("groupRecipients", group.getRecipients());
                                                             intent2.putExtras(b);
-                                                            if (!isAuthor) {
-                                                                intent2.putExtra("author", group.getAuthor());
-                                                                intent2.putExtra("author_name", groupAuthorName[0]);
-                                                            } else {
-                                                                intent2.putExtra("author", getString(R.string.you));
-                                                                intent2.putExtra("author_name", "you");
-                                                            }
                                                             intent2.putExtra("name", group.getName());
                                                             startActivity(intent2);
                                                             return true;

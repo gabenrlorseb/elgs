@@ -12,28 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.smartphone.createGroupActivity.MemberCheckListAdapter;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.legs.unijet.smartphone.R;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
     public class AuthorCourseManageAdapter extends RecyclerView.Adapter<AuthorCourseManageAdapter.ExampleViewHolder> implements Filterable {
         private ArrayList<UserChecklistSample> sampleList;
@@ -148,7 +132,6 @@ import java.util.List;
             }
             return addedMemberList;
         }
-
 
 
     }

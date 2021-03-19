@@ -10,13 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
 
 
 
 
         <activity
+
             android:name=".splashactivity.SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
@@ -30,7 +30,8 @@
         <activity android:name=".registerActivity.RegProfActivity" />
         <activity
             android:name=".utils.MainActivity"
-            android:exported="true" />
+
+            android:exported="true"/>
         <activity android:name=".createGroupActivity.CreateGroup" />
         <activity android:name=".course.CreateCourse" />
         <activity android:name=".project.CreateProject" />
