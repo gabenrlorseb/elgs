@@ -1,22 +1,29 @@
 package com.legs.unijet.tabletversion.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +36,8 @@ import com.legs.unijet.tabletversion.course.CourseAdapter;
 import com.legs.unijet.tabletversion.course.CourseSample;
 import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
 
@@ -38,8 +47,8 @@ public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ImageView item;
     EditText searchEditText;
+    FloatingActionButton fab;
     String userId;
-    FirebaseUser auth;
     Bundle bundle;
     Intent intent;
     DatabaseReference reference;
@@ -47,7 +56,7 @@ public class CoursesFragment extends Fragment {
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-static boolean isSinglePane;
+static boolean isSinglePane = true;
     RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
 
@@ -60,11 +69,14 @@ static boolean isSinglePane;
 
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
-        final android.view.View view = inflater.inflate(R.layout.courses_page, container, false);
+        View view = inflater.inflate(R.layout.courses_page, container, false);
+
+
         populateList();
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
-        /*searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
+        searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
+        fab = getActivity().findViewById(R.id.fab);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,11 +100,12 @@ static boolean isSinglePane;
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });*/
+        });
+
 
         return view;
-
     }
+
 
     private void populateList() {
         //members = new ArrayList<>();
@@ -204,13 +217,27 @@ static boolean isSinglePane;
                 new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+
                         Bundle bundle = new Bundle();
-                        Fragment fragment;
-                        fragment = new CourseDetailsActivity();
                         bundle.putString("CName", mAdapter.returnTitle(position));
                         bundle.putString("professor", mAdapter.returnProfessor(position));
-                        fragment.setArguments(bundle);
-                        loadFragment(fragment);
+
+                        if (isSinglePane) {
+                            Fragment fragment;
+                            fragment = new CourseDetailsActivity();
+                            fragment.setArguments(bundle);
+                            if (searchEditText.getVisibility() == View.VISIBLE) {
+                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                        getContext().INPUT_METHOD_SERVICE);
+                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
+                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, fragment);
+                            transaction.commit();
+                        } else {
+                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
+                        }
                     }
 
                     @Override
@@ -222,20 +249,26 @@ static boolean isSinglePane;
 
 
         );
+
+
     }
 
 
-    private void loadFragment(Fragment fragment) {
-
-if (isSinglePane){
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            new CoursesFragment();
+        }else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            new CoursesFragment();
         }
-else{
-    getChildFragmentManager().findFragmentById(R.id.detail_fragment);
-}
+    }
+
+    public static boolean isPortrait(Context context) {
+
+        return context.getResources().getBoolean(R.bool.is_portrait);
     }
 
 }

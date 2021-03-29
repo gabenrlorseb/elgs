@@ -7,11 +7,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.tabletversion.course.CourseSample;
+import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.tabletversion.group.Group;
 import com.legs.unijet.tabletversion.group.GroupAdapter;
 import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
@@ -43,6 +46,7 @@ public class GroupsFragment extends Fragment {
     private ArrayList <Group> groups;
     private ArrayList <String> members;
     private boolean isPrivate;
+    static boolean isSinglePane = true;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
@@ -61,7 +65,7 @@ public class GroupsFragment extends Fragment {
 
         searchEditText = (EditText) view.findViewById(R.id.groups_search_edit_text);
 
-        /*item.setOnClickListener(new View.OnClickListener() {
+        item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchEditText.setVisibility(View.VISIBLE);
@@ -83,7 +87,7 @@ public class GroupsFragment extends Fragment {
                 mAdapter.getFilter().filter(s);
                 mAdapter.notifyDataSetChanged();
             }
-        });*/
+        });
 
         return view;
 
@@ -163,10 +167,28 @@ public class GroupsFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), GroupActivity.class);
-                        i.putExtra("GName", mAdapter.returnTitle(position));
-                        i.putExtra("owner", mAdapter.returnOwner(position));
-                        view.getContext().startActivity(i);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("GName", mAdapter.returnTitle(position));
+                        bundle.putString("owner", mAdapter.returnOwner(position));
+
+                        if (isSinglePane) {
+                            Fragment fragment;
+                            fragment = new GroupActivity();
+                            fragment.setArguments(bundle);
+                            if (searchEditText.getVisibility() == View.VISIBLE) {
+                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                        getContext().INPUT_METHOD_SERVICE);
+                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
+                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, fragment);
+                            transaction.commit();
+                        } else {
+                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
+
+                        }
                     }
 
                     @Override

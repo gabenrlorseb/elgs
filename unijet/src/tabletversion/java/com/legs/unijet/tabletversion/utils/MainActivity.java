@@ -25,7 +25,6 @@ import com.legs.unijet.tabletversion.course.CreateCourse;
 import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.fragment.CoursesFragment;
-import com.legs.unijet.tabletversion.fragment.CoursesSection;
 import com.legs.unijet.tabletversion.fragment.GroupsFragment;
 import com.legs.unijet.tabletversion.fragment.MyUnijetFragment;
 import com.legs.unijet.tabletversion.fragment.ProjectsFragment;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
