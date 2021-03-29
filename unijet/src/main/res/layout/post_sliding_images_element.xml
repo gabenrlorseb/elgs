@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="1dip" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_ui_image"/>
+
+
+    <TextView
+        android:id="@+id/current_image_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tab_indicator_default"
+        android:drawablePadding="8dp"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="top|end"/>
+
+</FrameLayout>

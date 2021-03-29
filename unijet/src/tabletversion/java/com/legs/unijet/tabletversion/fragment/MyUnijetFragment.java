@@ -181,17 +181,12 @@ public class MyUnijetFragment extends Fragment {
         final StorageReference[] fileRef = {storageReference[0].child(userRef + ".jpg")};
 
         final Bitmap[] bitmap = new Bitmap[1];
-        File cachedProPic = context.getFilesDir();
+        File cachedProPic = context.getCacheDir();
         final File f = new File(cachedProPic, "profile-pic.jpg");
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(f);
-            bitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (fis != null) {
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            bitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
             ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
@@ -222,7 +217,13 @@ public class MyUnijetFragment extends Fragment {
                 bitmap[0] = BitmapFactory.decodeStream(fis);
                 profileAvatar.setImageBitmap(bitmap[0]);
             }
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
 }

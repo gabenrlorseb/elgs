@@ -1,10 +1,9 @@
  package com.legs.unijet.smartphone.groupDetailsActivity;
 
  import android.app.Activity;
- import android.app.AlertDialog;
+ import android.app.ProgressDialog;
  import android.content.ActivityNotFoundException;
  import android.content.Context;
- import android.content.DialogInterface;
  import android.content.Intent;
  import android.graphics.Bitmap;
  import android.graphics.BitmapFactory;
@@ -20,13 +19,12 @@
  import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
- import android.widget.LinearLayout;
+ import android.widget.ProgressBar;
  import android.widget.RelativeLayout;
  import android.widget.TextView;
  import android.widget.Toast;
 
  import androidx.annotation.NonNull;
- import androidx.annotation.Nullable;
  import androidx.appcompat.app.AppCompatActivity;
  import androidx.recyclerview.widget.LinearLayoutManager;
  import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +35,6 @@
  import com.google.android.material.floatingactionbutton.FloatingActionButton;
  import com.google.firebase.auth.FirebaseAuth;
  import com.google.firebase.auth.FirebaseUser;
- import com.google.firebase.database.ChildEventListener;
  import com.google.firebase.database.DataSnapshot;
  import com.google.firebase.database.DatabaseError;
  import com.google.firebase.database.DatabaseReference;
@@ -47,15 +44,14 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
  import com.legs.unijet.smartphone.Group;
+ import com.legs.unijet.smartphone.R;
  import com.legs.unijet.smartphone.post.NewPostActivity;
- import com.legs.unijet.smartphone.post.Post;
  import com.legs.unijet.smartphone.post.PostAdapter;
  import com.legs.unijet.smartphone.post.PostSample;
- import com.legs.unijet.smartphone.utils.MainActivity;
- import com.legs.unijet.smartphone.R;
  import com.legs.unijet.smartphone.profile.User;
+ import com.legs.unijet.smartphone.utils.BachecaUtils;
+ import com.legs.unijet.smartphone.utils.MainActivity;
 
  import java.io.ByteArrayOutputStream;
  import java.io.File;
@@ -64,9 +60,8 @@
  import java.io.FileOutputStream;
  import java.io.IOException;
  import java.util.ArrayList;
- import java.util.Objects;
 
- public class  GroupActivity extends AppCompatActivity {
+ public class  GroupActivity extends AppCompatActivity implements BachecaUtils.FinishCallback<Boolean> {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -82,16 +77,21 @@
 
      private ArrayList<PostSample> fetchedPosts;
 
+     BachecaUtils postFetcher;
 
-
-
-
+     ProgressDialog dialog;
 
     @Override
     protected void onCreate (Bundle savedInstance) {
 
+
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
+
+        recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
+
+
+
 
         final Bundle args = getIntent().getExtras();
 
@@ -112,20 +112,37 @@
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
+
+
+
+
+
+
         database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+
                     group = postSnapshot.getValue(Group.class);
+
                     if (user.getEmail().equals(group.getAuthor())) {
                         isAuthor = true;
                     }
                     groupUID = postSnapshot.getKey();
+
+                    postFetcher = new BachecaUtils(groupUID, recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher.run();
+
+
                     ArrayList<String> addedMails = group.getRecipients();
                     NumberOfMembers[0] = addedMails.size() + 1;
                     final String[] groupAuthorName = new String[1];
 
                     Log.v("AUTORE GRUPPO", group.getAuthor());
+
 
                     database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
                         @Override
@@ -156,158 +173,12 @@
                                         startActivity(intent);
                                     }
                                 });
+
+
+
+
                             }
-                            database2.child("posts/" + groupUID + "/").orderByChild("id").addValueEventListener(new ValueEventListener() {
 
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    fetchedPosts = new ArrayList<>();
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        final Post newPost = postSnapshot.getValue(Post.class);
-
-                                        final ArrayList<Bitmap> fetchedImages = new ArrayList<>();
-                                        final ArrayList<String> fetchedDocs = new ArrayList<>();
-
-                                        final Bitmap[] authorBitmap = new Bitmap[1];
-
-                                        boolean hasPictures = false;
-                                        boolean hasDocuments = false;
-
-
-                                        int PostID = newPost.getID();
-                                        final int numberOfPics = newPost.getHasPicture();
-                                        final int numberOfDocs = newPost.getHasDocument();
-                                        final String[] authorName = new String[1];
-
-                                        final String[] authorKey = new String[1];
-
-
-                                        if (numberOfPics != 0) {
-                                            hasPictures = true;
-                                            for (int i = 0; i < numberOfPics; i++) {
-                                                reference1.child(groupUID + "/" + PostID + "pic" + numberOfPics).getBytes(2048 * 2048).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                    @Override
-                                                    public void onSuccess(byte[] bytes) {
-                                                        Bitmap tempImageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                        fetchedImages.add(tempImageBitmap);
-                                                    }
-                                                });
-                                            }
-                                        }
-
-
-                                        if (numberOfDocs != 0) {
-                                            hasDocuments = true;
-                                            for (int i = 0; i < numberOfDocs; i++) {
-                                                final ArrayList<Uri> newArrayList = new ArrayList<>();
-                                                reference1.child(groupUID + "/" + PostID + "document" + numberOfDocs).getFile(newArrayList.get(numberOfDocs)).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                                    @Override
-                                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                                        String result = newArrayList.get(numberOfDocs).getPath();
-                                                        int cut = result.lastIndexOf('/');
-                                                        if (cut != -1) {
-                                                            result = result.substring(cut + 1);
-                                                        }
-                                                        fetchedDocs.add(result);
-                                                    }
-                                                });
-                                            }
-                                        }
-
-                                        final boolean finalHasPictures = hasPictures;
-                                        final boolean finalHasDocuments = hasDocuments;
-                                        database3.orderByChild("email").equalTo(newPost.getAuthor()).addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot3) {
-                                                for(DataSnapshot datas: snapshot3.getChildren()) {
-                                                    String keys = datas.getKey();
-                                                    User user = datas.getValue(User.class);
-                                                    authorKey[0] = datas.getKey();
-                                                    Log.v("AVVISO", "UTENTE TROVATO SU " + datas.getKey());
-                                                    StringBuilder newSB = new StringBuilder();
-                                                    newSB.append(user.getName());
-                                                    newSB.append(" ");
-                                                    newSB.append(user.getSurname());
-                                                    authorName[0] = newSB.toString();
-
-                                                    File cachedProPic = getBaseContext().getFilesDir();
-                                                    final File f = new File(cachedProPic, authorKey[0] + ".jpg");
-                                                    FileInputStream fis = null;
-                                                    try {
-                                                        fis = new FileInputStream(f);
-                                                        authorBitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
-                                                        Log.v("AVVISO", "Found in cache");
-                                                    } catch (FileNotFoundException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                    if (fis != null) {
-                                                        reference1.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                                            @Override
-                                                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                                                Log.v("AVVISO", "Il file è stato scaricato dal database");
-                                                                authorBitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
-                                                                FileOutputStream fos;
-                                                                try {
-                                                                    fos = new FileOutputStream(f);
-                                                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-                                                                    fos.flush();
-                                                                    fos.close();
-                                                                } catch (IOException e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }
-                                                        }).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Log.v("AVVISO", "File could not be fetched from database");
-                                                                Toast.makeText(GroupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                                                                authorBitmap[0] = BitmapFactory.decodeResource(getResources(), R.drawable.ic_generic_user_avatar);
-                                                            }
-                                                        });
-                                                    }
-
-                                                    boolean liked = false;
-
-
-                                                    final int[] numberOfComments = {0};
-
-                                                    database.child("comments").orderByKey().equalTo(newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            numberOfComments[0] = (int) snapshot.getChildrenCount();
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                                        }
-                                                    });
-
-                                                    Log.v("AVVISO", "STO PER AGGIUNGER ALL'ARRAYLIST RECYCLERVIEW");
-
-                                                    fetchedPosts.add(new PostSample(authorBitmap[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, fetchedDocs, fetchedImages, newPost.getTimestamp(), 0, finalHasPictures, finalHasDocuments, liked, numberOfComments[0]));
-
-                                                    if (!fetchedPosts.isEmpty()) {
-                                                        buildBacheca();
-                                                    }
-                                                }
-                                            }
-
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
 
                         }
                         @Override
@@ -315,6 +186,8 @@
 
                         }
                     });
+
+
 
 
 
@@ -383,7 +256,7 @@
                                     });
 
 
-                                } else if (group.getRecipients().contains(user.getEmail())){
+                                } else if (group.getRecipients().contains(user.getEmail())) {
                                     Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
                                     fab.setImageDrawable(myDrawable);
                                     fab.setOnClickListener(new View.OnClickListener() {
@@ -398,11 +271,11 @@
                                                 public boolean onMenuItemClick(MenuItem item) {
                                                     switch (item.getItemId()) {
                                                         case R.id.leave_group:
-                                                            Intent intent = new Intent (GroupActivity.this, MainActivity.class);
+                                                            Intent intent = new Intent(GroupActivity.this, MainActivity.class);
                                                             String groupUID = postSnapshot.getKey();
                                                             ArrayList<String> courseSubscribers = group.getRecipients();
-                                                            if(courseSubscribers.contains(user.getEmail())){
-                                                            courseSubscribers.remove(user.getEmail());
+                                                            if (courseSubscribers.contains(user.getEmail())) {
+                                                                courseSubscribers.remove(user.getEmail());
                                                             }
                                                             database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
                                                             startActivity(intent);
@@ -418,7 +291,7 @@
                                         }
                                     });
 
-                                }  else{
+                                } else {
                                     Drawable myDrawable = getResources().getDrawable(R.drawable.ic_baseline_add_24);
                                     fab.setImageDrawable(myDrawable);
                                     fab.setOnClickListener(new View.OnClickListener() {
@@ -453,7 +326,9 @@
 
                                     });
                                 }
+
                             }
+
                         }
 
                         @Override
@@ -471,9 +346,7 @@
                 Log.w("ERRORE", "loadPost:onCancelled", error.toException());
             }
         });
-
-
-
+        
 
         RelativeLayout postLayout = findViewById(R.id.area_post);
         postLayout.setOnClickListener(new View.OnClickListener() {
@@ -565,14 +438,6 @@
 
     }
 
-    protected void buildBacheca () {
-        recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
-        recyclerViewBacheca.setHasFixedSize(false);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        postAdapter = new PostAdapter(fetchedPosts);
-        recyclerViewBacheca.setLayoutManager(mLayoutManager);
-        recyclerViewBacheca.setAdapter(postAdapter);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -660,4 +525,15 @@
 
     }
 
-}
+
+
+     @Override
+     public void onComplete(Boolean result) {
+        dialog.dismiss();
+         fetchedPosts = new ArrayList<>();
+         fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
+
+
+     }
+ }
