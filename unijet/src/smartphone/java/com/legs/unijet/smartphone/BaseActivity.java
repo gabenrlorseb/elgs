@@ -93,8 +93,6 @@ public class BaseActivity extends AppCompatActivity {
                         } else {
                             Log.d ("TAG", "onComplete: failed");
                             Toast.makeText (BaseActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
-
-
                         }
 
                     }

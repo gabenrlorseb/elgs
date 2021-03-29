@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class PostSample implements Serializable {
+public class PostSample  {
     public PostSample() {
     }
 
@@ -14,61 +14,24 @@ public class PostSample implements Serializable {
 
     private String author_name;
     private String post_content;
+    private String identifier;
+    private String bachecaIdentifier;
 
-    public int getNumber_of_pics() {
-        return number_of_pics;
-    }
-
-    public void setNumber_of_pics(int number_of_pics) {
-        this.number_of_pics = number_of_pics;
-    }
-
-    public int getNumber_of_docs() {
-        return number_of_docs;
-    }
-
-    public void setNumber_of_docs(int number_of_docs) {
-        this.number_of_docs = number_of_docs;
-    }
-
-
-    private int number_of_pics;
-    private int number_of_docs;
-
-    private ArrayList<String> documents;
-    private ArrayList<Bitmap> images;
-
-    public PostSample(Bitmap author_propic, String author_name, String post_content, int number_of_pics, int number_of_docs, ArrayList<String> documents, ArrayList<Bitmap> images, long timestamp, int likes, boolean hasPictures, boolean hasDocuments, boolean isLiked, int comments) {
+    public PostSample(Bitmap author_propic, String author_name, String post_content, int hasPictures, int hasDocuments, String postIdentifier, String bachecaIdentifier,  long timestamp, int likes, boolean isLiked, int comments) {
         this.author_propic = author_propic;
         this.author_name = author_name;
         this.post_content = post_content;
-        this.number_of_pics = number_of_pics;
-        this.number_of_docs = number_of_docs;
-        this.documents = documents;
-        this.images = images;
         this.timestamp = timestamp;
         this.likes = likes;
+        this.bachecaIdentifier = bachecaIdentifier;
+        this.identifier = postIdentifier;
         this.hasPictures = hasPictures;
         this.hasDocuments = hasDocuments;
         this.isLiked = isLiked;
         this.comments = comments;
     }
 
-    public ArrayList<String> getDocuments() {
-        return documents;
-    }
 
-    public void setDocuments(ArrayList<String> documents) {
-        this.documents = documents;
-    }
-
-    public ArrayList<Bitmap> getImages() {
-        return images;
-    }
-
-    public void setImages(ArrayList<Bitmap> images) {
-        this.images = images;
-    }
 
     public Bitmap getAuthor_propic() {
         return author_propic;
@@ -110,19 +73,16 @@ public class PostSample implements Serializable {
         this.likes = likes;
     }
 
-    public boolean isHasPictures() {
-        return hasPictures;
-    }
 
-    public void setHasPictures(boolean hasPictures) {
+    public void setHasPictures(int hasPictures) {
         this.hasPictures = hasPictures;
     }
 
-    public boolean isHasDocuments() {
+    public int isHasDocuments() {
         return hasDocuments;
     }
 
-    public void setHasDocuments(boolean hasDocuments) {
+    public void setHasDocuments(int hasDocuments) {
         this.hasDocuments = hasDocuments;
     }
 
@@ -142,11 +102,34 @@ public class PostSample implements Serializable {
         this.comments = comments;
     }
 
+    public int getHasPictures() {
+        return hasPictures;
+    }
+
+    public int getHasDocuments() {
+        return hasDocuments;
+    }
+
     private long timestamp;
     private int likes;
-    private boolean hasPictures;
-    private boolean hasDocuments;
+    private int hasPictures;
+    private int hasDocuments;
     private boolean isLiked;
     private int comments;
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getBachecaIdentifier() {
+        return bachecaIdentifier;
+    }
+
+    public void setBachecaIdentifier(String bachecaIdentifier) {
+        this.bachecaIdentifier = bachecaIdentifier;
+    }
 }
