@@ -3,6 +3,7 @@ package com.legs.unijet.smartphone.courseDetailsActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,21 +19,31 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.smartphone.post.NewPostActivity;
+import com.legs.unijet.smartphone.post.PostAdapter;
+import com.legs.unijet.smartphone.post.PostSample;
 import com.legs.unijet.smartphone.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
+import com.legs.unijet.smartphone.utils.BachecaUtils;
+import com.legs.unijet.smartphone.utils.MainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,7 +69,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class  CourseDetailsActivity extends AppCompatActivity {
+public class  CourseDetailsActivity extends AppCompatActivity implements BachecaUtils.FinishCallback<Boolean>{
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -69,6 +80,12 @@ public class  CourseDetailsActivity extends AppCompatActivity {
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+    RecyclerView recyclerViewBacheca;
+    private PostAdapter postAdapter;
+    private ArrayList<PostSample> fetchedPosts;
+    BachecaUtils postFetcher;
+    ProgressDialog dialog;
+
 
 
 
@@ -78,6 +95,8 @@ public class  CourseDetailsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
+        recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
+
         final Bundle args = getIntent().getExtras();
 
         final ImageView groupPic = findViewById(R.id.header);
@@ -99,7 +118,9 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                     if (user.getEmail().equals(course.getEmail())) {
                         isAuthor = true;
                     }
-                    courseUID = snapshot.getKey();
+                    courseUID = postSnapshot.getKey();
+                    postFetcher = new BachecaUtils(courseUID, recyclerViewBacheca, getApplicationContext(), "teachers");
+                    postFetcher.run();
                     ArrayList<String> addedMails = course.getMembers();
 
                     NumberOfMembers[0] = addedMails.size();
@@ -307,7 +328,25 @@ public class  CourseDetailsActivity extends AppCompatActivity {
             }
         });
 
+        RelativeLayout postLayout = findViewById(R.id.area_post);
+        postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (CourseDetailsActivity.this, NewPostActivity.class);
+                i.putExtra("key", courseUID);
+                startActivity(i);
+            }
+        });
 
+        EditText postNow = findViewById(R.id.post_update_editText);
+        postNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (CourseDetailsActivity.this, NewPostActivity.class);
+                i.putExtra("key", courseUID);
+                startActivity(i);
+            }
+        });
 
 
         final StorageReference fileRef = storageReference.child(courseUID + ".jpg");
@@ -481,6 +520,16 @@ public class  CourseDetailsActivity extends AppCompatActivity {
                 Toast.makeText(CourseDetailsActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    @Override
+    public void onComplete(Boolean result) {
+        dialog.dismiss();
+        fetchedPosts = new ArrayList<>();
+        fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
+
 
     }
 

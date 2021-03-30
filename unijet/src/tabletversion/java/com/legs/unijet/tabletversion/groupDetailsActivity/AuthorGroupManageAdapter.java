@@ -33,7 +33,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
             super(itemView);
             mImageView = itemView.findViewById(R.id.member_icon);
             mTextView1 = itemView.findViewById(R.id.member_name);
-            mTextView2 = itemView.findViewById(R.id.post_content);
+            mTextView2 = itemView.findViewById(R.id.post_text);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
         }
 
@@ -91,13 +91,13 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
 
     @NonNull
     @Override
-    public AuthorGroupManageAdapter.ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_sample_layout, parent, false);
-        return new AuthorGroupManageAdapter.ExampleViewHolder(v);
+        return new ExampleViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final AuthorGroupManageAdapter.ExampleViewHolder holder, final int position) {
+    public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
         final UserChecklistSample currentItem = sampleList.get(position);
         holder.mImageView.setImageResource(currentItem.getImageResource());
         holder.mTextView1.setText(currentItem.getText1());

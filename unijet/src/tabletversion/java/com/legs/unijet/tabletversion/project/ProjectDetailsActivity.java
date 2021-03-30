@@ -19,8 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.tabletversion.group.Group;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.post.NewPostActivity;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 
@@ -107,7 +110,7 @@ public class ProjectDetailsActivity extends Fragment {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     project = postSnapshot.getValue(Project.class);
 
-                    projectUID = snapshot.getKey();
+                    projectUID = postSnapshot.getKey();
                     String group = project.getGroup();
 
 
@@ -260,6 +263,26 @@ public class ProjectDetailsActivity extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w("ERRORE", "loadPost:onCancelled", error.toException());
+            }
+        });
+
+        RelativeLayout postLayout = view.findViewById(R.id.area_post);
+        postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (getActivity(), NewPostActivity.class);
+                i.putExtra("key", projectUID);
+                startActivity(i);
+            }
+        });
+
+        EditText postNow = view.findViewById(R.id.post_update_editText);
+        postNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (getActivity(), NewPostActivity.class);
+                i.putExtra("key", projectUID);
+                startActivity(i);
             }
         });
 

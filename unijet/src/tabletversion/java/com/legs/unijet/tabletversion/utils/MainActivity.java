@@ -1,6 +1,7 @@
 package com.legs.unijet.tabletversion.utils;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -181,9 +182,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-
-
     }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -202,5 +204,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
+
 
 }
