@@ -62,21 +62,12 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
         Toolbar actionBar = findViewById(R.id.toolbar);
         actionBar.setTitle("Members");
 
-        Bundle args = getIntent().getExtras();
+        final Bundle args = getIntent().getExtras();
 
         passed_names =  (ArrayList<String>) args.getSerializable("groupRecipients");
-        authorName = args.getString("author_name");
 
-        if (authorName.equals("you")) {
-            authorName = getString(R.string.you);
-            authorMail = getString(R.string.admin);
-        } else {
-            authorName = args.getString("author_name");
-            authorMail = args.getString("author");
-        }
 
         populateList();
-
 
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -109,51 +100,51 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
             }
         });
-        mRecyclerView = findViewById(R.id.possible_members_list);
-
-db.child("groups").addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            Button fab = findViewById(R.id.remove_button);
-            Group group;
-            group = childSnapshot.getValue(Group.class);
-            final ArrayList<String> groupSubscribers = group.getRecipients();
-            //fab.setVisibility(View.GONE);
-            //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
-            //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
 
 
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mAdapter.removeCheckedUsers().isEmpty()) {
-                        Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
-                    } else {
-                        ArrayList<UserChecklistSample> addedMembersSendList;
-                        addedMembersSendList = mAdapter.removeCheckedUsers();
+        Button fab = findViewById(R.id.remove_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.child("groups").orderByChild("name").equalTo(args.getString("name")).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            final String groupUID = childSnapshot.getKey();
+                            Group group;
+                            group = childSnapshot.getValue(Group.class);
+                            ArrayList<String> groupMembers = group.getRecipients();
+                            //fab.setVisibility(View.GONE);
+                            //final Animation appearFab = AnimationUtils.loadAnimation(this, R.anim.fab_show);
+                            //final Animation disappearFab = AnimationUtils.loadAnimation(this, R.anim.fade_scale_anim_reverse);
 
-                        ArrayList<String> membersMails;
-                        membersMails = mAdapter.removeCheckedMails();
+                            mRecyclerView = findViewById(R.id.possible_members_list);
+                            if (mAdapter.removeCheckedUsers().isEmpty()) {
+                                Toast.makeText(getApplicationContext(), "You Haven't Selected a member", Toast.LENGTH_LONG).show();
+                            } else {
+                                ArrayList<String> removeMail = mAdapter.removeCheckedMails();
+                                for (String string : removeMail) {
+                                    groupMembers.remove(string);
 
-                        groupSubscribers.remove(membersMails);
+                                    db.child("group").child(groupUID).child("recipients").setValue(groupMembers);
+                                    Intent i = new Intent(AuthorGroupManageActivity.this, GroupActivity.class);
+                                    startActivity(i);
+                                    //finish();
+                                }
+                            }
+                        }
 
-                        Intent i = new Intent(AuthorGroupManageActivity.this, CourseDetailsActivity.class);
-                        startActivity(i);
-                        finish();
                     }
 
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-            });
-        }
-    }
+                    }
+                });
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
+            }
 
-    }
-});
+        });
 
 
     /* private ArrayList<String> getNamesToBeAdded() {
@@ -165,7 +156,6 @@ db.child("groups").addValueEventListener(new ValueEventListener() {
 
     private void populateList() {
         names = new ArrayList<>();
-        names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
         db.child("students").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

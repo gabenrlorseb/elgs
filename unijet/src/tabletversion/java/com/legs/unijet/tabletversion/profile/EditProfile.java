@@ -228,7 +228,7 @@ public class EditProfile extends AppCompatActivity {
                 Toast.makeText(EditProfile.this, getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
                 headerProPic = findViewById(R.id.header);
                 headerProPic.setImageBitmap(bitmap);
-                final File f = new File(getBaseContext().getFilesDir(), "profile-pic.jpg");
+                final File f = new File(getBaseContext().getCacheDir(), "profile-pic.jpg");
                 FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(f);

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,26 +31,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.smartphone.R;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 import java.util.UUID;
 
 public class NewPostActivity extends AppCompatActivity {
@@ -71,6 +60,7 @@ public class NewPostActivity extends AppCompatActivity {
 
     TextView indicationAttachedImages;
     TextView indicationDocumentsAttached;
+    boolean successful = false;
 
 
     @Override
@@ -81,9 +71,8 @@ public class NewPostActivity extends AppCompatActivity {
 
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String reference = "posts/" + args.getString("key");
+        String reference = "posts/" + args.getString("key") + "/";
         Log.v("Reference", reference);
-        final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference(reference);
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference(reference);
 
         final StorageReference fileDatabase1 = FirebaseStorage.getInstance().getReference(reference);
@@ -187,19 +176,10 @@ public class NewPostActivity extends AppCompatActivity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                successful = false;
 
-                database1.orderByChild("ID").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            Post lastPost = snapshot.getValue(Post.class);
-                            assert lastPost != null;
-                            postID = lastPost.getID() + 1;
-                        } else {
-                            postID = 0;
-                        }
 
-                        String uniqueId = UUID.randomUUID().toString();
+                        final String uniqueId = UUID.randomUUID().toString();
 
                         assert user != null;
 
@@ -210,7 +190,12 @@ public class NewPostActivity extends AppCompatActivity {
                             numberOfDocuments = Documents.size();
                             for (int counter = 0; counter < Documents.size(); counter++) {
                                 Uri file = Documents.get(counter);
-                                fileDatabase1.child(uniqueId + "/document" + counter).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                String fileName = file.getPath();
+                                int cut = fileName.lastIndexOf('/');
+                                if (cut != -1) {
+                                    fileName = fileName.substring(cut + 1);
+                                }
+                                fileDatabase1.child(uniqueId + "/" + fileName ).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     }
@@ -246,7 +231,9 @@ public class NewPostActivity extends AppCompatActivity {
 
                         long ut2 = System.currentTimeMillis() / 1000L;
 
-                        post = new Post(postID, user.getEmail(), false, numberOfDocuments, numberOfImages, new ArrayList<String>(), ut2, uniqueId, uniqueId,postContent.getText().toString());
+                        post = new Post(user.getEmail(), false, numberOfDocuments, numberOfImages, new ArrayList<String>(), ut2, uniqueId, uniqueId,postContent.getText().toString());
+                final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference("likes/");
+
 
                         database2.push().setValue(post, new DatabaseReference.CompletionListener()  {
                             @Override
@@ -255,6 +242,9 @@ public class NewPostActivity extends AppCompatActivity {
                                     System.out.println("Data could not be saved " + databaseError.getMessage());
                                     Toast.makeText (NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show ();
                                 } else {
+                                    ArrayList<String> setPreLikes = new ArrayList<>();
+                                    setPreLikes.add(user.getEmail());
+                                    database1.child(uniqueId).setValue(setPreLikes);
                                     Toast.makeText (NewPostActivity.this, "Success", Toast.LENGTH_SHORT).show ();
                                     finish();
                                 }
@@ -263,15 +253,9 @@ public class NewPostActivity extends AppCompatActivity {
 
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText (NewPostActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show ();
-                    }
-                });
-                
 
-            }
-        });
+
+            });
 
 
 
@@ -347,6 +331,11 @@ public class NewPostActivity extends AppCompatActivity {
     void useImage(Uri uri) throws IOException {
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
         Images.add(bitmap);
+
+        if (Images.size() > 5) {
+            Toast ts;
+            Toast.makeText(NewPostActivity.this, "Sorry, at the moment we support up to 5 images per post", Toast.LENGTH_SHORT).show();
+        }
 
         if (indicationAttachedImages.getVisibility() == View.GONE) {
             indicationAttachedImages.setVisibility(View.VISIBLE);

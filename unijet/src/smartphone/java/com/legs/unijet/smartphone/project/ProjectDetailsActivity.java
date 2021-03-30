@@ -3,6 +3,7 @@ package com.legs.unijet.smartphone.project;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +18,10 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +29,16 @@ import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.courseDetailsActivity.AuthorCourseManageActivity;
 import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.post.NewPostActivity;
+import com.legs.unijet.smartphone.post.PostAdapter;
+import com.legs.unijet.smartphone.post.PostSample;
 import com.legs.unijet.smartphone.project.Project;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +56,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.smartphone.profile.User;
+import com.legs.unijet.smartphone.utils.BachecaUtils;
 import com.legs.unijet.smartphone.utils.MainActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -59,7 +67,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ProjectDetailsActivity extends AppCompatActivity {
+public class ProjectDetailsActivity extends AppCompatActivity implements BachecaUtils.FinishCallback<Boolean>{
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -71,6 +79,14 @@ public class ProjectDetailsActivity extends AppCompatActivity {
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+    RecyclerView recyclerViewBacheca;
+    private PostAdapter postAdapter;
+
+    private ArrayList<PostSample> fetchedPosts;
+
+    BachecaUtils postFetcher;
+
+    ProgressDialog dialog;
 
 
     @Override
@@ -78,6 +94,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
+        recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
 
         final Bundle args = getIntent().getExtras();
 
@@ -100,6 +117,8 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                     project = postSnapshot.getValue(Project.class);
 
                     projectUID = snapshot.getKey();
+                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher.run();
                     String group = project.getGroup();
 
 
@@ -254,6 +273,26 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             }
         });
 
+        RelativeLayout postLayout = findViewById(R.id.area_post);
+        postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (ProjectDetailsActivity.this, NewPostActivity.class);
+                i.putExtra("key", projectUID);
+                startActivity(i);
+            }
+        });
+
+        EditText postNow = findViewById(R.id.post_update_editText);
+        postNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (ProjectDetailsActivity.this, NewPostActivity.class);
+                i.putExtra("key", projectUID);
+                startActivity(i);
+            }
+        });
+
         final StorageReference fileRef = storageReference.child(projectUID + ".jpg");
 
         File cachedProPic = getBaseContext().getFilesDir();
@@ -390,6 +429,16 @@ public class ProjectDetailsActivity extends AppCompatActivity {
                 Toast.makeText(ProjectDetailsActivity.this, getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    @Override
+    public void onComplete(Boolean result) {
+        dialog.dismiss();
+        fetchedPosts = new ArrayList<>();
+        fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
+
 
     }
 

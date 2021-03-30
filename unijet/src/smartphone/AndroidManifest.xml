@@ -41,7 +41,6 @@
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
         <activity android:name=".project.ProjectDetailsActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
-        <activity android:name=".NewPostActivity" />
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>
 
         <meta-data

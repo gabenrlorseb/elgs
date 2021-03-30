@@ -1,21 +1,8 @@
 package com.legs.unijet.tabletversion.post;
 
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Post {
-    int ID;
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 
     public String getAuthor() {
         return author;
@@ -89,8 +76,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(int ID, String author, Boolean isDeleted, int hasDocument, int hasPicture, ArrayList<String> likes, long timestamp, String commentSectionID, String likesSectionId, String content) {
-        this.ID = ID;
+    public Post(String author, Boolean isDeleted, int hasDocument, int hasPicture, ArrayList<String> likes, long timestamp, String commentSectionID, String likesSectionId, String content) {
         this.author = author;
         this.isDeleted = isDeleted;
         this.hasDocument = hasDocument;

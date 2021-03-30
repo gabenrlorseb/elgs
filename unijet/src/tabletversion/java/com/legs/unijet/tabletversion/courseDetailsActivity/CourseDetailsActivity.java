@@ -20,11 +20,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.legs.unijet.tabletversion.post.NewPostActivity;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.profile.User;
@@ -110,7 +113,7 @@ String professor = bundle.getString("professor");*/
                     if (user.getEmail().equals(course.getEmail())) {
                         isAuthor = true;
                     }
-                    courseUID = snapshot.getKey();
+                    courseUID = postSnapshot.getKey();
                     ArrayList<String> addedMails = course.getMembers();
 
                     NumberOfMembers[0] = addedMails.size() + 1;
@@ -312,6 +315,25 @@ String professor = bundle.getString("professor");*/
             }
         });
 
+        RelativeLayout postLayout = view.findViewById(R.id.area_post);
+        postLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (getActivity(), NewPostActivity.class);
+                i.putExtra("key", courseUID);
+                startActivity(i);
+            }
+        });
+
+        EditText postNow = view.findViewById(R.id.post_update_editText);
+        postNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (getActivity(), NewPostActivity.class);
+                i.putExtra("key", courseUID);
+                startActivity(i);
+            }
+        });
 
         final StorageReference fileRef = storageReference.child(courseUID + ".jpg");
 
