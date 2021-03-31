@@ -26,13 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.legs.unijet.smartphone.Group;
-import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.courseDetailsActivity.AuthorCourseManageActivity;
-import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.feedback.FeedbackActivity;
 import com.legs.unijet.smartphone.post.NewPostActivity;
 import com.legs.unijet.smartphone.post.PostAdapter;
 import com.legs.unijet.smartphone.post.PostSample;
-import com.legs.unijet.smartphone.project.Project;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 
@@ -72,7 +69,8 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Project project;
-    String  projectUID;
+    String projectUID;
+    String reference = "projects";
     String groupUID;
     Bitmap bitmap;
     Uri selectedImageUri;
@@ -80,6 +78,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
     ImageView headerProPic;
     Boolean isAuthor;
     RecyclerView recyclerViewBacheca;
+    TextView rating;
     private PostAdapter postAdapter;
 
     private ArrayList<PostSample> fetchedPosts;
@@ -95,6 +94,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
         recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
+        rating = findViewById(R.id.toolbar_additional_infos);
 
         final Bundle args = getIntent().getExtras();
 
@@ -110,7 +110,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child("projects").orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -193,7 +193,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                     collapsingToolbar.setTitle(project.getName());
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
-                    database3.child("projects").orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
                         final FloatingActionButton fab = findViewById(R.id.common_fab);
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -254,6 +254,32 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                                     }
                                 });
                             }
+
+                            database.child("feedbacks").child(projectUID).addValueEventListener(new ValueEventListener() {
+
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    float total = 0;
+                                    float count = 0;
+                                    float average;
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        float rating = postSnapshot.child("rating").getValue(Float.class);
+                                        total += rating;
+                                        count++;
+                                    }
+                                    average = total / count;
+                                    rating.setText(String.valueOf(average));
+                                }
+
+
+
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
 
                         @Override
@@ -264,6 +290,8 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
 
 
                 }
+
+
             }
 
 
@@ -289,6 +317,17 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
             public void onClick(View v) {
                 Intent i = new Intent (ProjectDetailsActivity.this, NewPostActivity.class);
                 i.putExtra("key", projectUID);
+                startActivity(i);
+            }
+        });
+        TextView rating = findViewById(R.id.toolbar_additional_infos);
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (ProjectDetailsActivity.this, FeedbackActivity.class);
+                i.putExtra("key", projectUID);
+                i.putExtra("reference",reference);
+                i.putExtra("Name", args.getString("PName"));
                 startActivity(i);
             }
         });

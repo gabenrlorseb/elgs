@@ -19,14 +19,12 @@
  import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
- import android.widget.ProgressBar;
  import android.widget.RelativeLayout;
  import android.widget.TextView;
  import android.widget.Toast;
 
  import androidx.annotation.NonNull;
  import androidx.appcompat.app.AppCompatActivity;
- import androidx.recyclerview.widget.LinearLayoutManager;
  import androidx.recyclerview.widget.RecyclerView;
 
  import com.google.android.gms.tasks.OnFailureListener;
@@ -46,6 +44,7 @@
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.smartphone.Group;
  import com.legs.unijet.smartphone.R;
+ import com.legs.unijet.smartphone.feedback.FeedbackActivity;
  import com.legs.unijet.smartphone.post.NewPostActivity;
  import com.legs.unijet.smartphone.post.PostAdapter;
  import com.legs.unijet.smartphone.post.PostSample;
@@ -66,13 +65,15 @@
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Group group;
-    String  groupUID;
+    String groupUID;
+     String reference = "groups";
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
      RecyclerView recyclerViewBacheca;
+     TextView rating;
      private PostAdapter postAdapter;
 
      private ArrayList<PostSample> fetchedPosts;
@@ -89,11 +90,13 @@
         setContentView(R.layout.collapsing_toolbar_layout_sample);
 
         recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
-
+rating = findViewById(R.id.toolbar_additional_infos);
 
 
 
         final Bundle args = getIntent().getExtras();
+
+        rating.setText(String.valueOf(args.getFloat("rating")));
 
         final ImageView groupPic = findViewById(R.id.header);
 
@@ -106,6 +109,7 @@
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference("students");
+        final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
 
         final StorageReference reference1 = FirebaseStorage.getInstance().getReference("posts");
 
@@ -118,7 +122,7 @@
 
 
 
-        database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -137,11 +141,14 @@
                     postFetcher.run();
 
 
+
+
                     ArrayList<String> addedMails = group.getRecipients();
                     NumberOfMembers[0] = addedMails.size() + 1;
                     final String[] groupAuthorName = new String[1];
 
                     Log.v("AUTORE GRUPPO", group.getAuthor());
+
 
 
                     database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
@@ -196,7 +203,7 @@
 
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                         final FloatingActionButton fab = findViewById(R.id.common_fab);
@@ -338,7 +345,38 @@
                     });
 
                 }
+
+                database.child("feedbacks").child(groupUID).addValueEventListener(new ValueEventListener() {
+
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        float total = 0;
+                        float count = 0;
+                        float average;
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            float rating = postSnapshot.child("rating").getValue(Float.class);
+                            total += rating;
+                            count++;
+                        }
+                        average = total / count;
+                        rating.setText(String.valueOf(average));
+                    }
+
+//Intent i = new Intent(FeedbackActivity.this, GroupActivity.class);
+//i.putExtra("rating", average);
+
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
             }
+
 
 
             @Override
@@ -367,6 +405,20 @@
                 startActivity(i);
             }
         });
+
+        TextView rating = findViewById(R.id.toolbar_additional_infos);
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (GroupActivity.this, FeedbackActivity.class);
+                i.putExtra("key", groupUID);
+                i.putExtra("reference",reference);
+                i.putExtra("Name", args.getString("GName"));
+                startActivity(i);
+            }
+        });
+
+
 
 
         final StorageReference fileRef = storageReference.child(groupUID + ".jpg");

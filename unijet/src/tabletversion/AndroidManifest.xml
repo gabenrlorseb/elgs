@@ -40,8 +40,9 @@
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
         <activity android:name=".post.NewPostActivity" />
-        <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>
-
+        <activity android:name=".groupDetailsActivity.MembersDetailsActivity" />
+        <activity android:name=".feedback.FeedbackActivity" />
+        <activity android:name=".feedback.NewFeedbackActivity"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

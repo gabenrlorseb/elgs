@@ -20,14 +20,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.smartphone.feedback.FeedbackActivity;
 import com.legs.unijet.smartphone.post.NewPostActivity;
 import com.legs.unijet.smartphone.post.PostAdapter;
 import com.legs.unijet.smartphone.post.PostSample;
@@ -37,7 +36,6 @@ import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 import com.legs.unijet.smartphone.utils.BachecaUtils;
-import com.legs.unijet.smartphone.utils.MainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,7 +72,8 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Course course;
-    String  courseUID;
+    String courseUID;
+    String reference = "courses";
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
@@ -85,6 +84,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
     private ArrayList<PostSample> fetchedPosts;
     BachecaUtils postFetcher;
     ProgressDialog dialog;
+    TextView rating;
 
 
 
@@ -96,6 +96,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
         super.onCreate(savedInstance);
         setContentView(R.layout.collapsing_toolbar_layout_sample);
         recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
+        rating = findViewById(R.id.toolbar_additional_infos);
 
         final Bundle args = getIntent().getExtras();
 
@@ -110,7 +111,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -181,7 +182,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                     collapsingToolbar.setTitle(course.getName());
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                     final FloatingActionButton fab = findViewById(R.id.common_fab);
@@ -304,7 +305,36 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                                     });
                                 }
                             }
+                            database.child("feedbacks").child(courseUID).addValueEventListener(new ValueEventListener() {
+
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    float total = 0;
+                                    float count = 0;
+                                    float average;
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        float rating = postSnapshot.child("rating").getValue(Float.class);
+                                        total += rating;
+                                        count++;
+                                    }
+                                    average = total / count;
+                                    rating.setText(String.valueOf(average));
+                                }
+
+//Intent i = new Intent(FeedbackActivity.this, GroupActivity.class);
+//i.putExtra("rating", average);
+
+
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
+
+
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -344,6 +374,17 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
             public void onClick(View v) {
                 Intent i = new Intent (CourseDetailsActivity.this, NewPostActivity.class);
                 i.putExtra("key", courseUID);
+                startActivity(i);
+            }
+        });
+        TextView rating = findViewById(R.id.toolbar_additional_infos);
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (CourseDetailsActivity.this, FeedbackActivity.class);
+                i.putExtra("key", courseUID);
+                i.putExtra("reference",reference);
+                i.putExtra("Name", args.getString("CName"));
                 startActivity(i);
             }
         });

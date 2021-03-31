@@ -3,6 +3,7 @@ package com.legs.unijet.tabletversion.courseDetailsActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,7 +28,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.legs.unijet.tabletversion.feedback.FeedbackActivity;
 import com.legs.unijet.tabletversion.post.NewPostActivity;
+import com.legs.unijet.tabletversion.post.PostAdapter;
+import com.legs.unijet.tabletversion.post.PostSample;
+import com.legs.unijet.tabletversion.utils.BachecaUtils;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.profile.User;
@@ -38,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,17 +69,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class  CourseDetailsActivity extends Fragment {
+public class  CourseDetailsActivity extends Fragment implements BachecaUtils.FinishCallback<Boolean>{
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Course course;
     String courseUID;
+    String reference = "courses";
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+    RecyclerView recyclerViewBacheca;
+    TextView rating;
+    private PostAdapter postAdapter;
+
+    private ArrayList<PostSample> fetchedPosts;
+
+    BachecaUtils postFetcher;
+
+    ProgressDialog dialog;
 
 
 
@@ -95,6 +111,8 @@ String professor = bundle.getString("professor");*/
             String professor = args.getString("professor");
         }
         final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
+        recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
+        rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
 
         final int[] NumberOfMembers = new int[1];
 
@@ -105,7 +123,7 @@ String professor = bundle.getString("professor");*/
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -170,7 +188,7 @@ String professor = bundle.getString("professor");*/
                     collapsingToolbar.setTitle(course.getName());
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child("courses").orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.common_fab);
@@ -291,6 +309,33 @@ String professor = bundle.getString("professor");*/
                                     });
                                 }
                             }
+                            database.child("feedbacks").child(courseUID).addValueEventListener(new ValueEventListener() {
+
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    float total = 0;
+                                    float count = 0;
+                                    float average;
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        float rating = postSnapshot.child("rating").getValue(Float.class);
+                                        total += rating;
+                                        count++;
+                                    }
+                                    average = total / count;
+                                    rating.setText(String.valueOf(average));
+                                }
+
+//Intent i = new Intent(FeedbackActivity.this, GroupActivity.class);
+//i.putExtra("rating", average);
+
+
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
 
                         @Override
@@ -331,6 +376,17 @@ String professor = bundle.getString("professor");*/
             public void onClick(View v) {
                 Intent i = new Intent (getActivity(), NewPostActivity.class);
                 i.putExtra("key", courseUID);
+                startActivity(i);
+            }
+        });
+        TextView rating = view.findViewById(R.id.toolbar_additional_infos);
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (getActivity(), FeedbackActivity.class);
+                i.putExtra("key", courseUID);
+                i.putExtra("reference", reference);
+                i.putExtra("Name", args.getString("CName"));
                 startActivity(i);
             }
         });
@@ -502,6 +558,15 @@ String professor = bundle.getString("professor");*/
 
         }
 
+    @Override
+    public void onComplete(Boolean result) {
+        dialog.dismiss();
+        fetchedPosts = new ArrayList<>();
+        fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
+
+
+    }
 
     }
 
