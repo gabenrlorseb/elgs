@@ -149,8 +149,7 @@ public class ProjectsFragment extends Fragment {
                             for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                 if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                                     for (Project project : projects) {
-                                        if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())
-                                                && project.getGroup().equals(group.getName())) {
+                                        if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())) {
                                             String namesString = project.getName();
                                             //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                             String mail = project.getGroup();

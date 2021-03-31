@@ -3,6 +3,7 @@ package com.legs.unijet.tabletversion.project;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -26,12 +27,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.legs.unijet.tabletversion.feedback.FeedbackActivity;
 import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,7 +54,10 @@ import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.tabletversion.group.Group;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.post.NewPostActivity;
+import com.legs.unijet.tabletversion.post.PostAdapter;
+import com.legs.unijet.tabletversion.post.PostSample;
 import com.legs.unijet.tabletversion.profile.User;
+import com.legs.unijet.tabletversion.utils.BachecaUtils;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -63,18 +69,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ProjectDetailsActivity extends Fragment {
+public class ProjectDetailsActivity extends Fragment implements BachecaUtils.FinishCallback<Boolean>{
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Project project;
-    String  projectUID;
+    String projectUID;
     String groupUID;
+    String reference = "projects";
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
     ImageView headerProPic;
     Boolean isAuthor;
+    RecyclerView recyclerViewBacheca;
+    TextView rating;
+    private PostAdapter postAdapter;
+
+    private ArrayList<PostSample> fetchedPosts;
+
+    BachecaUtils postFetcher;
+
+    ProgressDialog dialog;
 
 
     @Override
@@ -93,6 +109,8 @@ public class ProjectDetailsActivity extends Fragment {
         }
 
         final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
+        recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
+        rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
 
         final int[] NumberOfMembers = new int[1];
 
@@ -104,7 +122,7 @@ public class ProjectDetailsActivity extends Fragment {
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child("projects").orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -185,7 +203,7 @@ public class ProjectDetailsActivity extends Fragment {
                     collapsingToolbar.setTitle(project.getName());
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
-                    database3.child("projects").orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
                         final FloatingActionButton fab = view.findViewById(R.id.common_fab);
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -246,6 +264,33 @@ public class ProjectDetailsActivity extends Fragment {
                                     }
                                 });
                             }
+
+                            database.child("feedbacks").child(projectUID).addValueEventListener(new ValueEventListener() {
+
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    float total = 0;
+                                    float count = 0;
+                                    float average;
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        float rating = postSnapshot.child("rating").getValue(Float.class);
+                                        total += rating;
+                                        count++;
+                                    }
+                                    average = total / count;
+                                    rating.setText(String.valueOf(average));
+                                }
+
+
+
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
                         }
 
                         @Override
@@ -282,6 +327,17 @@ public class ProjectDetailsActivity extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent (getActivity(), NewPostActivity.class);
                 i.putExtra("key", projectUID);
+                startActivity(i);
+            }
+        });
+        TextView rating = view.findViewById(R.id.toolbar_additional_infos);
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (getActivity(), FeedbackActivity.class);
+                i.putExtra("key", projectUID);
+                i.putExtra("reference", reference);
+                i.putExtra("Name", args.getString("PName"));
                 startActivity(i);
             }
         });
@@ -423,6 +479,16 @@ return view;
                 Toast.makeText(getContext(), getString(R.string.error_profile_picture), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    @Override
+    public void onComplete(Boolean result) {
+        dialog.dismiss();
+        fetchedPosts = new ArrayList<>();
+        fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
+
 
     }
 

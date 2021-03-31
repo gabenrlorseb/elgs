@@ -51,6 +51,7 @@
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
+ import com.legs.unijet.tabletversion.feedback.FeedbackActivity;
  import com.legs.unijet.tabletversion.group.Group;
  import com.legs.unijet.tabletversion.post.NewPostActivity;
  import com.legs.unijet.tabletversion.post.Post;
@@ -77,7 +78,8 @@
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
     Group group;
-    String  groupUID;
+    String groupUID;
+    String reference = "groups";
     Bitmap bitmap;
     Uri selectedImageUri;
     StorageReference storageReference;
@@ -89,6 +91,7 @@
      private ArrayList<PostSample> fetchedPosts;
      BachecaUtils postFetcher;
      ProgressDialog dialog;
+     TextView rating;
 
 
 
@@ -111,6 +114,7 @@
          }
 
          recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
+         rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
 
         final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
 
@@ -129,7 +133,7 @@
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        database.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -190,7 +194,7 @@
 
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child("groups").orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.common_fab);
@@ -330,6 +334,34 @@
                     });
 
                 }
+
+                database.child("feedbacks").child(groupUID).addValueEventListener(new ValueEventListener() {
+
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        float total = 0;
+                        float count = 0;
+                        float average;
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            float rating = postSnapshot.child("rating").getValue(Float.class);
+                            total += rating;
+                            count++;
+                        }
+                        average = total / count;
+                        rating.setText(String.valueOf(average));
+                    }
+
+//Intent i = new Intent(FeedbackActivity.this, GroupActivity.class);
+//i.putExtra("rating", average);
+
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
 
@@ -361,6 +393,17 @@
                 startActivity(i);
             }
         });
+         TextView rating = view.findViewById(R.id.toolbar_additional_infos);
+         rating.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent i = new Intent (getActivity(), FeedbackActivity.class);
+                 i.putExtra("key", groupUID);
+                 i.putExtra("reference",reference);
+                 i.putExtra("Name", args.getString("GName"));
+                 startActivity(i);
+             }
+         });
 
 
         final StorageReference fileRef = storageReference.child(groupUID + ".jpg");

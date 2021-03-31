@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="attach_an_image">Attach an image</string>
+    <string name="attach_a_document">Attach a document</string>
+</resources>
