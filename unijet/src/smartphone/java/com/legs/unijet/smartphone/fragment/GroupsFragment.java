@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +33,7 @@ import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GroupsFragment extends Fragment {
     ImageView item;
@@ -47,6 +50,8 @@ public class GroupsFragment extends Fragment {
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    TextView notFoundTextView;
+    RelativeLayout notFoundLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,9 +62,12 @@ public class GroupsFragment extends Fragment {
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.groups_page, container, false);
         populateList();
-        item = (ImageView) view.findViewById(R.id.groups_search_button);
+        item = view.findViewById(R.id.groups_search_button);
 
-        searchEditText = (EditText) view.findViewById(R.id.groups_search_edit_text);
+        searchEditText = view.findViewById(R.id.groups_search_edit_text);
+
+        notFoundTextView = view.findViewById(R.id.not_found_textview);
+        notFoundLayout = view.findViewById(R.id.not_found);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +184,13 @@ public class GroupsFragment extends Fragment {
 
                 })
         );
+        if (groups.isEmpty()) {
+            notFoundLayout.setVisibility(View.VISIBLE);
+            String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
+            int randomIndex = new Random().nextInt(notFoundStrings.length);
+            String randomName = notFoundStrings[randomIndex];
+            notFoundTextView.setText(randomName);
+        }
     }
 
 
