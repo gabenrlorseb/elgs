@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +33,7 @@ import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -45,6 +48,8 @@ public class CoursesFragment extends Fragment {
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    TextView notFoundTextView;
+    RelativeLayout notFoundLayout;
 
     RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
@@ -60,9 +65,9 @@ public class CoursesFragment extends Fragment {
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.courses_page, container, false);
         populateList();
-        item = (ImageView) view.findViewById(R.id.courses_search_button);
+        item = view.findViewById(R.id.courses_search_button);
 
-        searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
+        searchEditText = view.findViewById(R.id.courses_search_edit_text);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +76,8 @@ public class CoursesFragment extends Fragment {
             }
         });
 
+        notFoundTextView = view.findViewById(R.id.not_found_textview);
+        notFoundLayout = view.findViewById(R.id.not_found);
 
         searchEditText.addTextChangedListener(new TextWatcher() {
 
@@ -108,7 +115,8 @@ public class CoursesFragment extends Fragment {
                                 courses.add(new Course (name, academicYear, department, email, members));
                                 //courseList.add(new CourseSample(namesString, mail));
                             }
-buildRecyclerView();
+                    buildRecyclerView();
+
             }
 
             @Override
@@ -212,6 +220,13 @@ private void fragmentStudent(){
 
                 })
         );
+        if (courses.isEmpty()) {
+            notFoundLayout.setVisibility(View.VISIBLE);
+            String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
+            int randomIndex = new Random().nextInt(notFoundStrings.length);
+            String randomName = notFoundStrings[randomIndex];
+            notFoundTextView.setText(randomName);
+        }
     }
 
 

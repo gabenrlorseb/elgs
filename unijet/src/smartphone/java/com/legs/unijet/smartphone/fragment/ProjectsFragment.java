@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +35,7 @@ import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ProjectsFragment extends Fragment {
 ImageView item;
@@ -47,6 +50,9 @@ EditText searchEditText;
     DatabaseReference db2 = FirebaseDatabase.getInstance ().getReference ();
     RecyclerView mRecyclerView;
     private ProjectAdapter mAdapter;
+
+    TextView notFoundTextView;
+    RelativeLayout notFoundLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,9 @@ EditText searchEditText;
                 searchEditText.setVisibility(View.VISIBLE);
             }
         });
+
+        notFoundTextView = view.findViewById(R.id.not_found_textview);
+        notFoundLayout = view.findViewById(R.id.not_found);
 
 
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -240,6 +249,14 @@ EditText searchEditText;
 
                 })
         );
+        if (projects.isEmpty()) {
+            notFoundLayout.setVisibility(View.VISIBLE);
+            String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
+            int randomIndex = new Random().nextInt(notFoundStrings.length);
+            String randomName = notFoundStrings[randomIndex];
+            notFoundTextView.setText(randomName);
+        }
     }
+
 }
 
