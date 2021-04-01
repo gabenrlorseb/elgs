@@ -29,10 +29,6 @@ public class FeedbackActivity  extends AppCompatActivity implements FeedbackUtil
     private ArrayList<FeedbackSample> fetchedPosts;
 
     FeedbackUtils postFetcher;
-    Feedback feedback;
-    Course course;
-    String  courseUID;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     RecyclerView recyclerViewBacheca;
     TextView name;
     TextView averageNumber;

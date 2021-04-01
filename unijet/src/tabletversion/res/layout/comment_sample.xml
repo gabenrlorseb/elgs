@@ -37,16 +37,6 @@
             android:text="Placeholder Text"
             android:textSize="@dimen/common_default_title_text_size" />
 
-        <TextView
-            card_view:layout_constraintTop_toTopOf="@id/member_icon_placeholder"
-            card_view:layout_constraintBottom_toBottomOf="@id/member_icon_placeholder"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            android:id="@+id/post_time_elapsed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="XXX min"
-            android:textSize="@dimen/common_default_subtitle_text_size" />
 
 
 
@@ -56,9 +46,22 @@
             android:layout_marginHorizontal="11dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/common_default_subtitle_text_size"
             card_view:layout_constraintStart_toStartOf="@id/member_icon_placeholder"
             card_view:layout_constraintTop_toBottomOf="@id/member_icon_placeholder"
             android:text="prova prova"/>
+
+        <TextView
+            android:id="@+id/date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginHorizontal="11dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_default_subtitle_text_size"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/post_text"
+            android:text="12/12/2012 19:38"/>
 
         <TextView
             android:id="@+id/likes_number"

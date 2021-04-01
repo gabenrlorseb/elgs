@@ -116,7 +116,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     project = postSnapshot.getValue(Project.class);
 
-                    projectUID = snapshot.getKey();
+                    projectUID = postSnapshot.getKey();
                     postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getApplicationContext(), "students");
                     postFetcher.run();
                     String group = project.getGroup();

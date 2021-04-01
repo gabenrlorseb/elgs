@@ -44,6 +44,8 @@
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.smartphone.Group;
  import com.legs.unijet.smartphone.R;
+ import com.legs.unijet.smartphone.comment.CommentActivity;
+ import com.legs.unijet.smartphone.comment.NewCommentActivity;
  import com.legs.unijet.smartphone.feedback.FeedbackActivity;
  import com.legs.unijet.smartphone.post.NewPostActivity;
  import com.legs.unijet.smartphone.post.PostAdapter;
@@ -417,6 +419,10 @@ rating = findViewById(R.id.toolbar_additional_infos);
                 startActivity(i);
             }
         });
+
+        //Intent i = new Intent(GroupActivity.this, PostAdapter.class);
+        //i.putExtra("reference" ,reference);
+
 
 
 
