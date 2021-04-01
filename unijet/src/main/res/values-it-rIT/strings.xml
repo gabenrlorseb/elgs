@@ -151,5 +151,11 @@
         <item>Oh no, non c\'è niente qui!</item>
         <item>Beh, qui non c\'è niente</item>
     </string-array>
+    <string name="post_a_comment">Pubblica un commento</string>
+    <string name="post_now">Pubblica</string>
+    <string name="write_something_here">Scrivi qualcosa</string>
+    <string name="comments">Commenti</string>
+    <string name="new_feedback">Nuovo Feedback</string>
+    <string name="new_comment">Nuovo Commento</string>
 
 </resources>

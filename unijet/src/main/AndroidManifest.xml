@@ -42,6 +42,8 @@
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>
         <activity android:name=".feedback.FeedbackActivity" />
         <activity android:name=".feedback.NewFeedbackActivity"/>
+        <activity android:name=".comment.CommentActivity" />
+        <activity android:name=".comment.NewCommentActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

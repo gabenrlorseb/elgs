@@ -1,6 +1,7 @@
 package com.legs.unijet.tabletversion.post;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.comment.CommentActivity;
 import com.legs.unijet.tabletversion.utils.SlidingImagesAdapter;
 
 import java.io.File;
@@ -47,6 +50,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public TextView date_time;
         public TextView number_of_comments;
         public TextView number_of_likes;
+        public EditText comment;
         public boolean liked;
         public ImageView like;
         public ViewPager image_area;
@@ -64,6 +68,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             like = itemView.findViewById(R.id.like_button);
             image_area = itemView.findViewById(R.id.post_images);
             documents_area = itemView.findViewById(R.id.documents_area);
+            comment = itemView.findViewById(R.id.comment_compose_box);
         }
 
     }
@@ -112,6 +117,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 }
             }
         });
+
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (v.getContext(), CommentActivity.class);
+                i.putExtra("authorImage" , currentItem.getAuthor_propic());
+                i.putExtra("author", currentItem.getAuthor_name());
+                i.putExtra("key", currentItem.getIdentifier());
+                i.putExtra("UID", currentItem.getBachecaIdentifier());
+                i.putExtra("postContent", currentItem.getPost_content());
+                v.getContext().startActivity(i);
+            }
+        });
+
 
         if (currentItem.getHasPictures() > 0) {
 

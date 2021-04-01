@@ -1,38 +1,35 @@
-package com.legs.unijet.smartphone.feedback;
+package com.legs.unijet.tabletversion.comment;
 
 import java.util.ArrayList;
 
-public class Feedback {
-
+public class Comment {
     String author;
     Boolean isDeleted;
-    float rating;
     ArrayList<String> likes;
-    String commentSectionID;
     String likesSectionId;
+    String commentSectionID;
     private long timestamp;
     String content;
 
-    public Feedback() {
+    public Comment() {
     }
 
-    public Feedback(String author, Boolean isDeleted, ArrayList<String> likes, long timestamp, String commentSectionID, String likesSectionId, String content, float rating) {
+    public Comment(String author, Boolean isDeleted, ArrayList<String> likes, long timestamp, String commentSectionID, String likesSectionId, String content) {
         this.author = author;
         this.isDeleted = isDeleted;
         this.likes = likes;
-        this.timestamp = timestamp;
         this.commentSectionID = commentSectionID;
+        this.timestamp = timestamp;
         this.likesSectionId = likesSectionId;
         this.content = content;
-        this.rating = rating;
     }
 
-    public String getLikesSectionId() {
-        return likesSectionId;
+    public String getCommentSectionId() {
+        return commentSectionID;
     }
 
-    public void setLikesSectionId(String likesSectionId) {
-        this.likesSectionId = likesSectionId;
+    public void setCommentSectionId(String commentSectionID) {
+        this.commentSectionID = commentSectionID;
     }
 
 
@@ -76,23 +73,5 @@ public class Feedback {
     public void setLikes(ArrayList<String> likes) {
         this.likes = likes;
     }
-
-    public String getCommentSectionID() {
-        return commentSectionID;
-    }
-
-    public float getRating(){
-        return rating;
-    }
-
-    public void setRating(float rating){
-    this.rating = rating;
-    }
-
-    public void setCommentSectionID(String commentSectionID) {
-        this.commentSectionID = commentSectionID;
-    }
-
-
 
 }

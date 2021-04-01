@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         app:titleTextAppearance="@style/TitleBarTextAppearance"
         app:titleTextColor="?colorOnPrimary"
-        app:title="@string/new_feedback"
+        app:title="New Comment"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
@@ -62,23 +62,6 @@
         app:layout_constraintTop_toBottomOf="@id/post_content"
         app:layout_constraintEnd_toEndOf="@id/post_content"
         app:layout_constraintStart_toStartOf="@id/post_content">
-
-        <LinearLayout
-            android:id="@+id/attach_feedback"
-            android:orientation="horizontal"
-            android:layout_marginTop="7dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RatingBar
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:saveEnabled="true"
-                android:numStars="5"/>
-
-
-        </LinearLayout>
 
         <TextView
             android:id="@+id/added_feedback_indication"

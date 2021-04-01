@@ -132,6 +132,8 @@ String professor = bundle.getString("professor");*/
                         isAuthor = true;
                     }
                     courseUID = postSnapshot.getKey();
+                    postFetcher = new BachecaUtils(courseUID, recyclerViewBacheca, getActivity(), "students");
+                    postFetcher.run();
                     ArrayList<String> addedMails = course.getMembers();
 
                     NumberOfMembers[0] = addedMails.size() + 1;

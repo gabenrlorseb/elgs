@@ -129,6 +129,8 @@ public class ProjectDetailsActivity extends Fragment implements BachecaUtils.Fin
                     project = postSnapshot.getValue(Project.class);
 
                     projectUID = postSnapshot.getKey();
+                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getActivity(), "students");
+                    postFetcher.run();
                     String group = project.getGroup();
 
 
