@@ -8,7 +8,7 @@
         android:id="@+id/toolbar"
         app:titleTextAppearance="@style/TitleBarTextAppearance"
         app:titleTextColor="?colorOnPrimary"
-        app:title="Feedbacks"
+        app:title="@string/feedbacks"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"

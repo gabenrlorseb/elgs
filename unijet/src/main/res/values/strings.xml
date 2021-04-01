@@ -154,6 +154,13 @@
     <string name="group_registration">Group Registration made successfully</string>
     <string name="group_elimination">Elimination from Group made successfully</string>
     <string name="remove_project">Remove Project</string>
+    <string name="post_a_comment">Post a comment</string>
+    <string name="post_now">POST NOW</string>
+    <string name="write_something_here">Write something here</string>
+    <string name="comments">Comments</string>
+    <string name="new_feedback">New Feedback</string>
+    <string name="feedbacks" translatable="false">Feedbacks</string>
+    <string name="new_comment">New Comment</string>
 
     <string-array name="not_found_strings">
         <item>If you were looking for the void, you found it!</item>
