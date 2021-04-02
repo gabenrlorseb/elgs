@@ -137,7 +137,7 @@ public class NewCommentActivity extends AppCompatActivity {
 
                 long ut2 = System.currentTimeMillis() / 1000L;
 
-                comment = new Comment(user.getEmail(), false,  new ArrayList<String>(), ut2, uniqueId, uniqueId,postContent.getText().toString());
+                comment = new Comment(user.getEmail(), false,  new ArrayList<String>(), ut2, uniqueId,postContent.getText().toString());
                 final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference("likes/");
 
 

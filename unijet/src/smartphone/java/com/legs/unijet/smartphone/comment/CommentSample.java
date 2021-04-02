@@ -10,19 +10,17 @@ public class CommentSample {
     private String author_name;
     private String post_content;
     private String identifier;
-    private String bachecaIdentifier;
     private long timestamp;
     private int likes;
     private boolean isLiked;
 
 
-    public CommentSample(Bitmap author_propic, String author_name, String post_content, String postIdentifier, String bachecaIdentifier,  long timestamp, int likes, boolean isLiked) {
+    public CommentSample(Bitmap author_propic, String author_name, String post_content, String postIdentifier,  long timestamp, int likes, boolean isLiked) {
         this.author_propic = author_propic;
         this.author_name = author_name;
         this.post_content = post_content;
         this.timestamp = timestamp;
         this.likes = likes;
-        this.bachecaIdentifier = bachecaIdentifier;
         this.identifier = postIdentifier;
         this.isLiked = isLiked;
     }
@@ -85,11 +83,4 @@ public class CommentSample {
         this.identifier = identifier;
     }
 
-    public String getBachecaIdentifier() {
-        return bachecaIdentifier;
-    }
-
-    public void setBachecaIdentifier(String bachecaIdentifier) {
-        this.bachecaIdentifier = bachecaIdentifier;
-    }
 }

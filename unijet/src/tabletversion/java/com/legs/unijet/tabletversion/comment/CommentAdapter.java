@@ -26,7 +26,6 @@ public static class CommentViewHolder extends  RecyclerView.ViewHolder{
     public TextView author_name;
     public TextView post_content;
     public TextView date_time;
-    public TextView number_of_comments;
     public TextView number_of_likes;
     public boolean liked;
     public ImageView like;
@@ -38,7 +37,6 @@ public static class CommentViewHolder extends  RecyclerView.ViewHolder{
         author_name = itemView.findViewById(R.id.member_name);
         post_content = itemView.findViewById(R.id.post_text);
         date_time = itemView.findViewById(R.id.date_time);
-        number_of_comments = itemView.findViewById(R.id.comments_number);
         number_of_likes = itemView.findViewById(R.id.likes_number);
         like = itemView.findViewById(R.id.like_button);
 

@@ -105,7 +105,7 @@ public class CommentUtils {
 
 
 
-                    final CommentSample postToBeAdded = new CommentSample(authorBitmap[0], authorName[0], newComment.getContent(), newComment.getCommentSectionId(),groupUID, newComment.getTimestamp(), numberOfLikes[0], false);
+                    final CommentSample postToBeAdded = new CommentSample(authorBitmap[0], authorName[0], newComment.getContent() ,groupUID, newComment.getTimestamp(), numberOfLikes[0], false);
 
 
                     database3.orderByChild("email").equalTo(newComment.getAuthor()).addListenerForSingleValueEvent(new ValueEventListener() {
