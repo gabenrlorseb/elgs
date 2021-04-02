@@ -9,10 +9,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.legs.unijet.smartphone.LoginActivity;
-import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.splashactivity.SplashActivity;
-import com.legs.unijet.smartphone.utils.MainActivity;
+import com.legs.unijet.tabletversion.LoginActivity;
+import com.legs.unijet.tabletversion.splashactivity.SplashActivity;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 
 public class LauncherActivity extends AppCompatActivity {
 

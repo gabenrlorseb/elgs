@@ -18,8 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.legs.unijet.tabletversion.BaseActivity;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.LoginActivity;
 
 public class RegisterActivityStart extends AppCompatActivity {
     TextView btn;
@@ -64,7 +64,7 @@ public class RegisterActivityStart extends AppCompatActivity {
         haveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (RegisterActivityStart.this, BaseActivity.class);
+                Intent intent = new Intent (RegisterActivityStart.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

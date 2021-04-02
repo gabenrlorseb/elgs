@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.tabletversion.BaseActivity;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.tabletversion.profile.User;
 
 import java.util.Calendar;
@@ -63,7 +63,7 @@ public class RegProfActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (RegProfActivity.this, BaseActivity.class));
+                startActivity(new Intent (RegProfActivity.this, LoginActivity.class));
 
             }
         });
@@ -120,7 +120,7 @@ public class RegProfActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkCrededentials ();
-                startActivity (new Intent (RegProfActivity.this, BaseActivity.class));
+                startActivity (new Intent (RegProfActivity.this, LoginActivity.class));
             }
         });
 

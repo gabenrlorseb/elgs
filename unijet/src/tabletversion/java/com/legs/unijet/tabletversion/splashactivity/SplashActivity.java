@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.button.MaterialButton;
-import com.legs.unijet.tabletversion.BaseActivity;
+import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.smartphone.R;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (splashScreenViewPager.getCurrentItem() + 1 < splashScreenAdapter.getItemCount()){
                     splashScreenViewPager.setCurrentItem(splashScreenViewPager.getCurrentItem() + 1);
                 } else {
-                    startActivity(new Intent(getApplicationContext(), BaseActivity.class));
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
                 }
             }
