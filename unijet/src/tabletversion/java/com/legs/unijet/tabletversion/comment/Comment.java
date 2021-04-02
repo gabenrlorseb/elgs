@@ -7,31 +7,20 @@ public class Comment {
     Boolean isDeleted;
     ArrayList<String> likes;
     String likesSectionId;
-    String commentSectionID;
     private long timestamp;
     String content;
 
     public Comment() {
     }
 
-    public Comment(String author, Boolean isDeleted, ArrayList<String> likes, long timestamp, String commentSectionID, String likesSectionId, String content) {
+    public Comment(String author, Boolean isDeleted, ArrayList<String> likes, long timestamp, String likesSectionId, String content) {
         this.author = author;
         this.isDeleted = isDeleted;
         this.likes = likes;
-        this.commentSectionID = commentSectionID;
         this.timestamp = timestamp;
         this.likesSectionId = likesSectionId;
         this.content = content;
     }
-
-    public String getCommentSectionId() {
-        return commentSectionID;
-    }
-
-    public void setCommentSectionId(String commentSectionID) {
-        this.commentSectionID = commentSectionID;
-    }
-
 
 
     public String getContent() {
