@@ -164,29 +164,6 @@ public class CreateProject extends AppCompatActivity {
             }
         });
 
-
-    db.child("students").addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for  (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            if(user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                for (Course course : courses) {
-                    if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
-                        String spinnerName = course.getName() + " " + course.getAcademicYear();
-                        spinnerCourses.add(spinnerName);
-                    }
-                }
-            }
-        }ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(CreateProject.this, android.R.layout.simple_spinner_item, spinnerCourses);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        inputCourse.setAdapter(arrayAdapter);
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-
-        }
-    });
 }
 
 private void populateSpinnerGroup (){
