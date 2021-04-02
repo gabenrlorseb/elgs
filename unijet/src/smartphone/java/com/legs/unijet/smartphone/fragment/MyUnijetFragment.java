@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,11 +27,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.view.View;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.legs.unijet.smartphone.BaseActivity;
+import com.legs.unijet.smartphone.LoginActivity;
 import com.legs.unijet.smartphone.profile.EditProfile;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.profile.User;
@@ -161,7 +158,7 @@ public class MyUnijetFragment extends Fragment {
 
     public void logout (){
         FirebaseAuth.getInstance().signOut ();
-        startActivity (new Intent(this.getContext(), BaseActivity.class));
+        startActivity (new Intent(this.getContext(), LoginActivity.class));
     }
 
     @Override

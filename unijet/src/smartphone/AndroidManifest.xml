@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.legs.unijet.smartphone"
-    >
+    package="com.legs.unijet.smartphone">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
-
-
-
-
-        <activity
-            android:name=".splashactivity.SplashActivity"
-            android:label="@string/app_name">
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity" />
+        <activity
+            android:name=".splashactivity.SplashActivity"
+            android:label="@string/app_name">
+
+        </activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".registerActivity.RegisterActivityStart" />
         <activity android:name=".registerActivity.RegStudentActivity" />
         <activity android:name=".registerActivity.RegProfActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".utils.MainActivity"
             android:exported="true" />
         <activity android:name=".createGroupActivity.CreateGroup" />
-        <activity android:name=".CreateCourse" />
-        <activity android:name=".CreateProject" />
-        <activity android:name=".AuthorCourseManageActivity" />
-        <activity android:name=".EditProfile" />
+        <activity android:name=".course.CreateCourse" />
+        <activity android:name=".project.CreateProject" />
+        <activity android:name=".courseDetailsActivity.AuthorCourseManageActivity" />
+        <activity android:name=".profile.EditProfile" />
         <activity android:name=".courseDetailsActivity.CourseDetailsActivity" />
         <activity android:name=".groupDetailsActivity.GroupActivity" />
         <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
         <activity android:name=".project.ProjectDetailsActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
-        <activity android:name=".groupDetailsActivity.MembersDetailsActivity"/>
+        <activity android:name=".groupDetailsActivity.MembersDetailsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

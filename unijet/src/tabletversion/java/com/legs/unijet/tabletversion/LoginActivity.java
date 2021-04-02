@@ -1,7 +1,9 @@
-package com.legs.unijet.tabletversion;
+package com.legs.unijet.smartphone;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,12 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.legs.unijet.tabletversion.registerActivity.RegisterActivityStart;
-import com.legs.unijet.smartphone.R;
-import com.legs.unijet.tabletversion.utils.MainActivity;
+import com.legs.unijet.smartphone.registerActivity.RegisterActivityStart;
+import com.legs.unijet.smartphone.utils.MainActivity;
 
-
-public class BaseActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword;
     TextView forgotTextLink;
     Button btnLogin,register_button;
@@ -32,6 +32,11 @@ public class BaseActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ProgressBar progressBar;
     TextView btn;
+    PackageManager packageManager;
+
+
+    SharedPreferences sp = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -57,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
         // progressBar=findViewById (R.id.progressBar);
 
 
-
+        sp = getSharedPreferences(getPackageName(), MODE_PRIVATE);
 
         register_button.setOnClickListener (new View.OnClickListener () {
 
@@ -65,7 +70,7 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity (new Intent (BaseActivity.this, RegisterActivityStart.class));
+                startActivity (new Intent (LoginActivity.this, RegisterActivityStart.class));
 
             }
         });
@@ -82,7 +87,7 @@ public class BaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (TextUtils.isEmpty (password)) {
-                    inputPassword.setError ("Password must be 7 Characters");
+                    inputPassword.setError ("Please enter a password");
                     return;
                 }
 
@@ -90,13 +95,14 @@ public class BaseActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful ()) {
-                            Toast.makeText (BaseActivity.this, "Login  effetuato con sucesso", Toast.LENGTH_SHORT).show ();
+                            SharedPreferences.Editor pe = sp.edit();
+                            pe.putBoolean("firstRun", false);
+                            pe.apply();
+                            Toast.makeText (LoginActivity.this, "Login  effetuato con sucesso", Toast.LENGTH_SHORT).show ();
                             startActivity (new Intent (getApplicationContext (), MainActivity.class));
                         } else {
                             Log.d ("TAG", "onComplete: failed");
-                            Toast.makeText (BaseActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
-
-
+                            Toast.makeText (LoginActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
                         }
 
                     }
@@ -124,17 +130,7 @@ public class BaseActivity extends AppCompatActivity {
             showError (inputEmail, "Your email is not valid");
         } else if (password.isEmpty () || password.length () < 7) {
             showError (inputPassword, "Your password  must be 7 characters");
-        } else {
-            /*LoadingBar.setTitle ("Registration");
-            LoadingBar.setMessage ("please wait check your credentials");
-            LoadingBar.setCanceledOnTouchOutside (false);
-            LoadingBar.show ();*/
-
-
-
-
         }
-
 
     }
 
