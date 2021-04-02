@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.tabletversion;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,8 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.legs.unijet.smartphone.registerActivity.RegisterActivityStart;
-import com.legs.unijet.smartphone.utils.MainActivity;
+import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.registerActivity.RegisterActivityStart;
+import com.legs.unijet.tabletversion.utils.MainActivity;
+
 
 public class LoginActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword;

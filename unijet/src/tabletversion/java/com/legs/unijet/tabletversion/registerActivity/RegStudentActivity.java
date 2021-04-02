@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.tabletversion.BaseActivity;
+import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.profile.User;
 
@@ -62,7 +62,7 @@ public class RegStudentActivity  extends RegisterActivityStart {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent (RegStudentActivity.this, BaseActivity.class));
+                startActivity(new Intent (RegStudentActivity.this, LoginActivity.class));
 
             }
         });
@@ -117,7 +117,7 @@ public class RegStudentActivity  extends RegisterActivityStart {
             @Override
             public void onClick(View v) {
                 checkCrededentials ();
-                startActivity (new Intent (RegStudentActivity.this, BaseActivity.class));
+                startActivity (new Intent (RegStudentActivity.this, LoginActivity.class));
             }
         });
 

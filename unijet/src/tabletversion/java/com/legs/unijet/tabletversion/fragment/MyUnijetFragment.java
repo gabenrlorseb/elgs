@@ -33,7 +33,9 @@ import com.google.firebase.database.core.view.View;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.legs.unijet.tabletversion.BaseActivity;
+
+
+import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.tabletversion.profile.EditProfile;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.GsonParser;
@@ -161,7 +163,7 @@ public class MyUnijetFragment extends Fragment {
 
     public void logout (){
         FirebaseAuth.getInstance().signOut ();
-        startActivity (new Intent(this.getContext(), BaseActivity.class));
+        startActivity (new Intent(this.getContext(), LoginActivity.class));
     }
 
     @Override

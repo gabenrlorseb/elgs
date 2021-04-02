@@ -17,34 +17,34 @@
 
         <activity
 
-            android:name=".splashactivity.SplashActivity"
+            android:name="com.legs.unijet.tabletversion.splashactivity.SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity" />
-        <activity android:name=".registerActivity.RegisterActivityStart" />
-        <activity android:name=".registerActivity.RegStudentActivity" />
-        <activity android:name=".registerActivity.RegProfActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.LoginActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.registerActivity.RegisterActivityStart" />
+        <activity android:name="com.legs.unijet.tabletversion.registerActivity.RegStudentActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.registerActivity.RegProfActivity" />
         <activity
-            android:name=".utils.MainActivity"
+            android:name="com.legs.unijet.tabletversion.utils.MainActivity"
 
             android:exported="true"/>
-        <activity android:name=".createGroupActivity.CreateGroup" />
-        <activity android:name=".course.CreateCourse" />
-        <activity android:name=".project.CreateProject" />
-        <activity android:name=".courseDetailsActivity.AuthorCourseManageActivity" />
-        <activity android:name=".profile.EditProfile" />
-        <activity android:name=".groupDetailsActivity.AuthorGroupManageActivity" />
-        <activity android:name=".createGroupActivity.CreateGroupStart" />
-        <activity android:name=".post.NewPostActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.createGroupActivity.CreateGroup" />
+        <activity android:name="com.legs.unijet.tabletversion.course.CreateCourse" />
+        <activity android:name="com.legs.unijet.tabletversion.project.CreateProject" />
+        <activity android:name="com.legs.unijet.tabletversion.courseDetailsActivity.AuthorCourseManageActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.profile.EditProfile" />
+        <activity android:name="com.legs.unijet.tabletversion.groupDetailsActivity.AuthorGroupManageActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart" />
+        <activity android:name="com.legs.unijet.tabletversion.post.NewPostActivity" />
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity" />
-        <activity android:name=".feedback.FeedbackActivity" />
-        <activity android:name=".feedback.NewFeedbackActivity"/>
-        <activity android:name=".comment.CommentActivity"/>
-        <activity android:name=".comment.NewCommentActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.feedback.FeedbackActivity" />
+        <activity android:name="com.legs.unijet.tabletversion.feedback.NewFeedbackActivity"/>
+        <activity android:name="com.legs.unijet.tabletversion.comment.CommentActivity"/>
+        <activity android:name="com.legs.unijet.tabletversion.comment.NewCommentActivity" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
