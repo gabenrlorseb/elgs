@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone;
+package com.legs.unijet.tabletversion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.legs.unijet.tabletversion.LoginActivity;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.splashactivity.SplashActivity;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 
