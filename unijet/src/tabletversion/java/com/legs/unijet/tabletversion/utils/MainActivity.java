@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new MyUnijetFragment(), "mynujet");
+        loadFragment(new MyUnijetFragment());
         navigation.setSelectedItemId(R.id.myunijet_tab);
 
         SensorManager sm = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -115,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-                    loadFragment(new MyUnijetFragment(), "myunijet");
+                    loadFragment(getVisibleFragment());
             }
         };
 
@@ -143,19 +142,19 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.myunijet_tab:
                     fragment = new MyUnijetFragment();
-                        loadFragment(fragment, "myunijet");
+                        loadFragment(fragment);
                     return true;
                 case R.id.projects_tab:
                     fragment = new ProjectsFragment();
-                        loadFragment(fragment, "projects");
+                        loadFragment(fragment);
                     return true;
                 case R.id.courses_tab:
                     fragment = new CoursesFragment();
-                    loadFragment(fragment, "courses");
+                    loadFragment(fragment);
                     return true;
                 case R.id.groups_tab:
                     fragment = new GroupsFragment();
-                    loadFragment(fragment, "groups");
+                    loadFragment(fragment);
                     return true;
 
             }
@@ -166,15 +165,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void loadFragment(Fragment fragment, String tag_name) {
+    private void loadFragment(Fragment fragment) {
 
-        if (!fragment.isInLayout()) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment, tag_name);
-
+            transaction.replace(R.id.fragment_container, fragment);
             transaction.addToBackStack(fragment.getTag());
+            transaction.setReorderingAllowed(true);
             transaction.commit();
-        }
+
 
     }
 
