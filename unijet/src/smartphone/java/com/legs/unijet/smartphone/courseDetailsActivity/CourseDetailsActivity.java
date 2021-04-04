@@ -85,6 +85,8 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
     BachecaUtils postFetcher;
     ProgressDialog dialog;
     TextView rating;
+    RelativeLayout postLayout;
+    EditText postNow;
 
 
 
@@ -97,6 +99,9 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
         setContentView(R.layout.collapsing_toolbar_layout_sample);
         recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
         rating = findViewById(R.id.toolbar_additional_infos);
+        postLayout = findViewById(R.id.area_post);
+        postNow = findViewById(R.id.post_update_editText);
+
 
         final Bundle args = getIntent().getExtras();
 
@@ -118,6 +123,10 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                     course = postSnapshot.getValue(Course.class);
                     if (user.getEmail().equals(course.getEmail())) {
                         isAuthor = true;
+                    }
+                    else{
+                     postLayout.setVisibility(View.GONE);
+                     postNow.setVisibility(View.GONE);
                     }
                     courseUID = postSnapshot.getKey();
                     postFetcher = new BachecaUtils(courseUID, recyclerViewBacheca, getApplicationContext(), "teachers");
@@ -358,7 +367,8 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
             }
         });
 
-        RelativeLayout postLayout = findViewById(R.id.area_post);
+
+
         postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -368,7 +378,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
             }
         });
 
-        EditText postNow = findViewById(R.id.post_update_editText);
+
         postNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,6 +387,9 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                 startActivity(i);
             }
         });
+
+
+
         TextView rating = findViewById(R.id.toolbar_additional_infos);
         rating.setOnClickListener(new View.OnClickListener() {
             @Override

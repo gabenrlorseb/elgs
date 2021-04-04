@@ -43,6 +43,7 @@ public class CreateGroupStart extends AppCompatActivity  {
     private MemberCheckListAdapter mAdapter;
 
     EditText searchEditText;
+    DatabaseReference userReference;
 
 
     @Override
@@ -123,7 +124,15 @@ public class CreateGroupStart extends AppCompatActivity  {
 
     private void populateList() {
         final User[] userProfile = new User[1];
-        DatabaseReference userReference = FirebaseDatabase.getInstance ().getReference ("students");
+        String reference = null;
+        if (user.getEmail().contains("@uniba.it")){
+        reference = "teachers" ;
+        userReference = FirebaseDatabase.getInstance ().getReference (reference);
+        } else if (user.getEmail().contains("@studenti.uniba.it")){
+            reference = "students" ;
+            userReference = FirebaseDatabase.getInstance ().getReference (reference);
+        }
+
         userReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -137,7 +146,7 @@ public class CreateGroupStart extends AppCompatActivity  {
             }
         });
         names = new ArrayList<>();
-        db.child ("students").addValueEventListener (new ValueEventListener() {
+        db.child (reference).addValueEventListener (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
