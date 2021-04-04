@@ -1,14 +1,10 @@
 package com.legs.unijet.smartphone.post;
 
-import android.app.Application;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -19,28 +15,27 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.comment.Comment;
 import com.legs.unijet.smartphone.comment.CommentActivity;
-import com.legs.unijet.smartphone.comment.NewCommentActivity;
-import com.legs.unijet.smartphone.feedback.FeedbackActivity;
+import com.legs.unijet.smartphone.profile.EditProfile;
 import com.legs.unijet.smartphone.utils.SlidingImagesAdapter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -99,8 +94,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(final PostViewHolder holder, final int position) {
 
+        File outputDir = holder.author_propic.getContext().getCacheDir();
+
         final PostSample currentItem = sampleList.get(position);
-        holder.author_propic.setImageBitmap(currentItem.getAuthor_propic());
+
+
+        final File localpropic = new File(outputDir, "propic" + currentItem.getAuthor_key() +".bmp");
+        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(currentItem.getAuthor_key() + ".jpg");
+        if (!localpropic.exists()) {
+            fileRef.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    holder.author_propic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.author_propic.setImageResource(R.drawable.ic_generic_user_avatar);
+                }
+            });
+        } else {
+            holder.author_propic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+        }
+
+
+
         holder.author_name.setText(currentItem.getAuthor_name());
         holder.post_content.setText(currentItem.getPost_content());
         holder.number_of_likes.setText(Integer.toString(currentItem.getLikes()));
@@ -128,7 +146,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             @Override
             public void onClick(View v) {
              Intent i = new Intent (v.getContext(), CommentActivity.class);
-             i.putExtra("authorImage" , currentItem.getAuthor_propic());
+             if (localpropic.exists()) {
+                 i.putExtra("authorBitmap", localpropic.getAbsolutePath());
+             }
              i.putExtra("author", currentItem.getAuthor_name());
              i.putExtra("key", currentItem.getIdentifier());
              i.putExtra("UID", currentItem.getBachecaIdentifier());
@@ -142,7 +162,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             final ViewPager layout = holder.image_area;
             layout.setVisibility(View.VISIBLE);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
             final ArrayList<Bitmap> fetchedImages = new ArrayList<>();
 
@@ -154,7 +173,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setImageResource(R.drawable.ic_file_document);
                 StorageReference fs = FirebaseStorage.getInstance().getReference("posts/" + currentItem.getBachecaIdentifier() + "/" + currentItem.getIdentifier()).child("pic" + i);
-                File outputDir = holder.author_propic.getContext().getCacheDir();
+
                 final File localFile = new File(outputDir, "pic" + i + currentItem.getTimestamp() +".bmp");
                 if (localFile.exists()) {
                     Bitmap tempImage= BitmapFactory.decodeFile(localFile.getAbsolutePath());
