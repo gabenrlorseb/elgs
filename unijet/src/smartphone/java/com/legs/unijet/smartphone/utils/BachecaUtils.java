@@ -32,6 +32,7 @@ import com.legs.unijet.smartphone.profile.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 
@@ -182,7 +183,6 @@ public class BachecaUtils implements Runnable {
                                 });
 
 
-                                Log.v("AVVISO", "STO PER AGGIUNGER ALL'ARRAYLIST RECYCLERVIEW");
 
                                     fetchedPosts.add(postToBeAdded);
 
@@ -191,8 +191,8 @@ public class BachecaUtils implements Runnable {
 
                             }
 
+                            Collections.sort(fetchedPosts, new CustomComparator());
 
-                            Collections.reverse(fetchedPosts);
                             Log.v("Attenzione", String.valueOf(fetchedPosts.size()));
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
                             PostAdapter postAdapter = new PostAdapter(fetchedPosts);
