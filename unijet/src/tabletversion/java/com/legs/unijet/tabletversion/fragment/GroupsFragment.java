@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -52,6 +54,7 @@ public class GroupsFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     TextView notFoundTextView;
     RelativeLayout notFoundLayout;
+    static boolean isSinglePane = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -209,10 +212,28 @@ public class GroupsFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), GroupActivity.class);
-                        i.putExtra("GName", mAdapter.returnTitle(position));
-                        i.putExtra("owner", mAdapter.returnOwner(position));
-                        view.getContext().startActivity(i);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("GName", mAdapter.returnTitle(position));
+                        bundle.putString("owner", mAdapter.returnOwner(position));
+
+                        if (isSinglePane) {
+                            Fragment fragment;
+                            fragment = new GroupActivity();
+                            fragment.setArguments(bundle);
+                            if (searchEditText.getVisibility() == View.VISIBLE) {
+                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                        getContext().INPUT_METHOD_SERVICE);
+                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
+                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fragment_container, fragment);
+                            transaction.commit();
+                        } else {
+                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
+
+                        }
                     }
 
                     @Override
@@ -222,14 +243,8 @@ public class GroupsFragment extends Fragment {
 
                 })
         );
-        if (groups.isEmpty()) {
-            notFoundLayout.setVisibility(View.VISIBLE);
-            String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
-            int randomIndex = new Random().nextInt(notFoundStrings.length);
-            String randomName = notFoundStrings[randomIndex];
-            notFoundTextView.setText(randomName);
-        }
     }
+
 
 
 }
