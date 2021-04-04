@@ -3,6 +3,7 @@ package com.legs.unijet.smartphone.comment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,9 +24,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.utils.CommentUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CommentActivity  extends AppCompatActivity implements CommentUtils.FinishCallback<Boolean>  {
@@ -32,8 +39,9 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
     CommentUtils postFetcher;
     RecyclerView recyclerViewBacheca;
     TextView name;
-    ImageView image;
+    ImageView image, authorImage;
     TextView content;
+    FirebaseUser fbUser;
 
 
     ProgressDialog dialog;
@@ -45,17 +53,43 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
         recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
         name = findViewById(R.id.member_name);
         content = findViewById(R.id.post_text);
-        image = findViewById(R.id.member_icon);
+        authorImage = findViewById(R.id.member_icon);
+        image = findViewById(R.id.member_icon_1);
 
         Intent i = getIntent();
-        Bitmap bitmap = (Bitmap) i.getParcelableExtra("authorImage");
 
         final Bundle args = getIntent().getExtras();
 
+        File outputDir = getApplicationContext().getCacheDir();
 
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (getIntent().hasExtra("authorBitmap")) {
+            authorImage.setImageBitmap(BitmapFactory.decodeFile(args.getString("authorBitmap")));
+        } else {
+            authorImage.setImageResource(R.drawable.ic_generic_user_avatar);
+        }
+
+        final File localpropic = new File(outputDir, "propic" + fbUser.getUid()  +".bmp");
+        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(fbUser.getUid() + ".jpg");
+        if (!localpropic.exists()) {
+            fileRef.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    image.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    image.setImageResource(R.drawable.ic_generic_user_avatar);
+                }
+            });
+        } else {
+            image.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+        }
 
         name.setText(args.getString("author"));
-        image.setImageBitmap(bitmap);
+
         content.setText(args.getString("postContent"));
         final String UID = args.getString("UID");
         String reference = "groups/" + UID + "/";

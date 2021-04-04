@@ -104,8 +104,6 @@ public class BachecaUtils implements Runnable {
                     final Post newPost = postSnapshot.getValue(Post.class);
 
 
-                    final Bitmap[] authorBitmap = new Bitmap[1];
-
                     final int numberOfPics = newPost.getHasPicture();
                     final int numberOfDocs = newPost.getHasDocument();
                     final int[] numberOfLikes = new int[1];
@@ -146,7 +144,10 @@ public class BachecaUtils implements Runnable {
 
 
 
-                    final PostSample postToBeAdded = new PostSample(authorBitmap[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, newPost.getCommentSectionID(), groupUID, newPost.getTimestamp(), numberOfLikes[0], false, numberOfComments[0]);
+                    final PostSample postToBeAdded = new PostSample(authorKey[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, newPost.getCommentSectionID(), groupUID, newPost.getTimestamp(), numberOfLikes[0], false, numberOfComments[0]);
+
+
+
 
 
 
@@ -161,6 +162,7 @@ public class BachecaUtils implements Runnable {
                                 newSB.append(user.getName());
                                 newSB.append(" ");
                                 newSB.append(user.getSurname());
+                                postToBeAdded.setAuthor_key(authorKey[0]);
                                 authorName[0] = newSB.toString();
                                 final int[] numberOfComments = {0};
 
@@ -168,7 +170,6 @@ public class BachecaUtils implements Runnable {
 
                                 postToBeAdded.setAuthor_name(authorName[0]);
 
-                                postToBeAdded.setAuthor_propic(authorBitmap[0]);
 
                                 database.child("comments").orderByKey().equalTo(newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
                                     @Override
