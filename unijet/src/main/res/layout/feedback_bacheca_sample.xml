@@ -7,7 +7,6 @@
     card_view:cardCornerRadius="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/button_with_stroke"
         android:elevation="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
