@@ -154,7 +154,7 @@ public class CreateProject extends AppCompatActivity {
             if(user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                 for (Course course : courses) {
                     if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())) {
-                        String spinnerName = course.getName() + " " + course.getAcademicYear();
+                        String spinnerName = course.getName();
                         spinnerCourses.add(spinnerName);
                     }
                 }

@@ -56,7 +56,7 @@ public class CoursesFragment extends Fragment {
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-static boolean isSinglePane = true;
+    static boolean isSinglePane = true;
     RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
 
@@ -254,25 +254,5 @@ static boolean isSinglePane = true;
     }
 
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-        {
-            new CoursesFragment();
-        }else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
-        {
-            new CoursesFragment();
-        }
-    }
-
-    public static boolean isPortrait(Context context) {
-
-        return context.getResources().getBoolean(R.bool.is_portrait);
-    }
 
 }
-
-
-
-

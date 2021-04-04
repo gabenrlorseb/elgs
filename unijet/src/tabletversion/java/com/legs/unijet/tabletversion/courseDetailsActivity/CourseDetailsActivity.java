@@ -83,6 +83,9 @@ public class  CourseDetailsActivity extends Fragment implements BachecaUtils.Fin
     Boolean isAuthor;
     RecyclerView recyclerViewBacheca;
     TextView rating;
+    RelativeLayout postLayout;
+    EditText postNow;
+
     private PostAdapter postAdapter;
 
     private ArrayList<PostSample> fetchedPosts;
@@ -113,7 +116,8 @@ String professor = bundle.getString("professor");*/
         final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
         recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
         rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
-
+        postLayout = view.findViewById(R.id.area_post);
+        postNow = view.findViewById(R.id.post_update_editText);
         final int[] NumberOfMembers = new int[1];
 
         isAuthor = false;
@@ -131,6 +135,12 @@ String professor = bundle.getString("professor");*/
                     if (user.getEmail().equals(course.getEmail())) {
                         isAuthor = true;
                     }
+
+                    else{
+                        postLayout.setVisibility(View.GONE);
+                        postNow.setVisibility(View.GONE);
+                    }
+
                     courseUID = postSnapshot.getKey();
                     postFetcher = new BachecaUtils(courseUID, recyclerViewBacheca, getActivity(), "students");
                     postFetcher.run();
@@ -362,7 +372,6 @@ String professor = bundle.getString("professor");*/
             }
         });
 
-        RelativeLayout postLayout = view.findViewById(R.id.area_post);
         postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -372,7 +381,7 @@ String professor = bundle.getString("professor");*/
             }
         });
 
-        EditText postNow = view.findViewById(R.id.post_update_editText);
+
         postNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
