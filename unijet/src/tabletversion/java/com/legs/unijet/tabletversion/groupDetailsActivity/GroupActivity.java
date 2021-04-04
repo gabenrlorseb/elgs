@@ -52,6 +52,7 @@
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
  import com.legs.unijet.tabletversion.feedback.FeedbackActivity;
+ import com.legs.unijet.tabletversion.fragment.GroupsFragment;
  import com.legs.unijet.tabletversion.group.Group;
  import com.legs.unijet.tabletversion.post.NewPostActivity;
  import com.legs.unijet.tabletversion.post.Post;
@@ -73,7 +74,7 @@
  import java.util.ArrayList;
  import java.util.Objects;
 
- public class  GroupActivity extends Fragment implements BachecaUtils.FinishCallback<Boolean>{
+ public class GroupActivity extends Fragment implements BachecaUtils.FinishCallback<Boolean>{
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -92,6 +93,8 @@
      BachecaUtils postFetcher;
      ProgressDialog dialog;
      TextView rating;
+     RelativeLayout postLayout;
+     EditText postNow;
 
 
 
@@ -115,6 +118,9 @@
 
          recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
          rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
+
+         postLayout = view.findViewById(R.id.area_post);
+         postNow = view.findViewById(R.id.post_update_editText);
 
         final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
 
@@ -141,6 +147,13 @@
                     if (user.getEmail().equals(group.getAuthor())) {
                         isAuthor = true;
                     }
+
+                    if (!user.getEmail().equals(group.getAuthor()) && !group.getRecipients().contains(user.getEmail()))
+                    {
+                        postLayout.setVisibility(View.GONE);
+                        postNow.setVisibility(View.GONE);
+                    }
+
                     groupUID = postSnapshot.getKey();
                     postFetcher = new BachecaUtils(groupUID, recyclerViewBacheca, getActivity(), "students");
                     postFetcher.run();
@@ -373,8 +386,6 @@
 
 
 
-
-        RelativeLayout postLayout = (RelativeLayout) view.findViewById(R.id.area_post);
         postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -384,7 +395,7 @@
             }
         });
 
-        EditText postNow = (EditText) view.findViewById(R.id.post_update_editText);
+
         postNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
