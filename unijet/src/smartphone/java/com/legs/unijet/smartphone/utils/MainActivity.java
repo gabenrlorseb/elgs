@@ -109,16 +109,6 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.myunijet_tab);
 
 
-        m_sensorEventListener = new OrientationEventListener(getApplicationContext()) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                loadFragment(new MyUnijetFragment(), "myunijet", false);
-                navigation.setSelectedItemId(R.id.myunijet_tab);
-            }
-
-        };
-
-        m_sensorEventListener.enable();
 
     }
 

@@ -29,6 +29,8 @@
         <activity android:name=".registerActivity.RegProfActivity" />
         <activity
             android:name=".utils.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:label="@string/app_name"
             android:exported="true" />
         <activity android:name=".createGroupActivity.CreateGroup" />
         <activity android:name=".course.CreateCourse" />
