@@ -175,50 +175,23 @@ public class MyUnijetFragment extends Fragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("students");
         DatabaseReference userRef = ref.child(user.getUid());
-        final StorageReference[] fileRef = {storageReference[0].child(userRef + ".jpg")};
 
-        final Bitmap[] bitmap = new Bitmap[1];
-        File cachedProPic = context.getFilesDir();
-        final File f = new File(cachedProPic, "profile-pic.jpg");
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(f);
-            bitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (fis != null) {
-            ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-            if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
-                fileRef[0].getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
-                        bitmap[0] = BitmapFactory.decodeFile(f.getAbsolutePath());
-                        FileOutputStream fos;
-                        try {
-                            fos = new FileOutputStream(f);
-                            bitmap[0].compress(Bitmap.CompressFormat.JPEG, 90, fos);
-                            fos.flush();
-                            fos.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
-                    }
-                });
-            } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
-                bitmap[0] = BitmapFactory.decodeStream(fis);
-                profileAvatar.setImageBitmap(bitmap[0]);
-            }
+        final File localpropic = new File(context.getCacheDir(), "propic" + user.getUid() +".bmp");
+        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
+        if (!localpropic.exists()) {
+            fileRef.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
+                }
+            });
+        } else {
+            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
         }
     }
 
