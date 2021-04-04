@@ -128,16 +128,26 @@ public class GroupsFragment extends Fragment {
             }
 
         });
+        if (user.getEmail().contains("@studenti.uniba.it")){
+            fragmentStudent();
+        } else if (user.getEmail().contains("@uniba.it")){
+            fragmentProfessor();
+        }
 
+    }
+
+
+    public void fragmentProfessor(){
         fullSampleList = new ArrayList();
-        db.child("students").addValueEventListener(new ValueEventListener() {
+        db.child("teachers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 fullSampleList.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                         for (Group group : groups) {
-                            if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())
+                                    && group.getAuthor().contains("@uniba.it")) {
                                 String namesString = group.getName();
                                 //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                 String mail = group.getAuthor();
@@ -157,8 +167,36 @@ public class GroupsFragment extends Fragment {
         });
 
     }
+    public void fragmentStudent(){
+        fullSampleList = new ArrayList();
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                fullSampleList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                        for (Group group : groups) {
+                            if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())
+                                    && group.getAuthor().contains("@studenti.uniba.it")) {
+                                String namesString = group.getName();
+                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                                String mail = group.getAuthor();
 
+                                fullSampleList.add(new CourseSample(namesString, mail));
+                            }
 
+                        }
+                    }
+                    buildRecyclerView();
+                }
+            }
+            @Override
+            public void onCancelled (@NonNull DatabaseError error){
+
+            }
+        });
+
+    }
 
 
     private void buildRecyclerView() {

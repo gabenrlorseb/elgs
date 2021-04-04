@@ -126,14 +126,23 @@ public class CreateGroup extends AppCompatActivity {
     }
 
     void createGroup() {
-
+        DatabaseReference userReference = FirebaseDatabase.getInstance ().getReference ();
         final String name = setname.getText ().toString ();
         if (name.isEmpty ()) {
             showError (setname, getString(R.string.group_name_error));
         } else {
             final User[] thisUser = new User[1];
             final String email = user.getEmail();
-            DatabaseReference userReference = FirebaseDatabase.getInstance ().getReference ("students");
+            String reference = null;
+            if (user.getEmail().contains("@uniba.it")){
+                reference = "teachers" ;
+                userReference = FirebaseDatabase.getInstance ().getReference (reference);
+            } else if (user.getEmail().contains("@studenti.uniba.it")){
+                reference = "students" ;
+                userReference = FirebaseDatabase.getInstance ().getReference (reference);
+            }
+
+            userReference = FirebaseDatabase.getInstance ().getReference (reference);
             userReference.orderByChild("email").equalTo(user.getEmail()).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

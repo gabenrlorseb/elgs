@@ -76,6 +76,9 @@
     Boolean isAuthor;
      RecyclerView recyclerViewBacheca;
      TextView rating;
+     RelativeLayout postLayout;
+     EditText postNow;
+
      private PostAdapter postAdapter;
 
      private ArrayList<PostSample> fetchedPosts;
@@ -93,7 +96,8 @@
 
         recyclerViewBacheca = findViewById(R.id.recyclerview_posts);
 rating = findViewById(R.id.toolbar_additional_infos);
-
+        postLayout = findViewById(R.id.area_post);
+        postNow = findViewById(R.id.post_update_editText);
 
 
         final Bundle args = getIntent().getExtras();
@@ -136,6 +140,12 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
                     if (user.getEmail().equals(group.getAuthor())) {
                         isAuthor = true;
+                    }
+
+                    if (!user.getEmail().equals(group.getAuthor()) && !group.getRecipients().contains(user.getEmail()))
+                    {
+                        postLayout.setVisibility(View.GONE);
+                        postNow.setVisibility(View.GONE);
                     }
                     groupUID = postSnapshot.getKey();
 
@@ -388,7 +398,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
         });
         
 
-        RelativeLayout postLayout = findViewById(R.id.area_post);
+
         postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -398,7 +408,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
             }
         });
 
-        EditText postNow = findViewById(R.id.post_update_editText);
+
         postNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
