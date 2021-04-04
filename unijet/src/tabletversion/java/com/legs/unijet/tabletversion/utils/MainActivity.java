@@ -1,13 +1,14 @@
 package com.legs.unijet.tabletversion.utils;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,9 +31,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.course.CreateCourse;
 import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.fragment.CoursesFragment;
 import com.legs.unijet.tabletversion.fragment.GroupsFragment;
 import com.legs.unijet.tabletversion.fragment.MyUnijetFragment;
@@ -45,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
     BottomSheetDialog bottomSheetDialog;
     DatabaseReference reference;
     String email;
-    SensorEventListener m_sensorEventListener;
+    OrientationEventListener m_sensorEventListener;
 
-    Fragment mCurrentFrag;
+    String currentTag;
+    FragmentTransaction supportFt;
+
 
     boolean doubleBackToExitPressedOnce = false;
 
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         String userId;
         FirebaseUser user;
         user = FirebaseAuth.getInstance().getCurrentUser ();
-
+        userId=user.getUid ();
         email=user.getEmail();
 
         if(email.contains("@studenti.uniba.it")) {
@@ -98,41 +102,37 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new MyUnijetFragment());
+        loadFragment(new MyUnijetFragment (), "myunijet", false);
         navigation.setSelectedItemId(R.id.myunijet_tab);
 
-        SensorManager sm = (SensorManager)getSystemService(SENSOR_SERVICE);
-        sm.registerListener(m_sensorEventListener, sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);
 
-        m_sensorEventListener = new SensorEventListener() {
+        m_sensorEventListener = new OrientationEventListener(getApplicationContext()) {
             @Override
-            public void onSensorChanged(SensorEvent event) {
-
+            public void onOrientationChanged(int orientation) {
+                loadFragment(new MyUnijetFragment(), "myunijet", false);
+                navigation.setSelectedItemId(R.id.myunijet_tab);
             }
 
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                    loadFragment(getVisibleFragment());
-            }
         };
 
+        m_sensorEventListener.enable();
 
-
-        /*loadFragment(new ProjectsFragment());
-        navigation.setSelectedItemId(R.id.projects_tab);
-
-        loadFragment(new CoursesFragment());
-        navigation.setSelectedItemId(R.id.courses_tab);
-
-        loadFragment(new GroupsFragment());
-        navigation.setSelectedItemId(R.id.myunijet_tab);*/
     }
 
-
-
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -142,19 +142,19 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.myunijet_tab:
                     fragment = new MyUnijetFragment();
-                        loadFragment(fragment);
+                    loadFragment(fragment, "myunijet", false);
                     return true;
                 case R.id.projects_tab:
-                    fragment = new ProjectsFragment();
-                        loadFragment(fragment);
+                    fragment = new ProjectsFragment ();
+                    loadFragment(fragment, "projects", false);
                     return true;
                 case R.id.courses_tab:
-                    fragment = new CoursesFragment();
-                    loadFragment(fragment);
+                    fragment = new CoursesFragment ();
+                    loadFragment(fragment, "courses", false);
                     return true;
                 case R.id.groups_tab:
-                    fragment = new GroupsFragment();
-                    loadFragment(fragment);
+                    fragment = new GroupsFragment ();
+                    loadFragment(fragment, "groups", false);
                     return true;
 
             }
@@ -165,16 +165,31 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void loadFragment(Fragment fragment) {
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(fragment.getTag());
-            transaction.setReorderingAllowed(true);
+
+
+    private void loadFragment(Fragment fragment, String tagName, boolean reloading) {
+
+        if (!reloading) {
+            Fragment actualFragment = getSupportFragmentManager().findFragmentByTag(tagName);
+            if (actualFragment != null && actualFragment.isVisible()) {
+                return;
+            }
+        }
+        currentTag = tagName;
+        Log.v("attenzione", currentTag);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, tagName);
+        transaction.addToBackStack(tagName);
+        if (!fm.isDestroyed()) {
+
             transaction.commit();
-
-
+        }
     }
+
+
+
 
     private void setBottomButtonsStudent (View view){
 
@@ -214,10 +229,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
+
+
     }
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -237,17 +251,6 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
     }
 
-    public Fragment getVisibleFragment(){
-        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
-        List<Fragment> fragments = fragmentManager.getFragments();
-        if(fragments != null){
-            for(Fragment fragment : fragments){
-                if(fragment != null && fragment.isVisible())
-                    return fragment;
-            }
-        }
-        return null;
-    }
 
 
 
