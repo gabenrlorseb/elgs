@@ -29,11 +29,13 @@ import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.createGroupActivity.CreateGroup;
 import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
+import com.legs.unijet.smartphone.fragment.GroupsFragment;
 import com.legs.unijet.smartphone.groupDetailsActivity.AuthorGroupManageAdapter;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.smartphone.utils.MainActivity;
 
 import java.util.ArrayList;
 
@@ -126,8 +128,8 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
                                 for (String string : removeMail) {
                                     groupMembers.remove(string);
 
-                                    db.child("group").child(groupUID).child("recipients").setValue(groupMembers);
-                                    Intent i = new Intent(AuthorGroupManageActivity.this, GroupActivity.class);
+                                    db.child("groups").child(groupUID).child("recipients").setValue(groupMembers);
+                                    Intent i = new Intent(AuthorGroupManageActivity.this, MainActivity.class);
                                     startActivity(i);
                                     //finish();
                                 }
