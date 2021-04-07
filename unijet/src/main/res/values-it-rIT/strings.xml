@@ -157,5 +157,11 @@
     <string name="comments">Commenti</string>
     <string name="new_feedback">Nuovo Feedback</string>
     <string name="new_comment">Nuovo Commento</string>
+    <string name="input_current_password">Inserisci la password corrente</string>
+    <string name="input_new_password">Inserisci la nuova password</string>
+    <string name="repeat_password">Ripeti la password</string>
+    <string name="change_password">Cambia password</string>
+    <string name="new_password">Nuova password</string>
+    <string name="old_password">Vecchia password</string>
 
 </resources>

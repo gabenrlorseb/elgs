@@ -44,6 +44,7 @@
         <activity android:name=".project.ProjectDetailsActivity" />
         <activity android:name=".createGroupActivity.CreateGroupStart" />
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity" />
+        <activity android:name=".profile.ChangePasswordActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
