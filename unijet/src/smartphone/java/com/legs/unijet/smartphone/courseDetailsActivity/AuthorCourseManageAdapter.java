@@ -20,8 +20,8 @@ import java.util.List;
 import com.legs.unijet.smartphone.R;
 
     public class AuthorCourseManageAdapter extends RecyclerView.Adapter<AuthorCourseManageAdapter.ExampleViewHolder> implements Filterable {
-        private ArrayList<UserChecklistSample> sampleList;
-        private ArrayList<UserChecklistSample> fullSampleList;
+        private final ArrayList<UserChecklistSample> sampleList;
+        private final ArrayList<UserChecklistSample> fullSampleList;
 
         public static class ExampleViewHolder extends RecyclerView.ViewHolder {
             public ImageView mImageView;
@@ -35,10 +35,6 @@ import com.legs.unijet.smartphone.R;
                 mTextView1 = itemView.findViewById(R.id.member_name);
                 mTextView2 = itemView.findViewById(R.id.post_text);
                 mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
-            }
-
-            public interface ClickInterface {
-                public void recyclerviewOnItemClick(int position);
             }
 
         }
@@ -59,7 +55,7 @@ import com.legs.unijet.smartphone.R;
             return mFilter;
         }
 
-        private Filter mFilter = new Filter() {
+        private final Filter mFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<UserChecklistSample> filteredList = new ArrayList<>();

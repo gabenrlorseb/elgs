@@ -38,7 +38,6 @@ public class RegProfActivity extends AppCompatActivity {
     Intent intent;
 
 
-    private FirebaseAuth firebaseAuth;
     private ProgressDialog LoadingBar;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,7 @@ public class RegProfActivity extends AppCompatActivity {
 
             }
         });
-        firebaseAuth = FirebaseAuth.getInstance ();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
 

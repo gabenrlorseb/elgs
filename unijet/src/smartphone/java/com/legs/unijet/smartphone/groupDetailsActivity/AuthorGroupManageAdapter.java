@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.smartphone.courseDetailsActivity.AuthorCourseManageAdapter;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
@@ -20,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupManageAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<UserChecklistSample> sampleList;
-    private ArrayList<UserChecklistSample> fullSampleList;
+    private final ArrayList<UserChecklistSample> sampleList;
+    private final ArrayList<UserChecklistSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -35,10 +34,6 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
             mTextView1 = itemView.findViewById(R.id.member_name);
             mTextView2 = itemView.findViewById(R.id.post_text);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
-        }
-
-        public interface ClickInterface {
-            public void recyclerviewOnItemClick(int position);
         }
 
     }
@@ -59,7 +54,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserChecklistSample> filteredList = new ArrayList<>();

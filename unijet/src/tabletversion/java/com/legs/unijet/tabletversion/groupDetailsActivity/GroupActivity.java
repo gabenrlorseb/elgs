@@ -161,7 +161,6 @@
                     NumberOfMembers[0] = addedMails.size() + 1;
                     final String[] groupAuthorName = new String[1];
 
-                    Log.v("AUTORE GRUPPO", group.getAuthor());
 
                     database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
                         @Override
@@ -175,7 +174,6 @@
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Log.v("VALORE NOME", groupAuthorName[0]);
                                         Bundle b = new Bundle();
                                         b.putSerializable("groupRecipients", group.getRecipients());
 
@@ -433,11 +431,9 @@
             ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
                 fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
                         bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                         FileOutputStream fos;
                         try {
@@ -452,12 +448,10 @@
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
                         Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }

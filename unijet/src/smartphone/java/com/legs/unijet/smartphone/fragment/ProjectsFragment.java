@@ -64,9 +64,9 @@ EditText searchEditText;
         final android.view.View view = inflater.inflate (R.layout.projects_page, container, false);
         populateList ();
 
-        item = (ImageView) view.findViewById(R.id.projects_search_button);
+        item = view.findViewById(R.id.projects_search_button);
 
-        searchEditText = (EditText) view.findViewById(R.id.projects_search_edit_text);
+        searchEditText = view.findViewById(R.id.projects_search_edit_text);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override

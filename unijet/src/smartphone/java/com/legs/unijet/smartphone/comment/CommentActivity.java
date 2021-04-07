@@ -2,7 +2,6 @@ package com.legs.unijet.smartphone.comment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +34,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class CommentActivity  extends AppCompatActivity implements CommentUtils.FinishCallback<Boolean>  {
-    private ArrayList<CommentSample> fetchedPosts;
 
     CommentUtils postFetcher;
     RecyclerView recyclerViewBacheca;
@@ -189,7 +187,7 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
     @Override
     public void onComplete(Boolean result) {
         dialog.dismiss();
-        fetchedPosts = new ArrayList<>();
+        ArrayList<CommentSample> fetchedPosts = new ArrayList<>();
         fetchedPosts.addAll(postFetcher.getFetchedPosts());
 
 

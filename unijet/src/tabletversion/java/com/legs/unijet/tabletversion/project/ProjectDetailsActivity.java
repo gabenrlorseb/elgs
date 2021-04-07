@@ -165,7 +165,6 @@ public class ProjectDetailsActivity extends Fragment implements BachecaUtils.Fin
                                             groupIndication.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    Log.v("VALORE NOME", groupName[0]);
                                                     Bundle b = new Bundle();
                                                     b.putSerializable("groupRecipients", group.getRecipients());
 
@@ -360,11 +359,9 @@ public class ProjectDetailsActivity extends Fragment implements BachecaUtils.Fin
             ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
                 fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
                         bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                         FileOutputStream fos;
                         try {
@@ -379,12 +376,10 @@ public class ProjectDetailsActivity extends Fragment implements BachecaUtils.Fin
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
                         Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }

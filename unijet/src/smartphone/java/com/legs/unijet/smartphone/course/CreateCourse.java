@@ -41,12 +41,8 @@ public class CreateCourse extends AppCompatActivity {
     Bundle bundle;
     Intent intent;
 
-    private FirebaseAuth firebaseAuth;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userId;
-
-
-    private ProgressDialog LoadingBar;
 
 
     @Override
@@ -60,14 +56,13 @@ public class CreateCourse extends AppCompatActivity {
         inputAcademicYear = findViewById (R.id.select_academic_year);
 
 
-
-        firebaseAuth = FirebaseAuth.getInstance ();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
 
 
         auth = FirebaseAuth.getInstance ();
-        LoadingBar = new ProgressDialog (CreateCourse.this);
+        ProgressDialog loadingBar = new ProgressDialog(CreateCourse.this);
         btnCreation = findViewById (R.id.creation_button);
 
 

@@ -1,19 +1,12 @@
 package com.legs.unijet.smartphone.utils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +14,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.post.Post;
@@ -29,10 +21,7 @@ import com.legs.unijet.smartphone.post.PostAdapter;
 import com.legs.unijet.smartphone.post.PostSample;
 import com.legs.unijet.smartphone.profile.User;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 
@@ -40,7 +29,6 @@ public class BachecaUtils implements Runnable {
 
     RecyclerView rvBacheca;
     Context context;
-    String type;
     String usertype;
 
     public BachecaUtils(String groupUID, RecyclerView rvBacheca, Context context, String usertype) {
@@ -48,10 +36,6 @@ public class BachecaUtils implements Runnable {
         this.groupUID = groupUID;
         this.rvBacheca = rvBacheca;
         this.usertype = usertype;
-    }
-
-    public boolean isRunning() {
-        return isRunning;
     }
 
     public void setRunning(boolean running) {
@@ -62,10 +46,6 @@ public class BachecaUtils implements Runnable {
 
     public ArrayList<PostSample> getFetchedPosts() {
         return fetchedPosts;
-    }
-
-    public void setFetchedPosts(ArrayList<PostSample> fetchedPosts) {
-        this.fetchedPosts = fetchedPosts;
     }
 
     public ArrayList<PostSample> fetchedPosts;
@@ -113,38 +93,11 @@ public class BachecaUtils implements Runnable {
                     final String[] authorName = new String[1];
                     final String[] authorKey = new String[1];
 
-                    Log.v("IDPOST", String.valueOf(groupUID));
-
-
-                    database.child("likes/" + newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            numberOfLikes[0] = (int) snapshot.getChildrenCount();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                    database.child("comments/" + newPost.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            numberOfComments[0] = (int) snapshot.getChildrenCount();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                    
 
 
 
-                    final PostSample postToBeAdded = new PostSample(authorKey[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, newPost.getCommentSectionID(), groupUID, newPost.getTimestamp(), numberOfLikes[0], false, numberOfComments[0]);
+
+                    final PostSample postToBeAdded = new PostSample(authorKey[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, newPost.getCommentSectionID(), groupUID, newPost.getTimestamp());
 
 
 
@@ -157,7 +110,6 @@ public class BachecaUtils implements Runnable {
                             for (DataSnapshot datas : snapshot3.getChildren()) {
                                 User user = datas.getValue(User.class);
                                 authorKey[0] = datas.getKey();
-                                Log.v("AVVISO", "UTENTE TROVATO SU " + datas.getKey());
                                 StringBuilder newSB = new StringBuilder();
                                 newSB.append(user.getName());
                                 newSB.append(" ");
@@ -194,7 +146,6 @@ public class BachecaUtils implements Runnable {
 
                             Collections.sort(fetchedPosts, new CustomComparator());
 
-                            Log.v("Attenzione", String.valueOf(fetchedPosts.size()));
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
                             PostAdapter postAdapter = new PostAdapter(fetchedPosts);
                             rvBacheca.setLayoutManager(mLayoutManager);
@@ -222,7 +173,7 @@ public class BachecaUtils implements Runnable {
 
 
     public interface FinishCallback<T> {
-        void onComplete(T result);
+        void onComplete();
     }
 
 

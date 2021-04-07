@@ -100,7 +100,6 @@ public class CommentUtils {
                     final String[] authorName = new String[1];
                     final String[] authorKey = new String[1];
 
-                    Log.v("IDPOST", String.valueOf(groupUID));
 
 
 
@@ -114,7 +113,6 @@ public class CommentUtils {
                             for (DataSnapshot datas : snapshot3.getChildren()) {
                                 User user = datas.getValue(User.class);
                                 authorKey[0] = datas.getKey();
-                                Log.v("AVVISO", "UTENTE TROVATO SU " + datas.getKey());
                                 StringBuilder newSB = new StringBuilder();
                                 newSB.append(user.getName());
                                 newSB.append(" ");
@@ -130,7 +128,6 @@ public class CommentUtils {
 
 
 
-                                Log.v("AVVISO", "STO PER AGGIUNGER ALL'ARRAYLIST RECYCLERVIEW");
 
                                 fetchedPosts.add(postToBeAdded);
 
@@ -139,7 +136,6 @@ public class CommentUtils {
 
 
                             Collections.reverse(fetchedPosts);
-                            Log.v("Attenzione", String.valueOf(fetchedPosts.size()));
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
                             CommentAdapter commentAdapter = new CommentAdapter(fetchedPosts);
                             rvBacheca.setLayoutManager(mLayoutManager);

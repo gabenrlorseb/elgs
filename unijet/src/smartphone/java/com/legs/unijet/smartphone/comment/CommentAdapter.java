@@ -5,15 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.feedback.FeedbackAdapter;
-import com.legs.unijet.smartphone.feedback.FeedbackSample;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

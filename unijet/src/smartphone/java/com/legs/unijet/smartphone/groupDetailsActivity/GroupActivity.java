@@ -44,8 +44,6 @@
  import com.google.firebase.storage.UploadTask;
  import com.legs.unijet.smartphone.Group;
  import com.legs.unijet.smartphone.R;
- import com.legs.unijet.smartphone.comment.CommentActivity;
- import com.legs.unijet.smartphone.comment.NewCommentActivity;
  import com.legs.unijet.smartphone.feedback.FeedbackActivity;
  import com.legs.unijet.smartphone.post.NewPostActivity;
  import com.legs.unijet.smartphone.post.PostAdapter;
@@ -80,8 +78,6 @@
      EditText postNow;
 
      private PostAdapter postAdapter;
-
-     private ArrayList<PostSample> fetchedPosts;
 
      BachecaUtils postFetcher;
 
@@ -159,7 +155,6 @@ rating = findViewById(R.id.toolbar_additional_infos);
                     NumberOfMembers[0] = addedMails.size() + 1;
                     final String[] groupAuthorName = new String[1];
 
-                    Log.v("AUTORE GRUPPO", group.getAuthor());
 
 
 
@@ -175,7 +170,6 @@ rating = findViewById(R.id.toolbar_additional_infos);
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Log.v("VALORE NOME", groupAuthorName[0]);
                                         Bundle b = new Bundle();
                                         b.putSerializable("groupRecipients", group.getRecipients());
 
@@ -293,9 +287,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
                                                             Intent intent = new Intent(GroupActivity.this, MainActivity.class);
                                                             String groupUID = postSnapshot.getKey();
                                                             ArrayList<String> courseSubscribers = group.getRecipients();
-                                                            if (courseSubscribers.contains(user.getEmail())) {
-                                                                courseSubscribers.remove(user.getEmail());
-                                                            }
+                                                            courseSubscribers.remove(user.getEmail());
                                                             database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
                                                             startActivity(intent);
                                                             return true;
@@ -453,11 +445,9 @@ rating = findViewById(R.id.toolbar_additional_infos);
             ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
                 fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
                         bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                         FileOutputStream fos;
                         try {
@@ -472,12 +462,10 @@ rating = findViewById(R.id.toolbar_additional_infos);
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
                         Toast.makeText(GroupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }
@@ -596,9 +584,9 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
 
      @Override
-     public void onComplete(Boolean result) {
+     public void onComplete() {
         dialog.dismiss();
-         fetchedPosts = new ArrayList<>();
+         ArrayList<PostSample> fetchedPosts = new ArrayList<>();
          fetchedPosts.addAll(postFetcher.getFetchedPosts());
 
 

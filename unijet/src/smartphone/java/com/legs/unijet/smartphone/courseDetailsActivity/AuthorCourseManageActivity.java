@@ -32,15 +32,10 @@ import java.util.ArrayList;
 
 public class AuthorCourseManageActivity extends AppCompatActivity {
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
     private ArrayList<UserChecklistSample> names;
-    private ArrayList<Course> courses;
     private ArrayList<String> passed_names;
-    String authorName;
-    String authorMail;
-    final StringBuilder membersEmailList = new StringBuilder();
 
     RecyclerView mRecyclerView;
     private AuthorCourseManageAdapter mAdapter;
@@ -144,7 +139,7 @@ public class AuthorCourseManageActivity extends AppCompatActivity {
 
     private void populateList() {
         names = new ArrayList<>();
-        //names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
+
         db.child("students").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

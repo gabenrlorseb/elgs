@@ -12,21 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.utils.FeedbackUtils;
 
 import java.util.ArrayList;
 
 public class FeedbackActivity  extends AppCompatActivity implements FeedbackUtils.FinishCallback<Boolean>  {
-    private ArrayList<FeedbackSample> fetchedPosts;
 
     FeedbackUtils postFetcher;
     RecyclerView recyclerViewBacheca;
@@ -122,7 +118,7 @@ public class FeedbackActivity  extends AppCompatActivity implements FeedbackUtil
     @Override
     public void onComplete(Boolean result) {
         dialog.dismiss();
-        fetchedPosts = new ArrayList<>();
+        ArrayList<FeedbackSample> fetchedPosts = new ArrayList<>();
         fetchedPosts.addAll(postFetcher.getFetchedPosts());
 
 

@@ -59,7 +59,6 @@ public class NewCommentActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String reference = "comments/" + args.getString("key") + "/";
-        Log.v("Reference", reference);
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference(reference);
 
         final StorageReference fileDatabase1 = FirebaseStorage.getInstance().getReference(reference);

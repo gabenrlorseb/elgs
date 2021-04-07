@@ -1,11 +1,6 @@
 package com.legs.unijet.smartphone.post;
 
 
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Map;
-
 public class PostSample  {
     public PostSample() {
     }
@@ -17,18 +12,15 @@ public class PostSample  {
     private String identifier;
     private String bachecaIdentifier;
 
-    public PostSample(String author_key, String author_name, String post_content, int hasPictures, int hasDocuments, String postIdentifier, String bachecaIdentifier,  long timestamp, int likes, boolean isLiked, int comments) {
+    public PostSample(String author_key, String author_name, String post_content, int hasPictures, int hasDocuments, String postIdentifier, String bachecaIdentifier,  long timestamp) {
         this.author_key = author_key;
         this.author_name = author_name;
         this.post_content = post_content;
         this.timestamp = timestamp;
-        this.likes = likes;
         this.bachecaIdentifier = bachecaIdentifier;
         this.identifier = postIdentifier;
         this.hasPictures = hasPictures;
         this.hasDocuments = hasDocuments;
-        this.isLiked = isLiked;
-        this.comments = comments;
     }
 
 

@@ -23,7 +23,7 @@ import java.util.List;
 
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> implements Filterable {
-    private ArrayList<ProjectSample> projectList;
+    private final ArrayList<ProjectSample> projectList;
 
     Bundle bundle;
     Intent intent;
@@ -55,7 +55,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<ProjectSample> filteredList = new ArrayList<>();
@@ -90,8 +90,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public ProjectViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.project_list_card, viewGroup, false);
-        ProjectViewHolder cvh = new ProjectViewHolder(v);
-        return cvh;
+        return new ProjectViewHolder(v);
     }
 
     @Override

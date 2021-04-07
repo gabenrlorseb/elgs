@@ -28,7 +28,6 @@ public class RegisterActivityStart extends AppCompatActivity {
     Button btnNext;
     FirebaseAuth auth;
     TextView haveAccount;
-    private ProgressDialog LoadingBar;
     DatabaseReference dbReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class RegisterActivityStart extends AppCompatActivity {
         auth=FirebaseAuth.getInstance () ;
 // Write a message to the database
 
-        LoadingBar= new ProgressDialog (RegisterActivityStart.this);
+        ProgressDialog loadingBar = new ProgressDialog(RegisterActivityStart.this);
         btnNext=findViewById (R.id.next_button);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,7 @@ public class RegisterActivityStart extends AppCompatActivity {
             }
         });
         auth=FirebaseAuth.getInstance();
-        LoadingBar=new ProgressDialog(RegisterActivityStart.this);
+        loadingBar =new ProgressDialog(RegisterActivityStart.this);
 
         haveAccount=findViewById(R.id.text_help);
 
