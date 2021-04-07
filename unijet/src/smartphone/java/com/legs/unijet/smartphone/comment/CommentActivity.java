@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.utils.CommentUtils;
 
@@ -42,6 +43,8 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
     ImageView image, authorImage;
     TextView content;
     FirebaseUser fbUser;
+    RelativeLayout postLayout;
+    EditText postNow;
 
 
     ProgressDialog dialog;
@@ -55,6 +58,8 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
         content = findViewById(R.id.post_text);
         authorImage = findViewById(R.id.member_icon);
         image = findViewById(R.id.member_icon_1);
+        postLayout = findViewById(R.id.area_post);
+        postNow = findViewById(R.id.post_update_editText);
 
         Intent i = getIntent();
 
@@ -100,7 +105,13 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+               Group group = snapshot.getValue(Group.class);
 
+                    if (!fbUser.getEmail().equals(group.getAuthor()) && !group.getRecipients().contains(fbUser.getEmail()))
+                    {
+                        postLayout.setVisibility(View.GONE);
+                        postNow.setVisibility(View.GONE);
+                    }
 
 
                     postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext(), "students");
@@ -154,7 +165,7 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
         });
 
 
-        RelativeLayout postLayout = findViewById(R.id.area_post);
+
         postLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +175,7 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
             }
         });
 
-        EditText postNow = findViewById(R.id.post_update_editText);
+
         postNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

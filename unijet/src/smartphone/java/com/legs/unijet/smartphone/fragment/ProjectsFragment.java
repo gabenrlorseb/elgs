@@ -106,7 +106,7 @@ EditText searchEditText;
         db.child("projects").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                projects.clear();
+                //projects.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String name = childSnapshot.child("name").getValue(String.class);
                     String course = childSnapshot.child("course").getValue(String.class);
@@ -125,9 +125,94 @@ EditText searchEditText;
         });
 
         if (user.getEmail().contains("@studenti.uniba.it")) {
-            fragmentStudent();
+            projectList = new ArrayList();
+            db.child("groups").addValueEventListener(new ValueEventListener() {
+                @Override
+
+                public void onDataChange(@NonNull DataSnapshot snapshot){
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        final Group group = childSnapshot.getValue(Group.class);
+                        db2.child("students").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                projectList.clear();
+
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+
+                                            for (Project project : projects) {
+                                                if (childSnapshot.child("email").getValue(String.class).equals(group.getAuthor())
+                                                        || group.getRecipients().contains(childSnapshot.child("email").getValue(String.class))) {
+                                                String namesString = project.getName();
+                                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                                                String mail = project.getGroup();
+                                                projectList.add(new ProjectSample(namesString, mail));
+
+                                            }
+
+
+                                        }
+                                    }
+                                    buildRecyclerView();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                }
+                @Override
+                public void onCancelled (@NonNull DatabaseError error){
+
+                }
+            });
         } else if (user.getEmail().contains("@uniba.it")) {
-            fragmentProfessor();
+            projectList = new ArrayList();
+            db.child("courses").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot){
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        final Course course = childSnapshot.getValue(Course.class);
+                        db2.child("teachers").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                projectList.clear();
+
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                                        for (Project project : projects) {
+                                            if (childSnapshot.child("email").getValue(String.class).equals(course.getEmail()))
+                                                /*|| user.getEmail().equals(course.getEmail())*/
+                                            {
+                                                String namesString = project.getName();
+                                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                                                String mail = project.getGroup();
+                                                projectList.add(new ProjectSample(namesString, mail));
+                                            }
+
+                                        }
+                                    }
+                                    buildRecyclerView();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                }
+                @Override
+                public void onCancelled (@NonNull DatabaseError error){
+
+                }
+            });
         }
 
 
@@ -135,95 +220,11 @@ EditText searchEditText;
     }
 
     private void fragmentStudent(){
-        projectList = new ArrayList();
-        db.child("groups").addValueEventListener(new ValueEventListener() {
-            @Override
 
-            public void onDataChange(@NonNull DataSnapshot snapshot){
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    final Group group = childSnapshot.getValue(Group.class);
-                    db2.child("students").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            projectList.clear();
-
-                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                                    for (Project project : projects) {
-                                        if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())) {
-                                            String namesString = project.getName();
-                                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
-                                            String mail = project.getGroup();
-
-                                            projectList.add(new ProjectSample(namesString, mail));
-                                        }
-
-                                    }
-                                }
-                                buildRecyclerView();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
-            }
-            @Override
-            public void onCancelled (@NonNull DatabaseError error){
-
-            }
-        });
     }
 
     private void fragmentProfessor(){
-        projectList = new ArrayList();
-        db.child("courses").addValueEventListener(new ValueEventListener() {
-            @Override
 
-            public void onDataChange(@NonNull DataSnapshot snapshot){
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    final Course course = childSnapshot.getValue(Course.class);
-                    db2.child("teachers").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            projectList.clear();
-
-                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
-                                    for (Project project : projects) {
-                                        if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
-                                                || user.getEmail().equals(course.getEmail()))
-                                                 {
-                                            String namesString = project.getName();
-                                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
-                                            String mail = project.getGroup();
-
-                                            projectList.add(new ProjectSample(namesString, mail));
-                                        }
-
-                                    }
-                                }
-                                buildRecyclerView();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
-            }
-            @Override
-            public void onCancelled (@NonNull DatabaseError error){
-
-            }
-        });
     }
 
     private void buildRecyclerView() {

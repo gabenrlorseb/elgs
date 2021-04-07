@@ -126,8 +126,8 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
                                 for (String string : removeMail) {
                                     groupMembers.remove(string);
 
-                                    db.child("group").child(groupUID).child("recipients").setValue(groupMembers);
-                                    Intent i = new Intent(AuthorGroupManageActivity.this, GroupActivity.class);
+                                    db.child("groups").child(groupUID).child("recipients").setValue(groupMembers);
+                                    Intent i = new Intent(AuthorGroupManageActivity.this, MainActivity.class);
                                     startActivity(i);
                                     //finish();
                                 }
