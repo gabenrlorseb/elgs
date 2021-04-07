@@ -161,6 +161,12 @@
     <string name="new_feedback">New Feedback</string>
     <string name="feedbacks" translatable="false">Feedbacks</string>
     <string name="new_comment">New Comment</string>
+    <string name="input_current_password">Input current password</string>
+    <string name="input_new_password">Input new password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_password">New password</string>
+    <string name="old_password">Old password</string>
 
     <string-array name="not_found_strings">
         <item>If you were looking for the void, you found it!</item>
