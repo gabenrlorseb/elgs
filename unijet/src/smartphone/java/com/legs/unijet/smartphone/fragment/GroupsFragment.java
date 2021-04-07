@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -45,7 +47,7 @@ public class GroupsFragment extends Fragment {
     private ArrayList<CourseSample> fullSampleList;
     private ArrayList <Group> groups;
     private ArrayList <String> members;
-    private boolean isPrivate;
+
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
@@ -107,11 +109,29 @@ public class GroupsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
 
+
+
+
+                    Boolean isPrivate = childSnapshot.child("private").getValue(Boolean.class);
                     String name = childSnapshot.child("name").getValue(String.class);
                     String owner = childSnapshot.child("author").getValue(String.class);
                     String department = childSnapshot.child("department").getValue(String.class);
+                    ArrayList<String> recipients = new ArrayList<>();
 
-                    groups.add(new Group(name, owner, members, department, isPrivate));
+
+                    if (isPrivate && !owner.equals(user.getEmail())) {
+                        for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
+
+                            Log.v("VALORE", users.getValue(String.class));
+                            if (users.getValue(String.class).equals(user.getEmail())) {
+
+                                groups.add(new Group(name, owner, members, department, true));
+                                break;
+                            }
+                        }
+                    } else {
+                        groups.add(new Group(name, owner, members, department, isPrivate));
+                    }
 
                 }
                 buildRecyclerView();
