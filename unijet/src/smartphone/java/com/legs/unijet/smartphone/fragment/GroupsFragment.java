@@ -33,7 +33,6 @@ import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -122,7 +121,6 @@ public class GroupsFragment extends Fragment {
                     if (isPrivate && !owner.equals(user.getEmail())) {
                         for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
 
-                            Log.v("VALORE", users.getValue(String.class));
                             if (users.getValue(String.class).equals(user.getEmail())) {
 
                                 groups.add(new Group(name, owner, members, department, true));

@@ -1,46 +1,29 @@
 package com.legs.unijet.smartphone.course;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.smartphone.createGroupActivity.MemberCheckListAdapter;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
-import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> implements Filterable {
-    private ArrayList<CourseSample> coursesList;
+    private final ArrayList<CourseSample> coursesList;
     Bundle bundle;
     Intent intent;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -77,7 +60,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<CourseSample> filteredList = new ArrayList<>();
@@ -112,8 +95,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public CourseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
-        CourseViewHolder svh = new CourseViewHolder(v);
-        return svh;
+        return new CourseViewHolder(v);
     }
 
 

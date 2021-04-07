@@ -165,7 +165,6 @@ String professor = bundle.getString("professor");*/
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Log.v("VALORE NOME", courseAuthorName[0]);
                                         Bundle b = new Bundle();
                                         b.putSerializable("groupRecipients", course.getMembers());
 
@@ -418,11 +417,9 @@ String professor = bundle.getString("professor");*/
             ConnectivityManager conMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
                 fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
                         bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                         FileOutputStream fos;
                         try {
@@ -437,12 +434,10 @@ String professor = bundle.getString("professor");*/
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
                         Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }

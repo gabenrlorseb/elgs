@@ -92,11 +92,9 @@ public class EditProfile extends AppCompatActivity {
             ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
                 fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
                         bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                         FileOutputStream fos;
                         try {
@@ -111,12 +109,10 @@ public class EditProfile extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
                         Toast.makeText(EditProfile.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
                 propic.setImageBitmap(bitmap);
             }

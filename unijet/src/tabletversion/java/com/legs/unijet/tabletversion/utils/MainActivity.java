@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         currentTag = tagName;
-        Log.v("attenzione", currentTag);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tagName);

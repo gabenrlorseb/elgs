@@ -24,7 +24,6 @@
      private ArrayList<String> passed_names;
 
      RecyclerView mRecyclerView;
-     private MemberNoChecklistAdapter mAdapter;
      DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
      String authorName;
@@ -90,7 +89,7 @@
          mRecyclerView = findViewById(R.id.recyclerview_details);
          mRecyclerView.setHasFixedSize(true);
          RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-         mAdapter = new MemberNoChecklistAdapter(names);
+         MemberNoChecklistAdapter mAdapter = new MemberNoChecklistAdapter(names);
          mRecyclerView.setLayoutManager(mLayoutManager);
          mRecyclerView.setAdapter(mAdapter);
      }

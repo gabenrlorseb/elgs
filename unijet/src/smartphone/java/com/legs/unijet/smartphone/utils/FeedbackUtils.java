@@ -20,9 +20,6 @@ import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.feedback.Feedback;
 import com.legs.unijet.smartphone.feedback.FeedbackAdapter;
 import com.legs.unijet.smartphone.feedback.FeedbackSample;
-import com.legs.unijet.smartphone.post.Post;
-import com.legs.unijet.smartphone.post.PostAdapter;
-import com.legs.unijet.smartphone.post.PostSample;
 import com.legs.unijet.smartphone.profile.User;
 
 import java.util.ArrayList;
@@ -102,7 +99,6 @@ public class FeedbackUtils {
                     final String[] authorName = new String[1];
                     final String[] authorKey = new String[1];
 
-                    Log.v("IDPOST", String.valueOf(groupUID));
 
 
                     database.child("likes/" + newFeedback.getCommentSectionID()).addValueEventListener(new ValueEventListener() {
@@ -143,7 +139,6 @@ public class FeedbackUtils {
                             for (DataSnapshot datas : snapshot3.getChildren()) {
                                 User user = datas.getValue(User.class);
                                 authorKey[0] = datas.getKey();
-                                Log.v("AVVISO", "UTENTE TROVATO SU " + datas.getKey());
                                 StringBuilder newSB = new StringBuilder();
                                 newSB.append(user.getName());
                                 newSB.append(" ");
@@ -170,7 +165,6 @@ public class FeedbackUtils {
                                 });
 
 
-                                Log.v("AVVISO", "STO PER AGGIUNGER ALL'ARRAYLIST RECYCLERVIEW");
 
                                 fetchedPosts.add(postToBeAdded);
 
@@ -181,7 +175,6 @@ public class FeedbackUtils {
 
 
                             Collections.reverse(fetchedPosts);
-                            Log.v("Attenzione", String.valueOf(fetchedPosts.size()));
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
                             FeedbackAdapter feedbackAdapter = new FeedbackAdapter(fetchedPosts);
                             rvBacheca.setLayoutManager(mLayoutManager);

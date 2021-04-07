@@ -45,9 +45,6 @@ public class CreateProject extends AppCompatActivity {
     String userId;
 
 
-    private ProgressDialog LoadingBar;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DatabaseReference reference;
@@ -67,7 +64,7 @@ public class CreateProject extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance ();
-        LoadingBar = new ProgressDialog (CreateProject.this);
+        ProgressDialog loadingBar = new ProgressDialog(CreateProject.this);
         btnCreation = findViewById (R.id.creation_button_project);
         btnCreation.setOnClickListener (new View.OnClickListener () {
             @Override

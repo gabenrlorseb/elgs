@@ -1,8 +1,8 @@
 package com.legs.unijet.smartphone.course;
 
 public class CourseSample {
-    private String mText1;
-    private String mText2;
+    private final String mText1;
+    private final String mText2;
 
     public CourseSample(String text1, String text2) {
         this.mText1 = text1;

@@ -2,12 +2,8 @@ package com.legs.unijet.smartphone.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,10 +33,6 @@ import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.utils.GsonParser;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class MyUnijetFragment extends Fragment {
 

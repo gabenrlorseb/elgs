@@ -2,7 +2,6 @@ package com.legs.unijet.smartphone.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +19,11 @@ import java.util.ArrayList;
 public class SlidingImagesAdapter extends PagerAdapter {
 
 
-    private ArrayList<Bitmap> IMAGES;
-    private LayoutInflater inflater;
-    private Context context;
-    private TextView indicator;
+    private final ArrayList<Bitmap> IMAGES;
+    private final LayoutInflater inflater;
 
 
     public SlidingImagesAdapter (Context context,ArrayList<Bitmap> IMAGES) {
-        this.context = context;
         this.IMAGES=IMAGES;
         inflater = LayoutInflater.from(context);
     }
@@ -47,7 +43,7 @@ public class SlidingImagesAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = inflater.inflate(R.layout.post_sliding_images_element, view, false);
 
-        indicator = imageLayout.findViewById(R.id.current_image_indicator);
+        TextView indicator = imageLayout.findViewById(R.id.current_image_indicator);
 
         if (getCount() > 1) {
             indicator.setVisibility(View.VISIBLE);

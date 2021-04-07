@@ -19,8 +19,8 @@ import java.util.List;
 
 
 public class MemberCheckListAdapter extends RecyclerView.Adapter<MemberCheckListAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<UserChecklistSample> sampleList;
-    private ArrayList<UserChecklistSample> fullSampleList;
+    private final ArrayList<UserChecklistSample> sampleList;
+    private final ArrayList<UserChecklistSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -37,7 +37,7 @@ public class MemberCheckListAdapter extends RecyclerView.Adapter<MemberCheckList
         }
 
         public interface ClickInterface {
-            public void recyclerviewOnItemClick(int position);
+            void recyclerviewOnItemClick(int position);
         }
 
     }
@@ -58,7 +58,7 @@ public class MemberCheckListAdapter extends RecyclerView.Adapter<MemberCheckList
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserChecklistSample> filteredList = new ArrayList<>();

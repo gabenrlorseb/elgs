@@ -26,8 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.feedback.Feedback;
-import com.legs.unijet.smartphone.feedback.NewFeedbackActivity;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -59,7 +57,6 @@ public class NewCommentActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String reference = "comments/" + args.getString("key") + "/";
-        Log.v("Reference", reference);
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference(reference);
 
         final StorageReference fileDatabase1 = FirebaseStorage.getInstance().getReference(reference);

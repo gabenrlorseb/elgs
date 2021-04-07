@@ -81,8 +81,6 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
     TextView rating;
     private PostAdapter postAdapter;
 
-    private ArrayList<PostSample> fetchedPosts;
-
     BachecaUtils postFetcher;
 
     ProgressDialog dialog;
@@ -153,7 +151,6 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                                             groupIndication.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    Log.v("VALORE NOME", groupName[0]);
                                                     Bundle b = new Bundle();
                                                     b.putSerializable("groupRecipients", group.getRecipients());
 
@@ -348,11 +345,9 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
             ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
             if (!netInfo.isConnected()) {
-                Log.v("AVVISO", "File has been found in cache");
                 fileRef.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.v("AVVISO", "Il file è stato scaricato dal database");
                         bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                         FileOutputStream fos;
                         try {
@@ -367,12 +362,10 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.v("AVVISO", "File could not be fetched from database");
                         Toast.makeText(ProjectDetailsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
-                Log.v("AVVISO", "File has been found in cache and internet is not available");
                 bitmap = BitmapFactory.decodeStream(fis);
                 groupPic.setImageBitmap(bitmap);
             }
@@ -472,9 +465,9 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
     }
 
     @Override
-    public void onComplete(Boolean result) {
+    public void onComplete() {
         dialog.dismiss();
-        fetchedPosts = new ArrayList<>();
+        ArrayList<PostSample> fetchedPosts = new ArrayList<>();
         fetchedPosts.addAll(postFetcher.getFetchedPosts());
 
 

@@ -57,8 +57,6 @@ public class CreateGroup extends AppCompatActivity {
     ImageView infoImageView;
     TextView infoTextView;
 
-    private ProgressDialog LoadingBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +70,7 @@ public class CreateGroup extends AppCompatActivity {
         setContentView (R.layout.create_group);
 
 
-        LoadingBar = new ProgressDialog (CreateGroup.this);
+        ProgressDialog loadingBar = new ProgressDialog(CreateGroup.this);
 
 
         assert user != null;

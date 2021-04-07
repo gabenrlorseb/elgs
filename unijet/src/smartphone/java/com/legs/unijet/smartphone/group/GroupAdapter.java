@@ -21,7 +21,7 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> implements Filterable {
 
 
-    private ArrayList<CourseSample> groupsList;
+    private final ArrayList<CourseSample> groupsList;
 
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +53,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<CourseSample> filteredList = new ArrayList<>();
@@ -90,8 +90,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     @Override
     public GroupAdapter.GroupViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
-        GroupAdapter.GroupViewHolder cvh = new GroupAdapter.GroupViewHolder (v);
-        return cvh;
+        return new GroupViewHolder (v);
     }
 
     @Override

@@ -24,15 +24,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.courseDetailsActivity.AuthorCourseManageActivity;
 import com.legs.unijet.smartphone.Group;
-import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroup;
-import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
-import com.legs.unijet.smartphone.fragment.GroupsFragment;
 import com.legs.unijet.smartphone.groupDetailsActivity.AuthorGroupManageAdapter;
 import com.legs.unijet.smartphone.course.Course;
-import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 import com.legs.unijet.smartphone.utils.MainActivity;
@@ -40,15 +34,10 @@ import com.legs.unijet.smartphone.utils.MainActivity;
 import java.util.ArrayList;
 
 public class AuthorGroupManageActivity extends AppCompatActivity {
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
     private ArrayList<UserChecklistSample> names;
-    private ArrayList<Course> courses;
     private ArrayList<String> passed_names;
-    String authorName;
-    String authorMail;
-    final StringBuilder membersEmailList = new StringBuilder();
 
     RecyclerView mRecyclerView;
     private AuthorGroupManageAdapter mAdapter;

@@ -1,44 +1,36 @@
-package com.legs.unijet.tabletversion.post;
+package com.legs.unijet.smartphone.post;
 
-import android.graphics.Bitmap;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class PostSample  {
     public PostSample() {
     }
 
-    private Bitmap author_propic;
+    private String author_key;
 
     private String author_name;
     private String post_content;
     private String identifier;
     private String bachecaIdentifier;
 
-    public PostSample(Bitmap author_propic, String author_name, String post_content, int hasPictures, int hasDocuments, String postIdentifier, String bachecaIdentifier,  long timestamp, int likes, boolean isLiked, int comments) {
-        this.author_propic = author_propic;
+    public PostSample(String author_key, String author_name, String post_content, int hasPictures, int hasDocuments, String postIdentifier, String bachecaIdentifier,  long timestamp) {
+        this.author_key = author_key;
         this.author_name = author_name;
         this.post_content = post_content;
         this.timestamp = timestamp;
-        this.likes = likes;
         this.bachecaIdentifier = bachecaIdentifier;
         this.identifier = postIdentifier;
         this.hasPictures = hasPictures;
         this.hasDocuments = hasDocuments;
-        this.isLiked = isLiked;
-        this.comments = comments;
     }
 
 
 
-    public Bitmap getAuthor_propic() {
-        return author_propic;
+    public String getAuthor_key() {
+        return author_key;
     }
 
-    public void setAuthor_propic(Bitmap author_propic) {
-        this.author_propic = author_propic;
+    public void setAuthor_key(String author_key) {
+        this.author_key = author_key;
     }
 
     public String getAuthor_name() {
