@@ -129,7 +129,7 @@ public class ProjectsFragment extends Fragment {
 
         if (user.getEmail().contains("@studenti.uniba.it")) {
             projectList = new ArrayList();
-            db.child("groups").addValueEventListener(new ValueEventListener() {
+            db.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
 
                 public void onDataChange(@NonNull DataSnapshot snapshot){
@@ -138,19 +138,18 @@ public class ProjectsFragment extends Fragment {
                         db2.child("students").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                projectList.clear();
 
                                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                     if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
 
                                         for (Project project : projects) {
-                                            if (childSnapshot.child("email").getValue(String.class).equals(group.getAuthor())
-                                                    || group.getRecipients().contains(childSnapshot.child("email").getValue(String.class))) {
+                                            if((childSnapshot.child("email").getValue(String.class).equals(group.getAuthor())
+                                                    || group.getRecipients().contains(childSnapshot.child("email").getValue(String.class)))
+                                                    && project.getGroup().equals(group.getName()))
+                                            {
                                                 String namesString = project.getName();
-                                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                                 String mail = project.getGroup();
                                                 projectList.add(new ProjectSample(namesString, mail));
-
                                             }
 
 
@@ -173,7 +172,8 @@ public class ProjectsFragment extends Fragment {
 
                 }
             });
-        } else if (user.getEmail().contains("@uniba.it")) {
+        }
+        else if (user.getEmail().contains("@uniba.it")) {
             projectList = new ArrayList();
             db.child("courses").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -183,16 +183,14 @@ public class ProjectsFragment extends Fragment {
                         db2.child("teachers").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                projectList.clear();
-
                                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                     if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                                         for (Project project : projects) {
-                                            if (childSnapshot.child("email").getValue(String.class).equals(course.getEmail()))
-                                                /*|| user.getEmail().equals(course.getEmail())*/
+                                            if (childSnapshot.child("email").getValue(String.class).equals(course.getEmail())
+                                                    && project.getCourse().equals(course.getName()))
+
                                             {
                                                 String namesString = project.getName();
-                                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                                 String mail = project.getGroup();
                                                 projectList.add(new ProjectSample(namesString, mail));
                                             }
