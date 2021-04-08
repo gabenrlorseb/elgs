@@ -221,9 +221,6 @@ String professor = bundle.getString("professor");*/
                                                 @Override
                                                 public boolean onMenuItemClick(MenuItem item) {
                                                     switch (item.getItemId()) {
-                                                        case R.id.settings_tab:
-                                                            //impostazioni
-                                                            return true;
                                                         case R.id.change_pic_tab:
                                                             Intent intent = new Intent();
                                                             intent.setType("image/*");
@@ -450,37 +447,7 @@ String professor = bundle.getString("professor");*/
         return view;
     }
 
-        private void loadFragment (Fragment fragment){
-            // load fragment
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
 
-
-    /*public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.course_prof_menu, menu);
-        return true;
-    }*/
-
-
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            switch (item.getItemId()) {
-                case R.id.settings_tab:
-                    //
-                    break;
-                case R.id.change_pic_tab:
-                    //
-                    break;
-                case R.id.members_tab:
-                    //
-                    break;
-            }
-            return true;
-        }
         @Override
         public void onActivityResult ( int requestCode, int resultCode, Intent data){
             super.onActivityResult(requestCode, resultCode, data);

@@ -47,6 +47,7 @@
         app:layout_constraintEnd_toStartOf="@id/average_number"
         app:layout_constraintTop_toTopOf="@id/average_number"
         android:src="@drawable/ic_star"
+        app:tint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="@id/average_number"/>
 
         <RelativeLayout
