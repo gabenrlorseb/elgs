@@ -180,10 +180,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.manage_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(holder.author_propic.getContext(), holder.manage_post);
-                //inflating menu from xml resource
+                final PopupMenu popup = new PopupMenu(holder.author_propic.getContext(), holder.manage_post);
+
                 popup.inflate(post_menu);
-                //adding click listener
+
+                Menu popupMenu = popup.getMenu();
+
+                if (!currentItem.getAuthor_key().equals(currentUser.getUid())) {
+                    popup.getMenu().removeItem(R.id.delete);
+                }
+
+                if (currentItem.getHasPictures() == 0 || currentItem.getHasDocuments() == 0) {
+                    popup.getMenu().removeItem(R.id.download_contents);
+                }
+
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -306,8 +316,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         documentIcon.setImageResource(R.drawable.ic_file_document);
                         documentIcon.requestLayout();
 
-                        float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, holder.itemView.getResources().getDisplayMetrics());
-                        float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, holder.itemView.getResources().getDisplayMetrics());
+                        float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
+                        float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int) width, (int) height);
                         documentIcon.setLayoutParams(lp);
