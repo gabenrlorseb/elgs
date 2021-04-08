@@ -32,11 +32,10 @@ public class BachecaUtils implements Runnable {
     Context context;
     String usertype;
 
-    public BachecaUtils(String groupUID, RecyclerView rvBacheca, Context context, String usertype) {
+    public BachecaUtils(String groupUID, RecyclerView rvBacheca, Context context) {
         this.context = context;
         this.groupUID = groupUID;
         this.rvBacheca = rvBacheca;
-        this.usertype = usertype;
     }
 
     public void setRunning(boolean running) {
@@ -51,10 +50,8 @@ public class BachecaUtils implements Runnable {
 
     public ArrayList<PostSample> fetchedPosts;
 
-    String  groupUID;
+    String groupUID;
     StorageReference storageReference;
-
-
 
 
     @Override
@@ -63,7 +60,6 @@ public class BachecaUtils implements Runnable {
         storageReference = FirebaseStorage.getInstance().getReference();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference("posts");
-        final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
 
 
         final StorageReference reference1 = FirebaseStorage.getInstance().getReference("posts");
@@ -76,7 +72,6 @@ public class BachecaUtils implements Runnable {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
 
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -96,14 +91,16 @@ public class BachecaUtils implements Runnable {
                     final String[] authorKey = new String[1];
 
 
+                    if (newPost.getAuthor().contains("@studenti.uniba.it")) {
+                        usertype = "students";
+                    } else {
+                        usertype = "teachers";
+                    }
 
+                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
 
 
                     final PostSample postToBeAdded = new PostSample(authorKey[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, newPost.getCommentSectionID(), groupUID, newPost.getTimestamp());
-
-                    postToBeAdded.setKey(postSnapshot.getKey());
-
-
 
 
                     database3.orderByChild("email").equalTo(newPost.getAuthor()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -119,7 +116,6 @@ public class BachecaUtils implements Runnable {
                                 postToBeAdded.setAuthor_key(authorKey[0]);
                                 authorName[0] = newSB.toString();
                                 final int[] numberOfComments = {0};
-
 
 
                                 postToBeAdded.setAuthor_name(authorName[0]);
@@ -138,10 +134,7 @@ public class BachecaUtils implements Runnable {
                                 });
 
 
-
                                 fetchedPosts.add(postToBeAdded);
-
-
 
 
                             }
@@ -177,10 +170,6 @@ public class BachecaUtils implements Runnable {
     public interface FinishCallback<T> {
         void onComplete();
     }
-
-
-
-
 }
 
 

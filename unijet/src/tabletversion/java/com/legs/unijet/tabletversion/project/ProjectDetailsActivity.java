@@ -129,7 +129,7 @@ public class ProjectDetailsActivity extends Fragment {
                     project = postSnapshot.getValue(Project.class);
 
                     projectUID = postSnapshot.getKey();
-                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getActivity(), "students");
+                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getActivity());
                     postFetcher.run();
                     String group = project.getGroup();
 

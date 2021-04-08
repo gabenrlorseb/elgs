@@ -112,7 +112,7 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
                     }
 
 
-                    postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
 
                 }
@@ -131,7 +131,7 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
 
 
 
-                    postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
 
                 }
@@ -150,7 +150,7 @@ public class CommentActivity  extends AppCompatActivity implements CommentUtils.
 
 
 
-                    postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher = new CommentUtils(args.getString("key"), recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
 
                 }

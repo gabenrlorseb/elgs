@@ -25,8 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.post.Post;
-import com.legs.unijet.smartphone.post.PostAdapter;
+import com.legs.unijet.tabletversion.post.Post;
+import com.legs.unijet.tabletversion.post.PostAdapter;
 
 import java.util.Objects;
 

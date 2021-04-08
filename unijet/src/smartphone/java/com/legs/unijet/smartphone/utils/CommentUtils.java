@@ -31,11 +31,10 @@ public class CommentUtils {
     String type;
     String usertype;
 
-    public CommentUtils(String groupUID, RecyclerView rvBacheca, Context context, String usertype) {
+    public CommentUtils(String groupUID, RecyclerView rvBacheca, Context context) {
         this.context = context;
         this.groupUID = groupUID;
         this.rvBacheca = rvBacheca;
-        this.usertype = usertype;
     }
 
     public boolean isRunning() {
@@ -68,7 +67,7 @@ public class CommentUtils {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference("comments");
-        final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
+
 
 
         final StorageReference reference1 = FirebaseStorage.getInstance().getReference("comments");
@@ -98,7 +97,13 @@ public class CommentUtils {
                     final String[] authorKey = new String[1];
 
 
+                    if (newComment.getAuthor().contains("@studenti.uniba.it")) {
+                        usertype = "students";
+                    } else {
+                        usertype = "teachers";
+                    }
 
+                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
 
 
                     final CommentSample postToBeAdded = new CommentSample(authorBitmap[0], authorName[0], newComment.getContent(),groupUID, newComment.getTimestamp(), numberOfLikes[0], false);
