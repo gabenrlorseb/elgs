@@ -55,6 +55,7 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.comment.CommentActivity;
+import com.legs.unijet.smartphone.course.CreateCourse;
 import com.legs.unijet.smartphone.utils.DeleteConfirmation;
 import com.legs.unijet.smartphone.utils.MainActivity;
 import com.legs.unijet.smartphone.utils.SlidingImagesAdapter;
@@ -67,7 +68,7 @@ import java.util.Objects;
 import static com.legs.unijet.smartphone.R.menu.post_menu;
 
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> implements View.OnCreateContextMenuListener {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder>  {
     private final ArrayList<PostSample> sampleList;
     private Context context;
 
@@ -214,9 +215,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     popup.getMenu().removeItem(R.id.delete);
                 }
 
-                if (currentItem.getHasPictures() == 0 || currentItem.getHasDocuments() == 0) {
-                    popup.getMenu().removeItem(R.id.download_contents);
-                }
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -229,6 +227,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                 deleteConfirm.setArguments(bundle);
                                 FragmentManager manager = ((AppCompatActivity)holder.author_propic.getContext()).getSupportFragmentManager();
                                 deleteConfirm.show(manager, "DeleteConfirmation");
+                                return true;
+                            case R.id.add_favourites:
+                                DatabaseReference newRef = FirebaseDatabase.getInstance ().getReference("favourites/" + currentUser.getUid());
+                                newRef.push().setValue(currentItem, new DatabaseReference.CompletionListener()  {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        if (databaseError != null) {
+                                            Toast.makeText (holder.like.getContext(), "ERROR", Toast.LENGTH_SHORT).show ();
+                                        } else {
+                                            Toast.makeText (holder.like.getContext(), "success", Toast.LENGTH_SHORT).show ();
+                                        }
+                                    }
+                                });
                                 return true;
                             default:
                                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
@@ -392,14 +403,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-        menu.setHeaderTitle("Select The Action");
-        menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
-        menu.add(0, v.getId(), 0, "SMS");
-
-    }
 
 
 

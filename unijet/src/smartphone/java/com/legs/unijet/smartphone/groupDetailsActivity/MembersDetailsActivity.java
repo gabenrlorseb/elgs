@@ -58,7 +58,7 @@
 
      private void populateList() {
          names = new ArrayList<>();
-         names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
+         names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false, authorName));
          db.child("students").addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -68,7 +68,7 @@
                                  " " +
                                  childSnapshot.child("surname").getValue(String.class);
                          String mail = childSnapshot.child ("email").getValue (String.class);
-                         names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false));
+                         names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false, childSnapshot.getKey()));
                      }
                  }
 

@@ -1,5 +1,6 @@
 package com.legs.unijet.smartphone.groupDetailsActivity;
 
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +102,23 @@ public class MemberNoChecklistAdapter extends RecyclerView.Adapter<MemberNoCheck
     @Override
     public void onBindViewHolder(final ExampleViewHolder holder, final int position) {
         final UserChecklistSample currentItem = sampleList.get(position);
-        holder.mImageView.setImageResource(currentItem.getImageResource());
+        final File userProPic = new File(holder.mCheckBox1.getContext().getCacheDir(), "propic" + currentItem.getUid() +".bmp");
+        StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(currentItem.getUid() + ".jpg");
+        if (!userProPic.exists()) {
+            fileRef2.getFile(userProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(userProPic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.mImageView.setImageResource(R.drawable.ic_generic_user_avatar);
+                }
+            });
+        } else {
+            holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(userProPic.getAbsolutePath()));
+        }
         holder.mTextView1.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
         holder.mCheckBox1.setVisibility(View.GONE);

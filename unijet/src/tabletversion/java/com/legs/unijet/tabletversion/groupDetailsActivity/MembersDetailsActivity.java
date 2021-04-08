@@ -24,7 +24,6 @@
      private ArrayList<String> passed_names;
 
      RecyclerView mRecyclerView;
-     private MemberNoChecklistAdapter mAdapter;
      DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
      String authorName;
@@ -32,34 +31,34 @@
 
 
      @Override
-    protected void onCreate (Bundle savedInstance) {
+     protected void onCreate (Bundle savedInstance) {
 
-        setContentView(R.layout.simple_activity_recyclerview_list);
+         setContentView(R.layout.simple_activity_recyclerview_list);
 
-        Toolbar actionBar = findViewById(R.id.toolbar);
-        actionBar.setTitle("Members");
+         Toolbar actionBar = findViewById(R.id.toolbar);
+         actionBar.setTitle("Members");
 
-        Bundle args = getIntent().getExtras();
+         Bundle args = getIntent().getExtras();
 
-        passed_names =  (ArrayList<String>) args.getSerializable("groupRecipients");
-        authorName = args.getString("author_name");
+         passed_names =  (ArrayList<String>) args.getSerializable("groupRecipients");
+         authorName = args.getString("author_name");
 
-        if (authorName.equals("you")) {
-            authorName = getString(R.string.you);
-            authorMail = getString(R.string.admin);
-        } else {
-            authorName = args.getString("author_name");
-            authorMail = args.getString("author");
-        }
+         if (authorName.equals("you")) {
+             authorName = getString(R.string.you);
+             authorMail = getString(R.string.admin);
+         } else {
+             authorName = args.getString("author_name");
+             authorMail = args.getString("author");
+         }
 
-        populateList();
+         populateList();
 
-        super.onCreate(savedInstance);
-    }
+         super.onCreate(savedInstance);
+     }
 
      private void populateList() {
          names = new ArrayList<>();
-         names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false));
+         names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false, authorName));
          db.child("students").addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -69,7 +68,7 @@
                                  " " +
                                  childSnapshot.child("surname").getValue(String.class);
                          String mail = childSnapshot.child ("email").getValue (String.class);
-                         names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false));
+                         names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false, childSnapshot.getKey()));
                      }
                  }
 
@@ -90,7 +89,7 @@
          mRecyclerView = findViewById(R.id.recyclerview_details);
          mRecyclerView.setHasFixedSize(true);
          RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-         mAdapter = new MemberNoChecklistAdapter(names);
+         MemberNoChecklistAdapter mAdapter = new MemberNoChecklistAdapter(names);
          mRecyclerView.setLayoutManager(mLayoutManager);
          mRecyclerView.setAdapter(mAdapter);
      }
