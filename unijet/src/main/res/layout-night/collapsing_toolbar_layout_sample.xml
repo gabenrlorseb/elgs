@@ -67,7 +67,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="115dp"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/ic_star"
+                android:src="@drawable/ic_star_night"
                 app:layout_collapseMode="parallax"
                 app:layout_constraintBottom_toBottomOf="@id/toolbar_additional_infos"
                 app:layout_constraintEnd_toStartOf="@id/toolbar_additional_infos"

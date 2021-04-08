@@ -276,9 +276,6 @@
                                                 @Override
                                                 public boolean onMenuItemClick(MenuItem item) {
                                                     switch (item.getItemId()) {
-                                                        case R.id.settings_tab:
-                                                            //impostazioni
-                                                            return true;
                                                         case R.id.change_pic_tab:
                                                             Intent intent = new Intent();
                                                             intent.setType("image/*");
