@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.post;
+package com.legs.unijet.tabletversion.post;
 
 
 public class PostSample  {
