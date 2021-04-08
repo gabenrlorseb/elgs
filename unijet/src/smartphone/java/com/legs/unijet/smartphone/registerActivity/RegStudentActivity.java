@@ -3,6 +3,7 @@ package com.legs.unijet.smartphone.registerActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -14,12 +15,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.smartphone.LoginActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.profile.User;
+import com.legs.unijet.smartphone.utils.MainActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +44,7 @@ public class RegStudentActivity  extends RegisterActivityStart {
     Intent intent;
     DatabaseReference db;
 
-    private ProgressDialog LoadingBar;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -100,7 +108,7 @@ public class RegStudentActivity  extends RegisterActivityStart {
 
 
         auth = FirebaseAuth.getInstance ();
-        LoadingBar = new ProgressDialog (RegStudentActivity.this);
+
         btnRegister = findViewById (R.id.confirm_button_student);
         btnRegister.setOnClickListener (new View.OnClickListener () {
             @Override
@@ -128,15 +136,15 @@ public class RegStudentActivity  extends RegisterActivityStart {
 
     void checkCrededentials() {
 
-Date d = new Date();
 
-        String name = inputName.getText ().toString ();
-        String surname = inputSurname.getText ().toString ();
-        String studentID = inputMatricola.getText ().toString ();
-        String department = inputDepartment.getSelectedItem ().toString ();
-        String universityCampus = inputAteneo.getSelectedItem ().toString ();
-        String gender=inputGender.getSelectedItem ().toString ();
-        String dateBorn = inputDateBorn.getText ().toString ();
+
+        final String name = inputName.getText ().toString ();
+        final String surname = inputSurname.getText ().toString ();
+        final String studentID = inputMatricola.getText ().toString ();
+        final String department = inputDepartment.getSelectedItem ().toString ();
+        final String universityCampus = inputAteneo.getSelectedItem ().toString ();
+        final String gender=inputGender.getSelectedItem ().toString ();
+        final String dateBorn = inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputName, getString(R.string.error_name));
         } else if (surname.isEmpty () || !surname.contains ("")) {
@@ -151,24 +159,62 @@ Date d = new Date();
         } else if (universityCampus.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
         }  else {
-            db= FirebaseDatabase.getInstance ().getReference ("students").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras ();
-            String email = bundle.getString ("email");
-            User student= new User(name,surname,studentID,department,universityCampus,gender,dateBorn,email);
-
-            if(student == null) {
-                Log.d ("TAG", "checkCrededentials: nullo");
-            } else {
-                Log.d ("TAG", "checkCrededentials: "+student.getName ());
-            }
-            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+            final String email = bundle.getString ("email");
+            final String pw = bundle.getString("pw");
 
 
-            db.setValue (student);
-            LoadingBar.setTitle ("Registration");
-            LoadingBar.setMessage ("please wait check your credentials");
-            LoadingBar.setCanceledOnTouchOutside (false);
+
+
+            final ProgressDialog dialog = ProgressDialog.show(RegStudentActivity.this, "",
+                    getString(R.string.wait), true);
+            dialog.show();
+
+
+
+                    auth.createUserWithEmailAndPassword (email,pw).addOnCompleteListener (new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful ()){
+                                Log.d ("TAG", "onComplete: success");
+                                auth.signInWithEmailAndPassword (email, pw).addOnCompleteListener (new OnCompleteListener<AuthResult> () {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful ()) {
+                                            SharedPreferences sp = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                                            SharedPreferences.Editor pe = sp.edit();
+                                            pe.putBoolean("firstRun", false);
+                                            pe.apply();
+                                            dialog.dismiss();
+                                            db= FirebaseDatabase.getInstance ().getReference ("students").child (auth.getCurrentUser ().getUid ());
+
+                                            final User student= new User(name,surname,studentID,department,universityCampus,gender,dateBorn,email);
+                                            db.setValue (student).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                           @Override
+                                                                                           public void onSuccess(Void aVoid) {
+                                                                                               Toast.makeText (RegStudentActivity.this, "Welcome to UniJet!", Toast.LENGTH_SHORT).show ();
+                                                                                               startActivity (new Intent (getApplicationContext (), MainActivity.class));
+                                                                                           }
+                                                                                       });
+
+                                        } else {
+                                            dialog.dismiss();
+                                            Toast.makeText (RegStudentActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
+                                        }
+
+                                    }
+                                });
+
+                            }
+                            else{
+                                Log.d ("TAG", "onComplete: failed");
+                                Toast.makeText (RegStudentActivity.this,R.string.generic_error, Toast.LENGTH_SHORT).show ();
+                            }
+                        }
+                    });
+
+
 
 
         }

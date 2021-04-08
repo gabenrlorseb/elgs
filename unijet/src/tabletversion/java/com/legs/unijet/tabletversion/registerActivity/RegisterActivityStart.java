@@ -28,7 +28,6 @@ public class RegisterActivityStart extends AppCompatActivity {
     Button btnNext;
     FirebaseAuth auth;
     TextView haveAccount;
-    private ProgressDialog LoadingBar;
     DatabaseReference dbReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class RegisterActivityStart extends AppCompatActivity {
         auth=FirebaseAuth.getInstance () ;
 // Write a message to the database
 
-        LoadingBar= new ProgressDialog (RegisterActivityStart.this);
+
         btnNext=findViewById (R.id.next_button);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,7 @@ public class RegisterActivityStart extends AppCompatActivity {
             }
         });
         auth=FirebaseAuth.getInstance();
-        LoadingBar=new ProgressDialog(RegisterActivityStart.this);
+
 
         haveAccount=findViewById(R.id.text_help);
 
@@ -75,59 +74,39 @@ public class RegisterActivityStart extends AppCompatActivity {
 
     void checkCrededentials() {
         final String email = inputEmail.getText ().toString ();
-        String password = inputPassword.getText ().toString ();
+        final String password = inputPassword.getText ().toString ();
         String confirmPassword = inputConfirmPassword.getText ().toString ();
-        Log.d ("", "checkCrededentials: email = " + email);
-        Log.d ("", "checkCrededentials: email empty = " + email.isEmpty ());
 
-        Log.d ("", "checkCrededentials: contains studentiuniba = " + !email.contains ("@studenti.uniba.it"));
-
-        Log.d ("", "checkCrededentials: contains uniba = " + !email.contains ("@uniba.it"));
 
         if (email.isEmpty () && (!email.contains ("@studenti.uniba.it") || !email.contains ("@uniba.it"))) {
             showError (inputEmail, getString(R.string.error_email));
         }/*else if (auth.){
 
         }*/
-            else if (password.isEmpty () || password.length () < 7) {
+        else if (password.isEmpty () || password.length () < 7) {
             showError (inputPassword, getString(R.string.error_password));
         } else if (confirmPassword.isEmpty () || !confirmPassword.equals (password)) {
             showError (inputConfirmPassword, getString(R.string.error_confirm_password));
         } else {
-            /*LoadingBar.setTitle ("Registration");
-            LoadingBar.setMessage ("please wait check your credentials");
-            LoadingBar.setCanceledOnTouchOutside (false);
-            LoadingBar.show ();*/
+
+            if(email.contains("@studenti.uniba.it")){
+                Toast.makeText (RegisterActivityStart.this, "", Toast.LENGTH_SHORT).show ();
+                Intent intent=new Intent (RegisterActivityStart.this,RegStudentActivity.class);
+                intent.putExtra ("email", email);
+                intent.putExtra ("pw", password);
+                intent.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity (intent);
+            }else if(email.contains("@uniba.it")){
+                Log.d ("TAG", "onComplete: equals uniba.it");
+                Toast.makeText (RegisterActivityStart.this, "  Successfully Registration ", Toast.LENGTH_SHORT).show ();
+                Intent intent=new Intent (RegisterActivityStart.this,RegProfActivity.class);
+                intent.putExtra ("email",email);
+                intent.putExtra ("pw", password);
+                intent.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity (intent);
+            }
 
 
-            auth.createUserWithEmailAndPassword (email,password).addOnCompleteListener (new OnCompleteListener<AuthResult> () {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    Log.d ("TAG", "onComplete: entered");
-                    if(task.isSuccessful ()){
-                        Log.d ("TAG", "onComplete: success");
-                        if(email.contains("@studenti.uniba.it")){
-                            Log.d ("TAG", "onComplete: equals studenti uniba");
-                            Toast.makeText (RegisterActivityStart.this, "", Toast.LENGTH_SHORT).show ();
-                            Intent intent=new Intent (RegisterActivityStart.this,RegStudentActivity.class);
-                            intent.putExtra ("email", email);
-                            intent.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity (intent);
-                        }else if(email.contains("@uniba.it")){
-                            Log.d ("TAG", "onComplete: equals uniba.it");
-                            Toast.makeText (RegisterActivityStart.this, "  Successfully Registration ", Toast.LENGTH_SHORT).show ();
-                            Intent intent=new Intent (RegisterActivityStart.this,RegProfActivity.class);
-                            intent.putExtra ("email",email);
-                            intent.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity (intent);
-                        }
-                    }
-                    else{
-                        Log.d ("TAG", "onComplete: failed");
-                        Toast.makeText (RegisterActivityStart.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
-                    }
-                }
-            });
         }
 
 

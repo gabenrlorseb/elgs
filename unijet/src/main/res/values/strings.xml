@@ -72,9 +72,9 @@
     <string name="ready_send_description">Pack all your projects files and send them to the professor</string>
     <string name="START">START</string>
     <string name="NEXTT">NEXT</string>
-    <string name="error_email">Your e-mail is not valid</string>
+    <string name="error_email">Sorry, we don\'t support this e-mail at the moment</string>
     <string name="error_password">Your password must be 7 characters</string>
-    <string name="error_confirm_password">Your password not match!</string>
+    <string name="error_confirm_password">Passwords don\'t match!</string>
     <string name="error_name">Your name is not valid</string>
     <string name="error_surname">Your surname is not valid</string>
     <string name="error_department">Your department selection is not valid</string>
@@ -177,5 +177,7 @@
         <item>We know you were searching for something, but we have nothing to show you</item>
         <item>Well, there\'s nothing here</item>
     </string-array>
+    <string name="generic_error">Something went wrong, please try again</string>
+    <string name="wait">Please wait</string>
 
 </resources>
