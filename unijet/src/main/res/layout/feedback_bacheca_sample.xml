@@ -71,38 +71,7 @@
             card_view:layout_constraintTop_toBottomOf="@id/attach_image"
             android:text="prova prova"/>
 
-        <TextView
-            android:id="@+id/comments_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="14dp"
-            android:textStyle="bold"
-            android:textSize="@dimen/common_default_subtitle_text_size"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/post_text"
-            android:text="9"/>
 
-        <ImageView
-            android:id="@+id/comments_image"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            card_view:layout_constraintEnd_toStartOf="@id/comments_number"
-            card_view:layout_constraintTop_toTopOf="@id/comments_number"
-            android:src="@drawable/ic_comment"
-            card_view:layout_constraintBottom_toBottomOf="@id/comments_number"/>
-
-        <TextView
-            android:id="@+id/likes_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="14dp"
-            android:textStyle="bold"
-            android:textSize="@dimen/common_default_subtitle_text_size"
-            card_view:layout_constraintEnd_toStartOf="@id/comments_image"
-            card_view:layout_constraintTop_toTopOf="@id/comments_image"
-            android:text="9"/>
 
         <TextView
             android:id="@+id/date_time"
@@ -116,15 +85,7 @@
             card_view:layout_constraintTop_toBottomOf="@id/post_text"
             android:text="12/12/2012 19:38"/>
 
-        <ImageView
-            android:id="@+id/like_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            card_view:layout_constraintEnd_toStartOf="@id/likes_number"
-            card_view:layout_constraintTop_toTopOf="@id/likes_number"
-            android:src="@drawable/ic_heart"
-            card_view:layout_constraintBottom_toBottomOf="@id/likes_number"/>
+
 
 
 
