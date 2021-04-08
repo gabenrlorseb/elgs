@@ -28,8 +28,6 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
         public TextView author_name;
         public TextView post_content;
         public TextView date_time;
-        public TextView number_of_comments;
-        public TextView number_of_likes;
         public RatingBar rating;
         public boolean liked;
         public ImageView like;
@@ -41,8 +39,6 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
             author_name = itemView.findViewById(R.id.member_name);
             post_content = itemView.findViewById(R.id.post_text);
             date_time = itemView.findViewById(R.id.date_time);
-            number_of_comments = itemView.findViewById(R.id.comments_number);
-            number_of_likes = itemView.findViewById(R.id.likes_number);
             like = itemView.findViewById(R.id.like_button);
             rating = itemView.findViewById(R.id.rating);
 
@@ -66,7 +62,6 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
         holder.author_propic.setImageBitmap(currentItem.getAuthor_propic());
         holder.author_name.setText(currentItem.getAuthor_name());
         holder.post_content.setText(currentItem.getPost_content());
-        holder.number_of_likes.setText(Integer.toString(currentItem.getLikes()));
         holder.rating.setRating(currentItem.getRating());
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a");
         String date = sdf.format(currentItem.getTimestamp() * 1000);
