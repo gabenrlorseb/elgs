@@ -62,7 +62,7 @@
     <string name="error_department">Il nome del dipartimento non è corretto</string>
     <string name="error_gender">La selezione del sesso non è corretts</string>
     <string name="error_campus">La sede univeristaria selezionata non è corretta</string>
-    <string name="error_email">La e-mail inserita non è valida</string>
+    <string name="error_email">Spiacenti, al momento non supportiamo questa e-mail</string>
     <string name="error_password">La password deve essere lunga almeno 7 caratteri</string>
     <string name="error_confirm_password">Le due password non coincidono</string>
     <string name="registration">Registrazione</string>
@@ -163,5 +163,7 @@
     <string name="change_password">Cambia password</string>
     <string name="new_password">Nuova password</string>
     <string name="old_password">Vecchia password</string>
+    <string name="generic_error">Qualcosa è andato storto, riprovare</string>
+    <string name="wait">Attendere prego</string>
 
 </resources>
