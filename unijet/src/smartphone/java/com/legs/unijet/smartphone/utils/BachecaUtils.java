@@ -100,7 +100,7 @@ public class BachecaUtils implements Runnable {
 
                     final PostSample postToBeAdded = new PostSample(authorKey[0], authorName[0], newPost.getContent(), numberOfPics, numberOfDocs, newPost.getCommentSectionID(), groupUID, newPost.getTimestamp());
 
-
+                    postToBeAdded.setKey(postSnapshot.getKey());
 
 
 

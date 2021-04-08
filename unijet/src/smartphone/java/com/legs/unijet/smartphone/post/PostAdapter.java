@@ -1,22 +1,35 @@
 package com.legs.unijet.smartphone.post;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -35,6 +48,8 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.comment.CommentActivity;
+import com.legs.unijet.smartphone.utils.DeleteConfirmation;
+import com.legs.unijet.smartphone.utils.MainActivity;
 import com.legs.unijet.smartphone.utils.SlidingImagesAdapter;
 
 import java.io.File;
@@ -42,9 +57,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.legs.unijet.smartphone.R.menu.post_menu;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> implements View.OnCreateContextMenuListener {
     private final ArrayList<PostSample> sampleList;
+    private Context context;
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         public ImageView author_propic;
@@ -58,6 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public ImageView like;
         public ViewPager image_area;
         public LinearLayout documents_area;
+        public ImageView manage_post;
 
 
         public PostViewHolder(View itemView) {
@@ -72,6 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             image_area = itemView.findViewById(R.id.post_images);
             documents_area = itemView.findViewById(R.id.documents_area);
             comment = itemView.findViewById(R.id.comment_compose_box);
+            manage_post = itemView.findViewById(R.id.manage_button);
         }
 
     }
@@ -174,11 +194,51 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        holder.manage_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(holder.author_propic.getContext(), holder.manage_post);
+                //inflating menu from xml resource
+                popup.inflate(post_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.delete:
+                                DialogFragment deleteConfirm = new DeleteConfirmation();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("bacheca", "posts/" + currentItem.getBachecaIdentifier() + "/" + currentItem.getKey());
+                                deleteConfirm.setArguments(bundle);
+                                FragmentManager manager = ((AppCompatActivity)holder.author_propic.getContext()).getSupportFragmentManager();
+                                deleteConfirm.show(manager, "DeleteConfirmation");
+                                return true;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + item.getItemId());
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
+
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.liked) {
-                    holder.like.setColorFilter(Color.argb(255,0,0,0));
+                    int nightModeFlags =
+                            holder.author_propic.getContext().getResources().getConfiguration().uiMode &
+                                    Configuration.UI_MODE_NIGHT_MASK;
+                    switch (nightModeFlags) {
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            holder.like.setColorFilter(Color.argb(255, 255, 255, 255));
+                            break;
+                        case Configuration.UI_MODE_NIGHT_NO:
+                        case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                            holder.like.setColorFilter(Color.argb(255, 0, 0, 0));
+                            break;
+                    }
                     holder.liked = false;
                     likeRef[0].removeValue();
                 } else {
@@ -289,6 +349,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.documents_area.setVisibility(View.GONE);
         }
 
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        menu.setHeaderTitle("Select The Action");
+        menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
+        menu.add(0, v.getId(), 0, "SMS");
 
     }
 

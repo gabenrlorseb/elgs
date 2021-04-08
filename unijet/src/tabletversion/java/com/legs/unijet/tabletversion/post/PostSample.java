@@ -12,6 +12,16 @@ public class PostSample  {
     private String identifier;
     private String bachecaIdentifier;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private String key;
+
     public PostSample(String author_key, String author_name, String post_content, int hasPictures, int hasDocuments, String postIdentifier, String bachecaIdentifier,  long timestamp) {
         this.author_key = author_key;
         this.author_name = author_name;

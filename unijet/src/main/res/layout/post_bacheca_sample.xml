@@ -95,6 +95,7 @@
             android:layout_marginEnd="4dp"
             card_view:layout_constraintEnd_toStartOf="@id/comments_number"
             card_view:layout_constraintTop_toTopOf="@id/comments_number"
+            card_view:tint="?android:attr/textColorPrimary"
             android:src="@drawable/ic_comment"
             card_view:layout_constraintBottom_toBottomOf="@id/comments_number"/>
 
@@ -126,6 +127,7 @@
             android:layout_marginEnd="4dp"
             card_view:layout_constraintEnd_toStartOf="@id/likes_number"
             card_view:layout_constraintTop_toTopOf="@id/comments_image"
+            card_view:tint="?android:attr/textColorPrimary"
             android:src="@drawable/ic_heart"
             card_view:layout_constraintBottom_toBottomOf="@id/likes_number"/>
 
@@ -137,6 +139,7 @@
             card_view:layout_constraintEnd_toStartOf="@id/like_button"
             card_view:layout_constraintTop_toTopOf="@id/comments_image"
             android:src="@drawable/ic_settings"
+            card_view:tint="?android:attr/textColorPrimary"
             card_view:layout_constraintBottom_toBottomOf="@id/likes_number"/>
 
         <EditText

@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#9769FF</color>
     <color name="colorAccent">#273FB6</color>
     <color name="accent_unselected">#8903DAC5</color>
+    <color name="default_foreground">?android:attr/textColorPrimary</color>
 </resources>

@@ -40,9 +40,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.legs.unijet.smartphone.R.menu.post_menu;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> implements View.OnCreateContextMenuListener {
     private final ArrayList<PostSample> sampleList;
+    private Context context;
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         public ImageView author_propic;
@@ -56,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public ImageView like;
         public ViewPager image_area;
         public LinearLayout documents_area;
+        public ImageView manage_post;
 
 
         public PostViewHolder(View itemView) {
@@ -70,6 +74,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             image_area = itemView.findViewById(R.id.post_images);
             documents_area = itemView.findViewById(R.id.documents_area);
             comment = itemView.findViewById(R.id.comment_compose_box);
+            manage_post = itemView.findViewById(R.id.manage_button);
         }
 
     }
@@ -172,11 +177,51 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        holder.manage_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(holder.author_propic.getContext(), holder.manage_post);
+                //inflating menu from xml resource
+                popup.inflate(post_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.delete:
+                                DialogFragment deleteConfirm = new DeleteConfirmation();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("bacheca", "posts/" + currentItem.getBachecaIdentifier() + "/" + currentItem.getKey());
+                                deleteConfirm.setArguments(bundle);
+                                FragmentManager manager = ((AppCompatActivity)holder.author_propic.getContext()).getSupportFragmentManager();
+                                deleteConfirm.show(manager, "DeleteConfirmation");
+                                return true;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + item.getItemId());
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
+
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.liked) {
-                    holder.like.setColorFilter(Color.argb(255,0,0,0));
+                    int nightModeFlags =
+                            holder.author_propic.getContext().getResources().getConfiguration().uiMode &
+                                    Configuration.UI_MODE_NIGHT_MASK;
+                    switch (nightModeFlags) {
+                        case Configuration.UI_MODE_NIGHT_YES:
+                            holder.like.setColorFilter(Color.argb(255, 255, 255, 255));
+                            break;
+                        case Configuration.UI_MODE_NIGHT_NO:
+                        case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                            holder.like.setColorFilter(Color.argb(255, 0, 0, 0));
+                            break;
+                    }
                     holder.liked = false;
                     likeRef[0].removeValue();
                 } else {
@@ -287,6 +332,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.documents_area.setVisibility(View.GONE);
         }
 
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        menu.setHeaderTitle("Select The Action");
+        menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
+        menu.add(0, v.getId(), 0, "SMS");
 
     }
 
