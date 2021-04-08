@@ -45,7 +45,7 @@
         <activity android:name=".createGroupActivity.CreateGroupStart" />
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
-
+        <activity android:name=".profile.Favourites" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

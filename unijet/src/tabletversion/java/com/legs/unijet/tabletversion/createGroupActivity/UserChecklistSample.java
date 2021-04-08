@@ -7,13 +7,14 @@ public class UserChecklistSample implements Serializable {
     private final String mText1;
     private final String mailText;
     private Boolean isChecked;
+    private final String uid;
 
-
-    public UserChecklistSample(int imageResource, String text1, String text2, Boolean checkbox) {
+    public UserChecklistSample(int imageResource, String text1, String text2, Boolean checkbox, String uid) {
         mImageResource = imageResource;
         mText1 = text1;
         mailText = text2;
         isChecked = checkbox;
+        this.uid = uid;
     }
 
     public int getImageResource() {
@@ -34,6 +35,9 @@ public class UserChecklistSample implements Serializable {
 
     public void setChecked(Boolean status) {
         isChecked = status;
+    }
 
+    public String getUid() {
+        return uid;
     }
 }

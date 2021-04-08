@@ -37,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 
 import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.tabletversion.profile.EditProfile;
+import com.legs.unijet.tabletversion.profile.Favourites;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.GsonParser;
 import com.legs.unijet.smartphone.R;
@@ -78,7 +79,17 @@ public class MyUnijetFragment extends Fragment {
         Button logout_button = view.findViewById (R.id.logout_button);
         LinearLayout settings =view.findViewById (R.id.settings_button);
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
+        LinearLayout toFavourites = view.findViewById(R.id.favourites_button);
 
+
+
+        toFavourites.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                startActivity (new Intent(getContext (), Favourites.class));
+            }
+
+        });
 
 
         profileAvatar = view.findViewById(R.id.member_icon);

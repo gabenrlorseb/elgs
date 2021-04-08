@@ -116,10 +116,46 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
         final StorageReference reference1 = FirebaseStorage.getInstance().getReference("posts");
 
-        final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final ImageView profileAvatar = findViewById(R.id.member_icon);
+
+        headerProPic = findViewById(R.id.header);
 
 
+        final File localpropic = new File(getCacheDir(), "propic" + user.getUid() +".bmp");
+        StorageReference fileRef1 = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
+        if (!localpropic.exists()) {
+            fileRef1.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
+                }
+            });
+        } else {
+            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+        }
 
+        final File groupProPic = new File(getCacheDir(), "propic" + groupUID +".bmp");
+        StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(groupUID + ".jpg");
+        if (!groupProPic.exists()) {
+            fileRef2.getFile(groupProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    headerProPic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    headerProPic.setImageResource(R.drawable.ic_generic_group_avatar);
+                }
+            });
+        } else {
+            headerProPic.setImageBitmap(BitmapFactory.decodeFile(groupProPic.getAbsolutePath()));
+        }
 
 
 

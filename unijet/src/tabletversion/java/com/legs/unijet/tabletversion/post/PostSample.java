@@ -80,9 +80,6 @@ public class PostSample  {
         this.hasPictures = hasPictures;
     }
 
-    public int isHasDocuments() {
-        return hasDocuments;
-    }
 
     public void setHasDocuments(int hasDocuments) {
         this.hasDocuments = hasDocuments;

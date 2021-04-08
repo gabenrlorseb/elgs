@@ -7,10 +7,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +57,7 @@ import java.util.Objects;
 import static com.legs.unijet.smartphone.R.menu.post_menu;
 
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> implements View.OnCreateContextMenuListener {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder>  {
     private final ArrayList<PostSample> sampleList;
     private Context context;
 
@@ -190,10 +194,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.manage_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(holder.author_propic.getContext(), holder.manage_post);
-                //inflating menu from xml resource
+                final PopupMenu popup = new PopupMenu(holder.author_propic.getContext(), holder.manage_post);
+
                 popup.inflate(post_menu);
-                //adding click listener
+
+                Menu popupMenu = popup.getMenu();
+
+                if (!currentItem.getAuthor_key().equals(currentUser.getUid())) {
+                    popup.getMenu().removeItem(R.id.delete);
+                }
+
+
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -205,6 +216,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                 deleteConfirm.setArguments(bundle);
                                 FragmentManager manager = ((AppCompatActivity)holder.author_propic.getContext()).getSupportFragmentManager();
                                 deleteConfirm.show(manager, "DeleteConfirmation");
+                                return true;
+                            case R.id.add_favourites:
+                                DatabaseReference newRef = FirebaseDatabase.getInstance ().getReference("favourites/" + currentUser.getUid());
+                                newRef.push().setValue(currentItem, new DatabaseReference.CompletionListener()  {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        if (databaseError != null) {
+                                            Toast.makeText (holder.like.getContext(), "ERROR", Toast.LENGTH_SHORT).show ();
+                                        } else {
+                                            Toast.makeText (holder.like.getContext(), "success", Toast.LENGTH_SHORT).show ();
+                                        }
+                                    }
+                                });
                                 return true;
                             default:
                                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
@@ -313,11 +337,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         nestedLayout.setOrientation(LinearLayout.HORIZONTAL);
 
                         ImageView documentIcon = new ImageView(nestedLayout.getContext());
-                        documentIcon.setImageResource(R.drawable.ic_file_document);
+                        documentIcon.setImageResource(R.drawable.ic_download);
                         documentIcon.requestLayout();
+                        final String[] downloadURL = new String[1];
 
-                        float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, holder.itemView.getResources().getDisplayMetrics());
-                        float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, holder.itemView.getResources().getDisplayMetrics());
+                        listOfDocs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                downloadURL[0] = uri.toString();
+                                Log.v("URL", downloadURL[0]);
+
+                            }
+                        });
+
+                        documentIcon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Uri webpage = Uri.parse(downloadURL[0]);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                if (intent.resolveActivity(holder.like.getContext().getPackageManager()) != null) {
+                                    holder.like.getContext().startActivity(intent);
+                                }
+                            }
+                        });
+
+                        float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
+                        float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int) width, (int) height);
                         documentIcon.setLayoutParams(lp);
@@ -330,6 +375,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         document.setText(listOfDocs.get(i).getName());
                         document.setTypeface(null, Typeface.BOLD);
                         nestedLayout.addView(document);
+
+                        nestedLayout.setPadding(0,20,0,20);
 
                         layout.addView(nestedLayout);
 
@@ -345,14 +392,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-        menu.setHeaderTitle("Select The Action");
-        menu.add(0, v.getId(), 0, "Call");//groupId, itemId, order, title
-        menu.add(0, v.getId(), 0, "SMS");
 
-    }
+
 
 
 

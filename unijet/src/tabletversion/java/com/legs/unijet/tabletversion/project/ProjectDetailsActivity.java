@@ -108,11 +108,55 @@ public class ProjectDetailsActivity extends Fragment {
             String professor = args.getString("professor");
         }
 
-        final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
+        headerProPic = view.findViewById(R.id.header);
         recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
         rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
 
         final int[] NumberOfMembers = new int[1];
+
+
+        headerProPic = view.findViewById(R.id.header);
+
+
+        final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final ImageView profileAvatar = view.findViewById(R.id.member_icon);
+
+
+        final File localpropic = new File(view.getContext().getCacheDir(), "propic" + CurrentUser.getUid() +".bmp");
+        StorageReference fileRef1 = FirebaseStorage.getInstance().getReference().child(CurrentUser.getUid() + ".jpg");
+        if (!localpropic.exists()) {
+            fileRef1.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
+                }
+            });
+        } else {
+            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+        }
+
+        final File projectProPic = new File(view.getContext().getCacheDir(), "propic" + projectUID +".bmp");
+        StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(projectUID + ".jpg");
+        if (!projectProPic.exists()) {
+            fileRef2.getFile(projectProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    headerProPic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    headerProPic.setImageResource(R.drawable.ic_generic_group_avatar);
+                }
+            });
+        } else {
+            headerProPic.setImageBitmap(BitmapFactory.decodeFile(projectProPic.getAbsolutePath()));
+        }
 
         isAuthor = false;
 
@@ -381,7 +425,7 @@ public class ProjectDetailsActivity extends Fragment {
                 });
             } else {
                 bitmap = BitmapFactory.decodeStream(fis);
-                groupPic.setImageBitmap(bitmap);
+                headerProPic.setImageBitmap(bitmap);
             }
 
 

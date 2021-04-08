@@ -10,9 +10,6 @@
         android:id="@+id/add_favourites"
         android:title="Add to favourites" />
 
-    <item
-        android:id="@+id/download_contents"
-        android:title="Download contents" />
 
 
 </menu>

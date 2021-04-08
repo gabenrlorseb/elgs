@@ -161,7 +161,6 @@
         android:layout_margin="10dp"
         android:clickable="true"
         android:focusable="true"
-
         app:backgroundTint="@color/colorPrimaryDark"
         app:tint="#FFFFFF"
         app:layout_anchor="@id/appbar"
