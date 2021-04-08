@@ -334,6 +334,9 @@ String professor = bundle.getString("professor");*/
                                         count++;
                                     }
                                     average = total / count;
+                                    if (total == 0 && count == 0){
+                                        average = 0;
+                                    }
                                     rating.setText(String.valueOf(average));
                                 }
 

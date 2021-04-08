@@ -352,7 +352,6 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
                 database.child("feedbacks").child(groupUID).addValueEventListener(new ValueEventListener() {
 
-
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         float total = 0;
@@ -364,6 +363,9 @@ rating = findViewById(R.id.toolbar_additional_infos);
                             count++;
                         }
                         average = total / count;
+                        if (total == 0 && count == 0){
+                            average = 0;
+                        }
                         rating.setText(String.valueOf(average));
                     }
 
