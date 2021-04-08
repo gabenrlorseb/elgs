@@ -323,8 +323,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         nestedLayout.setOrientation(LinearLayout.HORIZONTAL);
 
                         ImageView documentIcon = new ImageView(nestedLayout.getContext());
-                        documentIcon.setImageResource(R.drawable.ic_file_document);
+                        documentIcon.setImageResource(R.drawable.ic_download);
                         documentIcon.requestLayout();
+                        final String[] downloadURL = new String[1];
+
+                        listOfDocs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                downloadURL[0] = uri.toString();
+                                Log.v("URL", downloadURL[0]);
+
+                            }
+                        });
+
+                        documentIcon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Uri webpage = Uri.parse(downloadURL[0]);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                if (intent.resolveActivity(holder.like.getContext().getPackageManager()) != null) {
+                                    holder.like.getContext().startActivity(intent);
+                                }
+                            }
+                        });
 
                         float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
                         float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());

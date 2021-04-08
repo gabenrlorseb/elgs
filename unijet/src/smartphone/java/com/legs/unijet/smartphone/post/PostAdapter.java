@@ -1,6 +1,7 @@
 package com.legs.unijet.smartphone.post;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -8,7 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +41,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -330,8 +337,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         nestedLayout.setOrientation(LinearLayout.HORIZONTAL);
 
                         ImageView documentIcon = new ImageView(nestedLayout.getContext());
-                        documentIcon.setImageResource(R.drawable.ic_file_document);
+                        documentIcon.setImageResource(R.drawable.ic_download);
                         documentIcon.requestLayout();
+                        final String[] downloadURL = new String[1];
+
+                        listOfDocs.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                downloadURL[0] = uri.toString();
+                                Log.v("URL", downloadURL[0]);
+
+                            }
+                    });
+
+                        documentIcon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Uri webpage = Uri.parse(downloadURL[0]);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                if (intent.resolveActivity(holder.like.getContext().getPackageManager()) != null) {
+                                    holder.like.getContext().startActivity(intent);
+                                }
+                            }
+                        });
 
                         float width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
                         float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, holder.itemView.getResources().getDisplayMetrics());
@@ -347,6 +375,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         document.setText(listOfDocs.get(i).getName());
                         document.setTypeface(null, Typeface.BOLD);
                         nestedLayout.addView(document);
+
+                        nestedLayout.setPadding(0,20,0,20);
 
                         layout.addView(nestedLayout);
 
@@ -370,6 +400,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         menu.add(0, v.getId(), 0, "SMS");
 
     }
+
+
 
 
 
