@@ -3,6 +3,7 @@ package com.legs.unijet.tabletversion.registerActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -14,12 +15,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.profile.User;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 
 import java.text.DateFormat;
 import java.util.Calendar;
