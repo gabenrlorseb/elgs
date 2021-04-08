@@ -144,6 +144,7 @@
     <string name="course_registration">Course Registration made successfully</string>
     <string name="course_elimination">Elimination from Course made successfully</string>
     <string name="warning_back_content">Are you sure you want to go back? All changes will be lost</string>
+    <string name="warning_deletion">Are you sure you want to go delete this? All the contents will be lost and not visible to anyone</string>
     <string name="remove_from_course">Remove from course</string>
     <string name="remove_course">Remove Course</string>
     <string name="change_group_pic">Change Group Pic</string>
