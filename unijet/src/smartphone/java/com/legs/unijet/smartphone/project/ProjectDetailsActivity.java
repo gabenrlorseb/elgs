@@ -83,6 +83,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
 
     BachecaUtils postFetcher;
 
+
     ProgressDialog dialog;
 
 
@@ -113,9 +114,8 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     project = postSnapshot.getValue(Project.class);
-
                     projectUID = postSnapshot.getKey();
-                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
                     String group = project.getGroup();
 

@@ -52,7 +52,7 @@ public class FeedbackActivity  extends AppCompatActivity implements FeedbackUtil
 
 
 
-                    postFetcher = new FeedbackUtils(UID, recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher = new FeedbackUtils(UID, recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
 
                 }

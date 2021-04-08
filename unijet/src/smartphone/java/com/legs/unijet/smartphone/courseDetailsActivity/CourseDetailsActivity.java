@@ -128,7 +128,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                      postNow.setVisibility(View.GONE);
                     }
                     courseUID = postSnapshot.getKey();
-                    postFetcher = new BachecaUtils(courseUID, recyclerViewBacheca, getApplicationContext(), "teachers");
+                    postFetcher = new BachecaUtils(courseUID, recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
                     ArrayList<String> addedMails = course.getMembers();
 
