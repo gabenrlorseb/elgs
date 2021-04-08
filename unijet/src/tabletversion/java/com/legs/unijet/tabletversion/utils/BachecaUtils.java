@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.utils;
+package com.legs.unijet.tabletversion.utils;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,10 +16,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.legs.unijet.smartphone.post.Post;
-import com.legs.unijet.smartphone.post.PostAdapter;
-import com.legs.unijet.smartphone.post.PostSample;
-import com.legs.unijet.smartphone.profile.User;
+import com.legs.unijet.tabletversion.post.Post;
+import com.legs.unijet.tabletversion.post.PostAdapter;
+import com.legs.unijet.tabletversion.post.PostSample;
+import com.legs.unijet.tabletversion.profile.User;
+import com.legs.unijet.tabletversion.utils.CustomComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;

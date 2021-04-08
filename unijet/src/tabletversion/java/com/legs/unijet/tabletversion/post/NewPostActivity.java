@@ -103,9 +103,9 @@ public class NewPostActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String[] mimeTypes =
-                        {"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                                "application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                                "application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                        {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
                                 "text/plain",
                                 "application/pdf",
                                 "application/zip"};
@@ -147,7 +147,6 @@ public class NewPostActivity extends AppCompatActivity {
         });
 
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -178,86 +177,82 @@ public class NewPostActivity extends AppCompatActivity {
                 successful = false;
 
 
-                        final String uniqueId = UUID.randomUUID().toString();
+                final String uniqueId = UUID.randomUUID().toString();
 
-                        assert user != null;
+                assert user != null;
 
-                        int numberOfDocuments = 0;
-                        int numberOfImages = 0;
+                int numberOfDocuments = 0;
+                int numberOfImages = 0;
 
-                        if (!Documents.isEmpty()) {
-                            numberOfDocuments = Documents.size();
-                            for (int counter = 0; counter < Documents.size(); counter++) {
-                                Uri file = Documents.get(counter);
-                                String fileName = file.getPath();
-                                int cut = fileName.lastIndexOf('/');
-                                if (cut != -1) {
-                                    fileName = fileName.substring(cut + 1);
-                                }
-                                fileDatabase1.child(uniqueId + "/" + fileName ).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                            }
+                if (!Documents.isEmpty()) {
+                    numberOfDocuments = Documents.size();
+                    for (int counter = 0; counter < Documents.size(); counter++) {
+                        Uri file = Documents.get(counter);
+                        String fileName = file.getPath();
+                        int cut = fileName.lastIndexOf('/');
+                        if (cut != -1) {
+                            fileName = fileName.substring(cut + 1);
                         }
-
-                        if (!Images.isEmpty()) {
-                            numberOfImages = Images.size();
-                            for (int counter2 = 0; counter2 < Images.size(); counter2++) {
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                Images.get(counter2).compress(Bitmap.CompressFormat.JPEG, 85, baos);
-                                byte[] data = baos.toByteArray();
-                                fileDatabase2.child(uniqueId + "/pic" + counter2).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                            }
-                        }
-
-                        long ut2 = System.currentTimeMillis() / 1000L;
-
-                        post = new Post(user.getEmail(), false, numberOfDocuments, numberOfImages, new ArrayList<String>(), ut2, uniqueId, uniqueId,postContent.getText().toString());
-                final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference("likes/");
-
-
-                        database2.push().setValue(post, new DatabaseReference.CompletionListener()  {
+                        fileDatabase1.child(uniqueId + "/" + fileName).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
-                            public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                                if (databaseError != null) {
-                                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                                    Toast.makeText (NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show ();
-                                } else {
-                                    ArrayList<String> setPreLikes = new ArrayList<>();
-                                    setPreLikes.add(user.getEmail());
-                                    database1.child(uniqueId).setValue(setPreLikes);
-                                    Toast.makeText (NewPostActivity.this, "Success", Toast.LENGTH_SHORT).show ();
-                                    finish();
-                                }
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
                             }
                         });
 
                     }
+                }
+
+                if (!Images.isEmpty()) {
+                    numberOfImages = Images.size();
+                    for (int counter2 = 0; counter2 < Images.size(); counter2++) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        Images.get(counter2).compress(Bitmap.CompressFormat.JPEG, 85, baos);
+                        byte[] data = baos.toByteArray();
+                        fileDatabase2.child(uniqueId + "/pic" + counter2).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                }
+
+                long ut2 = System.currentTimeMillis() / 1000L;
+
+                post = new Post(user.getEmail(), false, numberOfDocuments, numberOfImages, new ArrayList<String>(), ut2, uniqueId, uniqueId, postContent.getText().toString());
+                final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference("likes/");
 
 
+                database2.push().setValue(post, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            System.out.println("Data could not be saved " + databaseError.getMessage());
+                            Toast.makeText(NewPostActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                        } else {
+                            ArrayList<String> setPreLikes = new ArrayList<>();
+                            setPreLikes.add(user.getEmail());
+                            database1.child(uniqueId).setValue(user.getEmail());
+                            Toast.makeText(NewPostActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                });
 
-            });
+            }
 
 
-
+        });
 
 
         super.onCreate(savedInstanceState);

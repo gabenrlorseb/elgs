@@ -60,7 +60,6 @@ public class BachecaUtils implements Runnable {
     public void run() {
         setRunning(true);
         storageReference = FirebaseStorage.getInstance().getReference();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference("posts");
         final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
@@ -83,11 +82,13 @@ public class BachecaUtils implements Runnable {
 
                     final Post newPost = postSnapshot.getValue(Post.class);
 
+                    if (newPost.getDeleted()) {
+                        continue;
+                    }
+
 
                     final int numberOfPics = newPost.getHasPicture();
                     final int numberOfDocs = newPost.getHasDocument();
-                    final int[] numberOfLikes = new int[1];
-                    final int[] numberOfComments = new int[1];
 
 
                     final String[] authorName = new String[1];
