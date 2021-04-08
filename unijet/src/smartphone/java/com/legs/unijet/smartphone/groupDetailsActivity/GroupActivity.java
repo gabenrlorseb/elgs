@@ -66,6 +66,7 @@
     final int PIC_CROP = 2;
     Group group;
     String groupUID;
+    String usertype;
      String reference = "groups";
     Bitmap bitmap;
     Uri selectedImageUri;
@@ -145,8 +146,14 @@ rating = findViewById(R.id.toolbar_additional_infos);
                     }
                     groupUID = postSnapshot.getKey();
 
-                    postFetcher = new BachecaUtils(groupUID, recyclerViewBacheca, getApplicationContext(), "students");
+                    postFetcher = new BachecaUtils(groupUID, recyclerViewBacheca, getApplicationContext());
                     postFetcher.run();
+
+                    if (user.getEmail().contains("@studenti.uniba.it")) {
+                        usertype = "students";
+                    } else {
+                        usertype = "teachers";
+                    }
 
 
 
@@ -158,7 +165,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
 
 
-                    database2.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
+                    database2.child(usertype).orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot2) {
                             for (DataSnapshot childSnapshot:snapshot2.getChildren()) {

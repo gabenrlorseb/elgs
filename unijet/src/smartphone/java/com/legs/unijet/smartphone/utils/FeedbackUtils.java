@@ -28,14 +28,12 @@ import java.util.Collections;
 public class FeedbackUtils {
     RecyclerView rvBacheca;
     Context context;
-    String type;
     String usertype;
 
-    public FeedbackUtils(String groupUID, RecyclerView rvBacheca, Context context, String usertype) {
+    public FeedbackUtils(String groupUID, RecyclerView rvBacheca, Context context) {
         this.context = context;
         this.groupUID = groupUID;
         this.rvBacheca = rvBacheca;
-        this.usertype = usertype;
     }
 
     public boolean isRunning() {
@@ -68,7 +66,6 @@ public class FeedbackUtils {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference("feedbacks");
-        final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
 
 
         final StorageReference reference1 = FirebaseStorage.getInstance().getReference("feedbacks");
@@ -125,7 +122,13 @@ public class FeedbackUtils {
                         }
                     });
 
+                    if (newFeedback.getAuthor().contains("@studenti.uniba.it")) {
+                        usertype = "students";
+                    } else {
+                        usertype = "teachers";
+                    }
 
+                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference(usertype);
 
 
 

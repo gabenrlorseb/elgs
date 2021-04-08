@@ -95,6 +95,7 @@
      TextView rating;
      RelativeLayout postLayout;
      EditText postNow;
+     String usertype;
 
 
 
@@ -155,8 +156,15 @@
                     }
 
                     groupUID = postSnapshot.getKey();
-                    postFetcher = new BachecaUtils(groupUID, recyclerViewBacheca, getActivity(), "students");
+                    postFetcher = new BachecaUtils(groupUID, recyclerViewBacheca, getActivity());
                     postFetcher.run();
+
+                    if (user.getEmail().contains("@studenti.uniba.it")) {
+                        usertype = "students";
+                    } else {
+                        usertype = "teachers";
+                    }
+
                     ArrayList<String> addedMails = group.getRecipients();
                     NumberOfMembers[0] = addedMails.size() + 1;
                     final String[] groupAuthorName = new String[1];
