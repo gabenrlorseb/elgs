@@ -2,6 +2,7 @@ package com.legs.unijet.tabletversion.registerActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -13,14 +14,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.tabletversion.profile.User;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 
 import java.util.Calendar;
 
@@ -39,7 +46,6 @@ public class RegProfActivity extends AppCompatActivity {
 
 
     private FirebaseAuth firebaseAuth;
-    private ProgressDialog LoadingBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -105,7 +111,7 @@ public class RegProfActivity extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance ();
-        LoadingBar = new ProgressDialog (RegProfActivity.this);
+
         btnRegister = findViewById (R.id.confirm_button_teacher);
         btnRegister.setOnClickListener (new View.OnClickListener () {
             @Override
@@ -133,13 +139,13 @@ public class RegProfActivity extends AppCompatActivity {
 
     void checkCrededentials() {
 
-        String name = inputName.getText ().toString ();
-        String surname = inputSurname.getText ().toString ();
-        String professorID = inputMatricola.getText ().toString ();
-        String department = inputDepartment.getSelectedItem ().toString ();
-        String universityCampus = inputAteneo.getSelectedItem ().toString ();
-        String gender=inputGender.getSelectedItem ().toString ();
-        String dateBorn=inputDateBorn.getText ().toString ();
+        final String name = inputName.getText ().toString ();
+        final String surname = inputSurname.getText ().toString ();
+        final String professorID = inputMatricola.getText ().toString ();
+        final String department = inputDepartment.getSelectedItem ().toString ();
+        final String universityCampus = inputAteneo.getSelectedItem ().toString ();
+        final String gender=inputGender.getSelectedItem ().toString ();
+        final String dateBorn=inputDateBorn.getText ().toString ();
         if (name.isEmpty () || !name.contains ("")) {
             showError (inputName, getString(R.string.error_name));
         } else if (surname.isEmpty () || !surname.contains ("")) {
@@ -152,25 +158,63 @@ public class RegProfActivity extends AppCompatActivity {
             showError3 (inputGender, getString(R.string.error_gender));
         } else if (universityCampus.isEmpty ()) {
             showError4 (inputAteneo, getString(R.string.error_campus));
-        }  else {
-            db=FirebaseDatabase.getInstance ().getReference ("teachers").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
+        }
+        else {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras ();
-            String email = bundle.getString ("email");
-            User teacher= new User(name,surname,professorID,department,universityCampus,gender,dateBorn,email);
-            if(teacher == null) {
-                Log.d ("TAG", "checkCrededentials: nullo");
-            } else {
-                Log.d ("TAG", "checkCrededentials: "+teacher.getName ());
-            }
-            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
+            final String email = bundle.getString ("email");
+            final String pw = bundle.getString("pw");
 
-            db.setValue (teacher);
 
-            //mDatabase.child(String.valueOf (teacher.sb ())).setValue (teacher);
-            LoadingBar.setTitle (getString(R.string.registration));
-            LoadingBar.setMessage (getString(R.string.check_credentials));
-            LoadingBar.setCanceledOnTouchOutside (false);
+
+
+            final ProgressDialog dialog = ProgressDialog.show(RegProfActivity.this, "",
+                    getString(R.string.wait), true);
+            dialog.show();
+
+
+
+            auth.createUserWithEmailAndPassword (email,pw).addOnCompleteListener (new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful ()){
+                        Log.d ("TAG", "onComplete: success");
+                        auth.signInWithEmailAndPassword (email, pw).addOnCompleteListener (new OnCompleteListener<AuthResult> () {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful ()) {
+                                    SharedPreferences sp = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+                                    SharedPreferences.Editor pe = sp.edit();
+                                    pe.putBoolean("firstRun", false);
+                                    pe.apply();
+                                    dialog.dismiss();
+                                    db= FirebaseDatabase.getInstance ().getReference ("teachers").child (auth.getCurrentUser ().getUid ());
+
+                                    final User professor= new User(name,surname,professorID,department,universityCampus,gender,dateBorn,email);
+                                    db.setValue (professor).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText (RegProfActivity.this, "Welcome to UniJet!", Toast.LENGTH_SHORT).show ();
+                                            startActivity (new Intent (getApplicationContext (), MainActivity.class));
+                                        }
+                                    });
+
+                                } else {
+                                    dialog.dismiss();
+                                    Toast.makeText (RegProfActivity.this,task.getException ().toString (), Toast.LENGTH_SHORT).show ();
+                                }
+
+                            }
+                        });
+
+                    }
+                    else{
+                        Log.d ("TAG", "onComplete: failed");
+                        Toast.makeText (RegProfActivity.this,R.string.generic_error, Toast.LENGTH_SHORT).show ();
+                    }
+                }
+            });
+
 
 
         }

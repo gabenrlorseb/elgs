@@ -79,6 +79,9 @@ public class FeedbackActivity  extends AppCompatActivity implements FeedbackUtil
                             count++;
                         }
                         average = total / count;
+                        if (total == 0 && count == 0){
+                            average = 0;
+                        }
                         averageNumber.setText(String.valueOf(average));
                     }
 
