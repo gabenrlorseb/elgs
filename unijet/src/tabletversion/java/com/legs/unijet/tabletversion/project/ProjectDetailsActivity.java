@@ -69,7 +69,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ProjectDetailsActivity extends Fragment implements BachecaUtils.FinishCallback<Boolean>{
+public class ProjectDetailsActivity extends Fragment {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -479,15 +479,11 @@ return view;
 
     }
 
-    @Override
-    public void onComplete(Boolean result) {
-        dialog.dismiss();
-        fetchedPosts = new ArrayList<>();
-        fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
 
 
 
     }
 
-}
+
 

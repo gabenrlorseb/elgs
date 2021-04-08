@@ -34,6 +34,7 @@ import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.tabletversion.utils.MainActivity;
 
 import java.util.ArrayList;
 
