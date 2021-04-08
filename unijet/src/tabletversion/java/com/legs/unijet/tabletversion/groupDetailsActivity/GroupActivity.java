@@ -74,7 +74,7 @@
  import java.util.ArrayList;
  import java.util.Objects;
 
- public class GroupActivity extends Fragment implements BachecaUtils.FinishCallback<Boolean>{
+ public class GroupActivity extends Fragment {
 
     private static final int SELECT_PICTURE = 1;
     final int PIC_CROP = 2;
@@ -579,14 +579,10 @@
 
     }
 
-     @Override
-     public void onComplete(Boolean result) {
-         dialog.dismiss();
-         fetchedPosts = new ArrayList<>();
-         fetchedPosts.addAll(postFetcher.getFetchedPosts());
+
 
 
 
      }
 
-}
+
