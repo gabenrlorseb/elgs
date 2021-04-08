@@ -239,7 +239,7 @@ public class NewPostActivity extends AppCompatActivity {
                         } else {
                             ArrayList<String> setPreLikes = new ArrayList<>();
                             setPreLikes.add(user.getEmail());
-                            database1.child(uniqueId).setValue(setPreLikes);
+                            database1.child(uniqueId).setValue(user.getEmail());
                             Toast.makeText(NewPostActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             finish();
                         }

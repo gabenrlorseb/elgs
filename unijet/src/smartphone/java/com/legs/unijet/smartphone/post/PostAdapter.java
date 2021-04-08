@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,8 +22,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -36,6 +40,7 @@ import com.legs.unijet.smartphone.utils.SlidingImagesAdapter;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -96,6 +101,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         final PostSample currentItem = sampleList.get(position);
 
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         final File localpropic = new File(outputDir, "propic" + currentItem.getAuthor_key() +".bmp");
         StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(currentItem.getAuthor_key() + ".jpg");
@@ -123,22 +130,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a");
         String date = sdf.format(currentItem.getTimestamp() * 1000);
         holder.date_time.setText(date);
-        if (holder.liked) {
-            holder.like.setColorFilter(Color.argb(255,255,0,0));
-        }
 
-        holder.date_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.liked) {
-                    holder.like.setColorFilter(Color.argb(255,0,0,0));
-                    holder.liked = false;
-                } else {
-                    holder.like.setColorFilter(Color.argb(255,255,0,0));
-                    holder.liked = true;
-                }
-            }
-        });
+
+
 
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,10 +149,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        final DatabaseReference[] likeRef = new DatabaseReference[1];
+
+
         FirebaseDatabase.getInstance().getReference().child("likes/" + currentItem.getIdentifier()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                holder.number_of_likes.setText(String.valueOf(snapshot.getChildrenCount()));
+
+                holder.number_of_likes.setText(String.valueOf((int) snapshot.getChildrenCount()));
+
+                for (DataSnapshot inSnapshot : snapshot.getChildren()) {
+                    if (Objects.equals(inSnapshot.getValue(String.class), currentUser.getEmail())) {
+                        likeRef[0] = inSnapshot.getRef();
+                        holder.like.setColorFilter(Color.argb(255,255,0,0));
+                        holder.liked = true;
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -166,6 +173,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             }
         });
+
+        holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.liked) {
+                    holder.like.setColorFilter(Color.argb(255,0,0,0));
+                    holder.liked = false;
+                    likeRef[0].removeValue();
+                } else {
+                    holder.like.setColorFilter(Color.argb(255,255,0,0));
+                    final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference("likes/" + currentItem.getIdentifier());
+                    database1.push().setValue(currentUser.getEmail());
+                }
+            }
+        });
+
 
         FirebaseDatabase.getInstance().getReference().child("comments/" + currentItem.getIdentifier()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
