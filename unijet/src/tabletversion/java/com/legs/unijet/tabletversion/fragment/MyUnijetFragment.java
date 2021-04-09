@@ -2,6 +2,7 @@ package com.legs.unijet.tabletversion.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,7 +77,6 @@ public class MyUnijetFragment extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.myunijet, container, false);
 
         Button logout_button = view.findViewById (R.id.logout_button);
-        LinearLayout settings =view.findViewById (R.id.settings_button);
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
 
 
@@ -152,13 +152,6 @@ public class MyUnijetFragment extends Fragment {
         });
 
 
-        settings .setOnClickListener (new android.view.View.OnClickListener () {
-            @Override
-            public void onClick(android.view.View v) {
-                //startActivity (new Intent (getApplicationContext (), CreateGroup.class));
-
-            }
-        });
 
 
         return view;
@@ -180,7 +173,6 @@ public class MyUnijetFragment extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("students");
 
         final File localpropic = new File(context.getCacheDir(), "propic" + user.getUid() +".bmp");
         StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
@@ -210,7 +202,11 @@ public class MyUnijetFragment extends Fragment {
                     PostSample postToBeAdded = childSnapshot.getValue(PostSample.class);
                     posts.add(postToBeAdded);
                 }
-                buildRecyclerView(view);
+                int orientation = getResources().getConfiguration().orientation;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    buildRecyclerView(view);
+                }
+
             }
 
             @Override
