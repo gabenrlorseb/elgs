@@ -66,7 +66,6 @@ public class MyUnijetFragment extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.myunijet, container, false);
 
         Button logout_button = view.findViewById (R.id.logout_button);
-        LinearLayout settings =view.findViewById (R.id.settings_button);
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
         LinearLayout toFavourites = view.findViewById(R.id.favourites_button);
 
@@ -146,13 +145,7 @@ public class MyUnijetFragment extends Fragment {
         });
 
 
-        settings .setOnClickListener (new android.view.View.OnClickListener () {
-            @Override
-            public void onClick(android.view.View v) {
-                //startActivity (new Intent (getApplicationContext (), CreateGroup.class));
 
-            }
-        });
 
 
         return view;
