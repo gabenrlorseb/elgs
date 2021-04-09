@@ -47,7 +47,6 @@
         <activity android:name="com.legs.unijet.tabletversion.feedback.NewFeedbackActivity"/>
         <activity android:name="com.legs.unijet.tabletversion.comment.CommentActivity"/>
         <activity android:name="com.legs.unijet.tabletversion.comment.NewCommentActivity" />
-        <activity android:name="com.legs.unijet.tabletversion.profile.Favourites" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

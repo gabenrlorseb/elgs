@@ -2,23 +2,19 @@ package com.legs.unijet.tabletversion.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,24 +25,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.view.View;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
 import com.legs.unijet.tabletversion.LoginActivity;
+import com.legs.unijet.tabletversion.post.PostAdapter;
+import com.legs.unijet.tabletversion.post.PostSample;
 import com.legs.unijet.tabletversion.profile.EditProfile;
-import com.legs.unijet.tabletversion.profile.Favourites;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.GsonParser;
 import com.legs.unijet.smartphone.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 
 public class MyUnijetFragment extends Fragment {
 
@@ -61,6 +54,12 @@ public class MyUnijetFragment extends Fragment {
     User userProfile;
     ImageView profileAvatar;
 
+    ArrayList<PostSample> posts;
+
+    RecyclerView mRecyclerView;
+    DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
+
+
     public MyUnijetFragment() {
 //costruttore vuoto
     }
@@ -71,7 +70,7 @@ public class MyUnijetFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public android.view.View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final android.view.View view = inflater.inflate(R.layout.myunijet, container, false);
@@ -79,17 +78,7 @@ public class MyUnijetFragment extends Fragment {
         Button logout_button = view.findViewById (R.id.logout_button);
         LinearLayout settings =view.findViewById (R.id.settings_button);
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
-        LinearLayout toFavourites = view.findViewById(R.id.favourites_button);
 
-
-
-        toFavourites.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View v) {
-                startActivity (new Intent(getContext (), Favourites.class));
-            }
-
-        });
 
 
         profileAvatar = view.findViewById(R.id.member_icon);
@@ -101,6 +90,10 @@ public class MyUnijetFragment extends Fragment {
             assert user != null;
             userId = user.getUid();
             email = user.getEmail();
+
+            populateList(userId, view);
+
+
             if (email.contains("@studenti.uniba.it")) {
                 reference = FirebaseDatabase.getInstance().getReference("students");
                 memberType = "student";
@@ -185,12 +178,9 @@ public class MyUnijetFragment extends Fragment {
 
     public void getAvatar(Context context) {
 
-        final StorageReference[] storageReference = {FirebaseStorage.getInstance().getReference()};
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("students");
-        DatabaseReference userRef = ref.child(user.getUid());
 
         final File localpropic = new File(context.getCacheDir(), "propic" + user.getUid() +".bmp");
         StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
@@ -209,6 +199,35 @@ public class MyUnijetFragment extends Fragment {
         } else {
             profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
         }
+    }
+
+    private void populateList(String uid, final android.view.View view) {
+        posts = new ArrayList<>();
+        db.child("favourites/" + uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot:snapshot.getChildren()) {
+                    PostSample postToBeAdded = childSnapshot.getValue(PostSample.class);
+                    posts.add(postToBeAdded);
+                }
+                buildRecyclerView(view);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void buildRecyclerView(android.view.View view) {
+        mRecyclerView = view.findViewById(R.id.favourites_list);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
+        PostAdapter mAdapter = new PostAdapter(posts);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 }
