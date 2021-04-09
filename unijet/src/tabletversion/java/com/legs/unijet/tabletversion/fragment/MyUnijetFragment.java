@@ -2,6 +2,7 @@ package com.legs.unijet.tabletversion.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -201,7 +202,11 @@ public class MyUnijetFragment extends Fragment {
                     PostSample postToBeAdded = childSnapshot.getValue(PostSample.class);
                     posts.add(postToBeAdded);
                 }
-                buildRecyclerView(view);
+                int orientation = getResources().getConfiguration().orientation;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    buildRecyclerView(view);
+                }
+
             }
 
             @Override
