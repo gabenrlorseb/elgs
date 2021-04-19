@@ -46,6 +46,8 @@
         <activity android:name=".groupDetailsActivity.MembersDetailsActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
         <activity android:name=".profile.Favourites" />
+        <activity android:name=".Demo" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
