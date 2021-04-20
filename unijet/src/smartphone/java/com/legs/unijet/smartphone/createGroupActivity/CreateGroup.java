@@ -23,7 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.legs.unijet.smartphone.Group;
+import com.legs.unijet.smartphone.group.Group;
 import com.legs.unijet.smartphone.utils.MainActivity;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.profile.User;

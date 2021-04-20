@@ -26,8 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.group.Group;
 import com.legs.unijet.smartphone.utils.CommentUtils;
 
 import java.io.File;

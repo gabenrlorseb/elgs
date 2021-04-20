@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="login_guest">Acesso come utente ospite</string>
     <string name="courses_tab_name">Corsi</string>
     <string name="projects_tab_name">Progetti</string>
     <string name="groups_tab_name">Gruppi</string>

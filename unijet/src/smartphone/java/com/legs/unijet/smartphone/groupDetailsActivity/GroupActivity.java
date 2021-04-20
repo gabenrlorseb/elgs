@@ -42,9 +42,9 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.smartphone.Group;
  import com.legs.unijet.smartphone.R;
  import com.legs.unijet.smartphone.feedback.FeedbackActivity;
+ import com.legs.unijet.smartphone.group.Group;
  import com.legs.unijet.smartphone.post.NewPostActivity;
  import com.legs.unijet.smartphone.post.PostAdapter;
  import com.legs.unijet.smartphone.post.PostSample;

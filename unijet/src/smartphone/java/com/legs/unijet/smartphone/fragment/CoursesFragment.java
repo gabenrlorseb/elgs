@@ -124,7 +124,10 @@ public class CoursesFragment extends Fragment {
 
             }
         });
-        if (user.getEmail().contains("@studenti.uniba.it")){
+        if (user==null){
+        }
+        else if (user.getEmail().contains("@studenti.uniba.it")){
+
         fragmentStudent();
         } else if (user.getEmail().contains("@uniba.it")){
         fragmentProfessor();

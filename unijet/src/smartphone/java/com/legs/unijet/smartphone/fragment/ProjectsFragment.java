@@ -24,8 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.course.Course;
+import com.legs.unijet.smartphone.group.Group;
 import com.legs.unijet.smartphone.project.Project;
 import com.legs.unijet.smartphone.project.ProjectAdapter;
 import com.legs.unijet.smartphone.project.ProjectDetailsActivity;
@@ -124,7 +124,11 @@ EditText searchEditText;
             }
         });
 
-        if (user.getEmail().contains("@studenti.uniba.it")) {
+        if(user==null){
+        }
+
+        else   if (user.getEmail().contains("@studenti.uniba.it")) {
+
             projectList = new ArrayList();
             db.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

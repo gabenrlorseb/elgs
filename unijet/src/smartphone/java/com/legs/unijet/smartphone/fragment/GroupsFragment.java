@@ -26,14 +26,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.Group;
+import com.legs.unijet.smartphone.group.Group;
 import com.legs.unijet.smartphone.group.GroupAdapter;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
+import java.security.cert.PolicyNode;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GroupsFragment extends Fragment {
@@ -62,7 +64,9 @@ public class GroupsFragment extends Fragment {
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.groups_page, container, false);
-        populateList();
+
+            populateList ();
+
         item = view.findViewById(R.id.groups_search_button);
 
         searchEditText = view.findViewById(R.id.groups_search_edit_text);
@@ -118,23 +122,23 @@ public class GroupsFragment extends Fragment {
                     ArrayList<String> recipients = new ArrayList<>();
 
 
-                    if (isPrivate && !owner.equals(user.getEmail())) {
-                        for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
-
-                            if (users.getValue(String.class).equals(user.getEmail())) {
-
-                                groups.add(new Group(name, owner, members, department, true));
-                                break;
-                            }
-                        }
-                    } else {
-                        groups.add(new Group(name, owner, members, department, isPrivate));
-                    }
+                         if (isPrivate && user != null) {
+                             for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
+                                 if (users.getValue(String.class).equals(user.getEmail())) {
+                                     groups.add(new Group(name, owner, members, department, true));
+                                     break;
+                                 }
+                             }
+                         } else if (isPrivate || user == null) {
+                             break;
+                         } else {
+                             groups.add(new Group(name, owner, members, department, isPrivate));
+                         }
 
                 }
                 buildRecyclerView();
 
-                    }
+            }
 
 
 
@@ -146,7 +150,12 @@ public class GroupsFragment extends Fragment {
             }
 
         });
-        if (user.getEmail().contains("@studenti.uniba.it")){
+        if (user==null){
+
+            ViewGroup ();
+        }
+
+        else if (user.getEmail().contains("@studenti.uniba.it")){
             fragmentStudent();
         } else if (user.getEmail().contains("@uniba.it")){
             fragmentProfessor();
@@ -197,7 +206,7 @@ public class GroupsFragment extends Fragment {
                             if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())
                                     && group.getAuthor().contains("@studenti.uniba.it")) {
                                 String namesString = group.getName();
-                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+
                                 String mail = group.getAuthor();
 
                                 fullSampleList.add(new CourseSample(namesString, mail));
@@ -209,10 +218,10 @@ public class GroupsFragment extends Fragment {
                 }
             }
             @Override
-            public void onCancelled (@NonNull DatabaseError error){
+        public void onCancelled (@NonNull DatabaseError error){
 
-            }
-        });
+        }
+    });
 
     }
 
@@ -241,13 +250,47 @@ public class GroupsFragment extends Fragment {
                 })
         );
         if (groups.isEmpty()) {
-            notFoundLayout.setVisibility(View.VISIBLE);
-            String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
+             notFoundLayout.setVisibility(View.VISIBLE);
+             String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
             int randomIndex = new Random().nextInt(notFoundStrings.length);
             String randomName = notFoundStrings[randomIndex];
             notFoundTextView.setText(randomName);
         }
     }
+    public void ViewGroup() {
+        fullSampleList = new ArrayList();
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                fullSampleList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+                        for (Group group : groups) {
+
+                                String namesString = group.getName();
+
+                                String mail = group.getAuthor();
+
+                                fullSampleList.add(new CourseSample(namesString, mail));
+
+
+                        }
+
+
+                }
+                buildRecyclerView();
+            }
+            @Override
+            public void onCancelled (@NonNull DatabaseError error){
+
+            }
+        });
+
+
+
+    }
+
 
 
 }
+

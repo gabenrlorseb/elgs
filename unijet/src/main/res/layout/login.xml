@@ -14,7 +14,7 @@
         android:layout_marginHorizontal="80dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="@string/text_login_guest"
+        android:text="@string/login_guest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_button" />
