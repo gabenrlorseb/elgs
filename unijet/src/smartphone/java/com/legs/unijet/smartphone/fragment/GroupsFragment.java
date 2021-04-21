@@ -31,12 +31,14 @@ import com.legs.unijet.smartphone.group.GroupAdapter;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
+import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
-import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static android.content.ContentValues.TAG;
 
 public class GroupsFragment extends Fragment {
     ImageView item;
@@ -44,6 +46,8 @@ public class GroupsFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userId;
     FirebaseUser auth;
+    FirebaseDatabase mdb;
+
     DatabaseReference reference;
     private ArrayList<CourseSample> fullSampleList;
     private ArrayList <Group> groups;
@@ -65,7 +69,7 @@ public class GroupsFragment extends Fragment {
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.groups_page, container, false);
 
-            populateList ();
+    populateList ();
 
         item = view.findViewById(R.id.groups_search_button);
 
@@ -151,7 +155,6 @@ public class GroupsFragment extends Fragment {
 
         });
         if (user==null){
-
             ViewGroup ();
         }
 
@@ -231,15 +234,29 @@ public class GroupsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getContext());
         mAdapter = new GroupAdapter (fullSampleList);
+
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), GroupActivity.class);
-                        i.putExtra("GName", mAdapter.returnTitle(position));
-                        i.putExtra("owner", mAdapter.returnOwner(position));
-                        view.getContext().startActivity(i);
+                        if (user==null){
+                            Intent i=  new Intent(view.getContext(), MembersDetailsActivity.class);
+
+                            i.putExtra("author",mAdapter.returnOwner (position));
+                            Log.d (TAG, "onDataChange:d "+i);
+                            i.putExtra("name", mAdapter.returnTitle (position));
+                            Log.d (TAG, "onDataChange:d "+i);
+                            view.getContext().startActivity(i);
+
+                        }
+                        else {
+                            Intent i = new Intent (view.getContext (), GroupActivity.class);
+                            i.putExtra ("GName", mAdapter.returnTitle (position));
+                            i.putExtra ("owner", mAdapter.returnOwner (position));
+                            view.getContext().startActivity(i);
+                        }
+                       
                     }
 
                     @Override
@@ -250,40 +267,48 @@ public class GroupsFragment extends Fragment {
                 })
         );
         if (groups.isEmpty()) {
-             notFoundLayout.setVisibility(View.VISIBLE);
-             String[] notFoundStrings = getResources().getStringArray(R.array.not_found_strings);
-            int randomIndex = new Random().nextInt(notFoundStrings.length);
-            String randomName = notFoundStrings[randomIndex];
-            notFoundTextView.setText(randomName);
+            if (user==null){
+
+            }else {
+                notFoundLayout.setVisibility (View.VISIBLE);
+                String[] notFoundStrings = getResources ().getStringArray (R.array.not_found_strings);
+                int randomIndex = new Random ().nextInt (notFoundStrings.length);
+                String randomName = notFoundStrings[randomIndex];
+                notFoundTextView.setText (randomName);
+            }
         }
     }
     public void ViewGroup() {
         fullSampleList = new ArrayList();
-        db.child("students").addValueEventListener(new ValueEventListener() {
+        mdb=FirebaseDatabase.getInstance ();
+        db=mdb.getReference ("groups");
+        db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 fullSampleList.clear();
+                List<String>groups=new ArrayList<> ();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    groups.add(childSnapshot.getKey ());
 
-                        for (Group group : groups) {
+                    Group group=childSnapshot.getValue (Group.class);
+                   if(group.getPrivate ()==false) {
+                       String name = group.getName ();
+                       String autor = group.getAuthor ();
 
-                                String namesString = group.getName();
-
-                                String mail = group.getAuthor();
-
-                                fullSampleList.add(new CourseSample(namesString, mail));
-
-
-                        }
-
-
+                       fullSampleList.add (new CourseSample (name, autor));
+                   }
+                    buildRecyclerView();
                 }
-                buildRecyclerView();
-            }
-            @Override
-            public void onCancelled (@NonNull DatabaseError error){
+
+                Log.d (TAG, "onDataChange:d "+fullSampleList);
 
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
         });
 
 
