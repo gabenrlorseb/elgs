@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.group.Group;
+import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
+import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.project.Project;
 import com.legs.unijet.smartphone.project.ProjectAdapter;
 import com.legs.unijet.smartphone.project.ProjectDetailsActivity;
@@ -35,12 +38,18 @@ import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import static android.content.ContentValues.TAG;
+
 public class ProjectsFragment extends Fragment {
-ImageView item;
-EditText searchEditText;
+    ImageView item;
+    EditText searchEditText;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseDatabase mdb;
+    DatabaseReference db1;
+
     String userId;
     FirebaseUser auth;
     DatabaseReference reference;
@@ -125,6 +134,8 @@ EditText searchEditText;
         });
 
         if(user==null){
+            ViewProject();
+
         }
 
         else   if (user.getEmail().contains("@studenti.uniba.it")) {
@@ -143,13 +154,15 @@ EditText searchEditText;
                                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                     if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
 
-                                            for (Project project : projects) {
-                                                if((childSnapshot.child("email").getValue(String.class).equals(group.getAuthor())
-                                                        || group.getRecipients().contains(childSnapshot.child("email").getValue(String.class)))
-                                                && project.getGroup().equals(group.getName()))
-                                                 {
+                                        for (Project project : projects) {
+                                            if((childSnapshot.child("email").getValue(String.class).equals(group.getAuthor())
+                                                    || group.getRecipients().contains(childSnapshot.child("email").getValue(String.class)))
+                                                    && project.getGroup().equals(group.getName()))
+                                            {
+                                                Group group=new Group ();
                                                 String namesString = project.getName();
                                                 String mail = project.getGroup();
+
                                                 projectList.add(new ProjectSample(namesString, mail));
                                             }
 
@@ -184,13 +197,14 @@ EditText searchEditText;
                         db2.child("teachers").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                     if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                                         for (Project project : projects) {
                                             if (childSnapshot.child("email").getValue(String.class).equals(course.getEmail())
-                                            && project.getCourse().equals(course.getName()))
+                                                    && project.getCourse().equals(course.getName()))
 
                                             {
+                                                Group group =new Group ();
                                                 String namesString = project.getName();
                                                 String mail = project.getGroup();
                                                 projectList.add(new ProjectSample(namesString, mail));
@@ -239,10 +253,33 @@ EditText searchEditText;
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), ProjectDetailsActivity.class);
-                        i.putExtra("PName", mAdapter.returnTitle(position));
-                        i.putExtra("group", mAdapter.returnGroup(position));
-                        view.getContext().startActivity(i);
+                        if (user == null) {
+                            final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
+                            String name;
+                            String mail;
+                            String mailA;
+                            ArrayList<String> namepass;
+                            ArrayList<String> nameOwners;
+                            i.putExtra ("author", mailA = mAdapter.returnMailA (position));
+                            i.putExtra ("authorl", mail = mAdapter.returnGroup (position));
+                            Log.d (TAG, "onDataChange:d " + i);
+                            i.putExtra ("name", name = mAdapter.returnTitle (position));
+                            System.out.println ("author1:" + mailA);
+                            i.putExtra ("nameless", namepass =mAdapter.returnReci (position));
+                            i.putExtra ("nameowners", nameOwners =mAdapter.returnNameOwner (position));
+
+                            System.out.println ("membri:" + namepass);
+
+
+                            Log.d (TAG, "onDataChange:d " + i);
+                            view.getContext ().startActivity (i);
+
+                        }else {
+                            Intent i = new Intent (view.getContext (), ProjectDetailsActivity.class);
+                            i.putExtra ("PName", mAdapter.returnTitle (position));
+                            i.putExtra ("group", mAdapter.returnGroup (position));
+                            view.getContext ().startActivity (i);
+                        }
                     }
 
                     @Override
@@ -260,6 +297,117 @@ EditText searchEditText;
             notFoundTextView.setText(randomName);
         }
     }
+    public void ViewProject() {
+        projectList = new ArrayList();
+        mdb=FirebaseDatabase.getInstance ();
+        db=mdb.getReference ("projects");
+        db1=mdb.getReference ("groups");
+        db2=mdb.getReference ("students");
+        final ArrayList<String> []autori=new ArrayList[]{new ArrayList ()};
+        final ArrayList<String>nameOwners=new ArrayList<> ();
+        final String[] autor = {""};
+        final String[] mailU = new String[1];
+        final String[] nameO = {""};
+
+
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                projectList.clear();
+                List<String> projects=new ArrayList<> ();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    projects.add(childSnapshot.getKey ());
+                    final Project project = childSnapshot.getValue (Project.class);
+                    final String nameProjects = project.getName ();
+
+                    final String nameGroups = project.getGroup ();
+//System.out.println (""+mail);
+                    final List<String> members=new ArrayList<> ();
+                    final ArrayList<String>[] reci = new ArrayList[]{new ArrayList ()};
+
+
+                    final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                    db1.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for (DataSnapshot childSnapshot : snapshot.getChildren ()) {
+                                members.add(childSnapshot.getKey ());
+                                System.out.println ("members:"+members);
+                                Group group = childSnapshot.getValue (Group.class);
+                                String namegroup=group.getName ();
+
+                                System.out.println ("namegroup:"+namegroup);
+                                System.out.println ("nameGroups:"+nameGroups);
+                                if (nameGroups.equals (namegroup)) {
+                                    System.out.println ("entrato");
+                                    ArrayList<String> membri = group.getRecipients ();
+                                    autor[0]="";
+                                     autor[0] = group.getAuthor ();
+                                    System.out.println ("autor[0]=" + autor[0]);
+
+                                    reci[0].addAll (membri);
+                                }
+                                System.out.println ("::" + reci[0]);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    db2.addValueEventListener (new ValueEventListener () {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                nameOwners.add (childSnapshot.getKey ());
+                                User user = childSnapshot.getValue (User.class);
+                                mailU[0] =user.getEmail ();
+
+                                if (mailU[0].equals (autor[0])) {
+                                    nameO[0] = user.getName () + ( " " ) + user.getSurname ();
+                                    finalNameOWners.add(nameO[0]);
+
+                                }
+                                System.out.println ("nameOwners:" + finalNameOWners);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    projectList.add (new ProjectSample (nameProjects, nameGroups, reci[0],autor[0],finalNameOWners));
+                    System.out.println ("autor[0]=" + autor[0]);
+
+                    //System.out.println ("memgri" + reci[0]);
+
+
+                   // System.out.println ("ProjectList:"+projectList);
+                    buildRecyclerView();
+
+                }
+
+                Log.d (TAG, "onDataChange:d "+projectList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+
+
+
+    }
+
 
 }
 

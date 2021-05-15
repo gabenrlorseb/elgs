@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +30,25 @@ import com.legs.unijet.smartphone.course.CourseAdapter;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.course.Course;
 import com.legs.unijet.smartphone.courseDetailsActivity.CourseDetailsActivity;
+import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
+import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import static android.content.ContentValues.TAG;
 
 public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ImageView item;
+    FirebaseDatabase mdb;
+    ArrayList<String> reci;
     EditText searchEditText;
     String userId;
+    Course course;
     FirebaseUser auth;
     Bundle bundle;
     Intent intent;
@@ -48,6 +57,7 @@ public class CoursesFragment extends Fragment {
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference db1 = FirebaseDatabase.getInstance ().getReference ();
     TextView notFoundTextView;
     RelativeLayout notFoundLayout;
 
@@ -125,7 +135,9 @@ public class CoursesFragment extends Fragment {
             }
         });
         if (user==null){
+            ViewCourse();
         }
+
         else if (user.getEmail().contains("@studenti.uniba.it")){
 
         fragmentStudent();
@@ -210,10 +222,31 @@ private void fragmentStudent(){
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
-                        i.putExtra("CName", mAdapter.returnTitle(position));
-                        i.putExtra("professor", mAdapter.returnProfessor(position));
-                        view.getContext().startActivity(i);
+                        if (user == null) {
+                            final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
+                            String name;
+                            String mail;
+                            ArrayList<String> namepass;
+                            ArrayList<String> nameowner;
+
+                            i.putExtra ("author", mail = mAdapter.returnProfessor (position));
+                            Log.d (TAG, "onDataChange:d " + i);
+                            i.putExtra ("name", name = mAdapter.returnTitle (position));
+
+                            i.putExtra ("nameless", namepass =mAdapter.returnReci (position));
+                            i.putExtra ("nameowner", nameowner =mAdapter.returnNameOwner (position));
+                            System.out.println ("membri:" + namepass);
+
+
+                            Log.d (TAG, "onDataChange:d " + i);
+                            view.getContext ().startActivity (i);
+
+                        }else {
+                            Intent i = new Intent (view.getContext (), CourseDetailsActivity.class);
+                            i.putExtra ("CName", mAdapter.returnTitle (position));
+                            i.putExtra ("professor", mAdapter.returnProfessor (position));
+                            view.getContext ().startActivity (i);
+                        }
                     }
 
                     @Override
@@ -234,7 +267,80 @@ private void fragmentStudent(){
 
 
 
+    public void ViewCourse() {
+        courseList = new ArrayList();
+        mdb=FirebaseDatabase.getInstance ();
+        db=mdb.getReference ("courses");
 
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> courses=new ArrayList<> ();
+                final ArrayList<String>nameOwners=new ArrayList<> ();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    courses.add(childSnapshot.getKey ());
+
+                     course = childSnapshot.getValue (Course.class);
+
+                    String name = course.getName ();
+
+                    final String autor = course.getEmail ();
+                    final String[] mailU = new String[1];
+                    reci = course.getMembers ();
+                    System.out.println ("::"+reci);
+                    db1 = mdb.getReference ("teachers");
+
+
+                    final String[] nameO = {""};
+
+                    final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                    db1.addValueEventListener (new ValueEventListener () {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                nameOwners.add (childSnapshot.getKey ());
+                                User user = childSnapshot.getValue (User.class);
+                                mailU[0] =user.getEmail ();
+
+                                if (mailU[0].equals (autor)) {
+                                    nameO[0] = user.getName () + ( " " ) + user.getSurname ();
+                                    finalNameOWners.add(nameO[0]);
+
+                                }
+                                System.out.println ("nameOwners:" + finalNameOWners);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    courseList.add (new CourseSample (name, autor, reci,finalNameOWners));
+
+                    System.out.println ("-:"+courseList);
+                    buildRecyclerView();
+                }
+
+                Log.d (TAG, "onDataChange:d "+courseList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+
+
+
+    }
 
 
 

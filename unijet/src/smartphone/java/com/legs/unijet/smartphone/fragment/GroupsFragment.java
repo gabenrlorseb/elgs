@@ -32,6 +32,7 @@ import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CourseSample;
 import com.legs.unijet.smartphone.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.smartphone.groupDetailsActivity.MembersDetailsActivity;
+import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 import java.util.ArrayList;
@@ -47,13 +48,15 @@ public class GroupsFragment extends Fragment {
     String userId;
     FirebaseUser auth;
     FirebaseDatabase mdb;
-
+    Group group;
     DatabaseReference reference;
     private ArrayList<CourseSample> fullSampleList;
     private ArrayList <Group> groups;
-    private ArrayList <String> members;
+    private ArrayList<String> members;
+    ArrayList<String> reci;
 
-    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference db = FirebaseDatabase.getInstance ().getReference ();
+    DatabaseReference db1 = FirebaseDatabase.getInstance ().getReference ();
     RecyclerView mRecyclerView;
     private GroupAdapter mAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -69,7 +72,7 @@ public class GroupsFragment extends Fragment {
                                           Bundle savedInstanceState) {
         final android.view.View view = inflater.inflate(R.layout.groups_page, container, false);
 
-    populateList ();
+        populateList ();
 
         item = view.findViewById(R.id.groups_search_button);
 
@@ -126,18 +129,18 @@ public class GroupsFragment extends Fragment {
                     ArrayList<String> recipients = new ArrayList<>();
 
 
-                         if (isPrivate && user != null) {
-                             for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
-                                 if (users.getValue(String.class).equals(user.getEmail())) {
-                                     groups.add(new Group(name, owner, members, department, true));
-                                     break;
-                                 }
-                             }
-                         } else if (isPrivate || user == null) {
-                             break;
-                         } else {
-                             groups.add(new Group(name, owner, members, department, isPrivate));
-                         }
+                    if (isPrivate && user != null) {
+                        for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
+                            if (users.getValue(String.class).equals(user.getEmail())) {
+                                groups.add(new Group(name, owner, members, department, true));
+                                break;
+                            }
+                        }
+                    } else if (isPrivate || user == null) {
+                        break;
+                    } else {
+                        groups.add(new Group(name, owner, members, department, isPrivate));
+                    }
 
                 }
                 buildRecyclerView();
@@ -182,7 +185,7 @@ public class GroupsFragment extends Fragment {
                                 //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                 String mail = group.getAuthor();
 
-                                fullSampleList.add(new CourseSample(namesString, mail));
+                                fullSampleList.add (new CourseSample (namesString, mail));
                             }
 
                         }
@@ -212,7 +215,7 @@ public class GroupsFragment extends Fragment {
 
                                 String mail = group.getAuthor();
 
-                                fullSampleList.add(new CourseSample(namesString, mail));
+                                fullSampleList.add (new CourseSample (namesString,mail));
                             }
 
                         }
@@ -221,10 +224,10 @@ public class GroupsFragment extends Fragment {
                 }
             }
             @Override
-        public void onCancelled (@NonNull DatabaseError error){
+            public void onCancelled (@NonNull DatabaseError error){
 
-        }
-    });
+            }
+        });
 
     }
 
@@ -239,15 +242,26 @@ public class GroupsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        if (user==null){
-                            Intent i=  new Intent(view.getContext(), MembersDetailsActivity.class);
+                    @Override
+                    public void onItemClick(final View view, final int position) {
+                        if (user == null) {
+                            final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
+                            String name;
+                            String mail;
+                            ArrayList<String> namepass;
+                            ArrayList<String> nameowner;
 
-                            i.putExtra("author",mAdapter.returnOwner (position));
-                            Log.d (TAG, "onDataChange:d "+i);
-                            i.putExtra("name", mAdapter.returnTitle (position));
-                            Log.d (TAG, "onDataChange:d "+i);
-                            view.getContext().startActivity(i);
+                            i.putExtra ("author", mail = mAdapter.returnOwner (position));
+                            Log.d (TAG, "onDataChange:d " + i);
+                            i.putExtra ("name", name = mAdapter.returnTitle (position));
+
+                            i.putExtra ("nameless", namepass =mAdapter.returnReci (position));
+                            i.putExtra ("nameowner", nameowner =mAdapter.returnNameOwner (position));
+                            System.out.println ("membri:" + namepass);
+
+
+                            Log.d (TAG, "onDataChange:d " + i);
+                            view.getContext ().startActivity (i);
 
                         }
                         else {
@@ -256,7 +270,7 @@ public class GroupsFragment extends Fragment {
                             i.putExtra ("owner", mAdapter.returnOwner (position));
                             view.getContext().startActivity(i);
                         }
-                       
+
                     }
 
                     @Override
@@ -282,21 +296,62 @@ public class GroupsFragment extends Fragment {
         fullSampleList = new ArrayList();
         mdb=FirebaseDatabase.getInstance ();
         db=mdb.getReference ("groups");
+
+
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                fullSampleList.clear();
                 List<String>groups=new ArrayList<> ();
+
+                final ArrayList<String>nameOwners=new ArrayList<> ();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     groups.add(childSnapshot.getKey ());
 
-                    Group group=childSnapshot.getValue (Group.class);
-                   if(group.getPrivate ()==false) {
-                       String name = group.getName ();
-                       String autor = group.getAuthor ();
+                    group = childSnapshot.getValue (Group.class);
+                    if(group.getPrivate ()==false&& group.getAuthor ().contains ("@studenti.uniba.it")) {
+                        String name = group.getName ();
+                        final String[] mailU = new String[1];
+                        final String autor = group.getAuthor ();
 
-                       fullSampleList.add (new CourseSample (name, autor));
-                   }
+                        reci = group.getRecipients ();
+                        System.out.println ("::"+reci);
+                        db1 = mdb.getReference ("students");
+
+
+                        final String[] nameO = {""};
+
+                       final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                        db1.addValueEventListener (new ValueEventListener () {
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                    nameOwners.add (childSnapshot.getKey ());
+                                    User user = childSnapshot.getValue (User.class);
+                                    mailU[0] =user.getEmail ();
+
+                                    if (mailU[0].equals (autor)) {
+                                        nameO[0] = user.getName () + ( " " ) + user.getSurname ();
+                                        finalNameOWners.add(nameO[0]);
+
+                                    }
+                                            System.out.println ("nameOwners:" + finalNameOWners);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+
+                        fullSampleList.add (new CourseSample (name, autor,reci, finalNameOWners));
+                    }
+                    System.out.println ("-:"+fullSampleList);
                     buildRecyclerView();
                 }
 

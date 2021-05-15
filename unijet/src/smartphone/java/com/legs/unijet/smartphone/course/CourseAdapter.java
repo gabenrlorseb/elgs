@@ -126,6 +126,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public String returnTitle (int position) {
         return coursesList.get(position).getText1();
     }
+    public ArrayList<String> returnReci (int position) {
+        return coursesList.get(position).getText3();
+    }
+    public ArrayList<String> returnNameOwner (int position) {
+        return coursesList.get(position).getText4();
+    }
 
     public String returnProfessor (int position) {
         return coursesList.get(position).getText2();

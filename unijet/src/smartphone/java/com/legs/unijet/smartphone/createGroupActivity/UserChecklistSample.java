@@ -18,6 +18,8 @@ public class UserChecklistSample implements Serializable {
         this.uid = uid;
     }
 
+
+
     public int getImageResource() {
         return mImageResource;
     }
