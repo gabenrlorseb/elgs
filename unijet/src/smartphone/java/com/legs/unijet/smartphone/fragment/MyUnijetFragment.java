@@ -84,40 +84,57 @@ public class MyUnijetFragment extends Fragment {
 
         if (savedInstanceState == null) {
             user = FirebaseAuth.getInstance().getCurrentUser();
-            assert user != null;
-            userId = user.getUid();
-            email = user.getEmail();
-            if (email.contains("@studenti.uniba.it")) {
+
+            if (user==null){
+                userId = null;
+                email = null;
+                reference=null;
+
+            }else{
+                assert user != null;
+                userId = user.getUid();
+                email=user.getEmail ();
+            }
+            if(email==null){
+                reference = null;
+            }
+
+            else if (email.contains("@studenti.uniba.it")) {
                 reference = FirebaseDatabase.getInstance().getReference("students");
                 memberType = "student";
             } else {
                 reference = FirebaseDatabase.getInstance().getReference("teachers");
                 memberType = "professor";
             }
+
             text_name_surname = view.findViewById(R.id.text_name_surname);
             email_login_field = view.findViewById(R.id.email_logn_field);
+            if (reference==null){
 
-            reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            }else {
+                reference.child (userId).addListenerForSingleValueEvent (new ValueEventListener () {
 
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userProfile = snapshot.getValue(User.class);
-                    if (userProfile != null) {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        userProfile = snapshot.getValue (User.class);
+                        if (userProfile != null) {
 
-                        name = userProfile.name;
-                        email = user.getEmail();
-                        surname = userProfile.surname;
-                        nameFull = name + " " + surname;
-                        text_name_surname.setText(nameFull.toUpperCase());
-                        email_login_field.setText(email);
+                            name = userProfile.name;
+                            email = user.getEmail ();
+                            surname = userProfile.surname;
+                            nameFull = name + " " + surname;
+                            text_name_surname.setText (nameFull.toUpperCase ());
+                            email_login_field.setText (email);
+                        }
+
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+                    }
+                });
+            }
         } else {
             text_name_surname = view.findViewById(R.id.text_name_surname);
             email_login_field = view.findViewById(R.id.email_logn_field);
@@ -131,19 +148,32 @@ public class MyUnijetFragment extends Fragment {
                 logout ();
             }
         });
-        editProfileButton.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View v) {
-                Intent i = new Intent(getActivity().getApplicationContext(), EditProfile.class);
-                Bundle b = new Bundle();
-                String personJsonString = GsonParser.getGsonParser().toJson(userProfile);
-                b.putString("PERSON_KEY", personJsonString);
-                i.putExtras(b);
-                i.putExtra("PERSON_TYPE", memberType);
-                startActivity(i);
-            }
-        });
+        if (user==null) {
+            editProfileButton.setVisibility(View.GONE);
+            toFavourites.setVisibility (View.GONE);
+            name = "User";
+            email = "prova@prova.it";
+            surname = "name";
+            nameFull = name + surname;
+            text_name_surname.setText (nameFull.toUpperCase ());
+            email_login_field.setText (email);
+        }
+        else {
+            editProfileButton.setOnClickListener (new android.view.View.OnClickListener () {
+                @Override
+                public void onClick(android.view.View v) {
+                    Intent i = new Intent (getActivity ().getApplicationContext (), EditProfile.class);
+                    Bundle b = new Bundle ();
+                    String personJsonString = GsonParser.getGsonParser ().toJson (userProfile);
+                    b.putString ("PERSON_KEY", personJsonString);
+                    i.putExtras (b);
+                    i.putExtra ("PERSON_TYPE", memberType);
+                    startActivity (i);
+                }
 
+            });
+
+        }
 
 
 
@@ -165,30 +195,34 @@ public class MyUnijetFragment extends Fragment {
 
     public void getAvatar(Context context) {
 
-        final StorageReference[] storageReference = {FirebaseStorage.getInstance().getReference()};
+        final StorageReference[] storageReference = {FirebaseStorage.getInstance ().getReference ()};
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("students");
-        DatabaseReference userRef = ref.child(user.getUid());
-
-        final File localpropic = new File(context.getCacheDir(), "propic" + user.getUid() +".bmp");
-        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
-        if (!localpropic.exists()) {
-            fileRef.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
-                }
-            });
+        FirebaseUser user = FirebaseAuth.getInstance ().getCurrentUser ();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance ();
+        DatabaseReference ref = database.getReference ("students");
+        DatabaseReference userRef;
+        if (user == null) {
+            userRef = null;
         } else {
-            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+            userRef = ref.child (user.getUid ());
+            final File localpropic = new File (context.getCacheDir (), "propic" + user.getUid () + ".bmp");
+            StorageReference fileRef = FirebaseStorage.getInstance ().getReference ().child (user.getUid () + ".jpg");
+            if (!localpropic.exists ()) {
+                fileRef.getFile (localpropic).addOnSuccessListener (new OnSuccessListener<FileDownloadTask.TaskSnapshot> () {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        profileAvatar.setImageBitmap (BitmapFactory.decodeFile (localpropic.getAbsolutePath ()));
+                    }
+                }).addOnFailureListener (new OnFailureListener () {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        profileAvatar.setImageResource (R.drawable.ic_generic_user_avatar);
+                    }
+                });
+            } else {
+                profileAvatar.setImageBitmap (BitmapFactory.decodeFile (localpropic.getAbsolutePath ()));
+            }
         }
-    }
 
+    }
 }

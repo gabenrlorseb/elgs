@@ -25,8 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.feedback.FeedbackActivity;
+import com.legs.unijet.smartphone.group.Group;
 import com.legs.unijet.smartphone.post.NewPostActivity;
 import com.legs.unijet.smartphone.post.PostAdapter;
 import com.legs.unijet.smartphone.post.PostSample;

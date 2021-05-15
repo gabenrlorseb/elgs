@@ -22,9 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.legs.unijet.smartphone.Group;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
+import com.legs.unijet.smartphone.group.Group;
 import com.legs.unijet.smartphone.utils.MainActivity;
 
 import java.util.ArrayList;
@@ -152,6 +152,8 @@ public class AuthorGroupManageActivity extends AppCompatActivity {
                                 " " +
                                 childSnapshot.child("surname").getValue(String.class);
                         String mail = childSnapshot.child ("email").getValue (String.class);
+                        ArrayList<String> finalNamesString = new ArrayList<>();
+
                         names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false, childSnapshot.getKey()));
                     }
                 }

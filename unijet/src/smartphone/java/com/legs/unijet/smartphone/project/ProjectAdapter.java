@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.legs.unijet.smartphone.project.ProjectSample;
 import com.legs.unijet.smartphone.R;
 
 import java.util.ArrayList;
@@ -95,7 +94,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
     @Override
     public int getItemCount() {
-        return projectList.size();
+        if (projectList==null) {
+            return 0;
+        }
+        else {
+            return projectList.size ();
+        }
+
     }
 
 
@@ -104,6 +109,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public void onBindViewHolder(@NonNull final ProjectViewHolder projectViewHolder, int i) {
 
         projectViewHolder.mNameProjects.setText(projectList.get(i).getText1());
+
         projectViewHolder.mTitle.setText(projectList.get(i).getText2());
         projectViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +132,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public String returnTitle (int position) {
         return projectList.get(position).getText1();
     }
+    public String returnMailA (int position) {
+        return projectList.get(position).getText5();
+    }
 
+    public ArrayList<String> returnReci (int position) {
+        return projectList.get(position).getText3();
+    }
+    public  ArrayList<String>  returnNameOwner (int position) {
+        return projectList.get(position).getText4();
+    }
     public String returnGroup (int position) {
         return projectList.get(position).getText2();
     }

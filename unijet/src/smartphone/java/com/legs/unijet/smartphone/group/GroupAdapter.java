@@ -1,6 +1,7 @@
 package com.legs.unijet.smartphone.group;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +117,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public String returnTitle (int position) {
         return groupsList.get(position).getText1();
     }
-
+    public ArrayList<String> returnReci (int position) {
+        return groupsList.get(position).getText3();
+    }
+    public ArrayList<String> returnNameOwner (int position) {
+        return groupsList.get(position).getText4();
+    }
     public String returnOwner (int position) {
         return groupsList.get(position).getText2();
     }

@@ -52,7 +52,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public int getItemCount() {
-        return coursesList.size();
+        if(coursesList==null){
+            return 0;
+        }else {
+            return coursesList.size ();
+        }
+
     }
 
     @Override
@@ -120,6 +125,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     public String returnTitle (int position) {
         return coursesList.get(position).getText1();
+    }
+    public ArrayList<String> returnReci (int position) {
+        return coursesList.get(position).getText3();
+    }
+    public ArrayList<String> returnNameOwner (int position) {
+        return coursesList.get(position).getText4();
     }
 
     public String returnProfessor (int position) {

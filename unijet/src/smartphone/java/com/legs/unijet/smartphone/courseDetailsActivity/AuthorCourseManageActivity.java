@@ -147,6 +147,7 @@ public class AuthorCourseManageActivity extends AppCompatActivity {
                                 " " +
                                 childSnapshot.child("surname").getValue(String.class);
                         String mail = childSnapshot.child ("email").getValue (String.class);
+
                         names.add (new UserChecklistSample(R.drawable.ic_people, namesString, mail, false, childSnapshot.getKey()));
                     }
                 }
