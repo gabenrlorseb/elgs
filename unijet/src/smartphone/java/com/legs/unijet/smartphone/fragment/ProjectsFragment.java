@@ -306,7 +306,7 @@ public class ProjectsFragment extends Fragment {
         db1=mdb.getReference ("groups");
         db2=mdb.getReference ("students");
 
-        final String[] autor  = new String[5];
+
 
         db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -332,6 +332,7 @@ public class ProjectsFragment extends Fragment {
                     final ArrayList<String>[] reci = new ArrayList[]{new ArrayList ()};
 
                     final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                    final String[] autor  = new String[5];
                     db1.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -346,6 +347,7 @@ public class ProjectsFragment extends Fragment {
                                 if (nameGroups.equals (namegroup)) {
                                     System.out.println ("entrato");
                                     ArrayList<String> membri = group.getRecipients ();
+
                                     autor[0] = group.getAuthor ();
                                     System.out.println ("autor[0]=" + autor[0]);
 
@@ -393,7 +395,7 @@ public class ProjectsFragment extends Fragment {
 
                     });
                     projectList.add (new ProjectSample (nameProjects, nameGroups, reci[0], autor[0],finalNameOWners));
-                    System.out.println ("auto12r[0]=" + autor[0]);
+                    System.out.println ("autore=" + autor[0]);
 
                     //System.out.println ("memgri" + reci[0]);
 
