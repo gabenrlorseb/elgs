@@ -133,8 +133,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return coursesList.get(position).getText4();
     }
 
-    public String returnProfessor (int position) {
-        return coursesList.get(position).getText2();
+    public ArrayList<String> returnProfessor (int position) {
+        return coursesList.get(position).getText5();
     }
 
     @Override

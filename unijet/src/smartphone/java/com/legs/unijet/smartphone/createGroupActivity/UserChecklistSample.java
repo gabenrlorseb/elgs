@@ -1,13 +1,15 @@
 package com.legs.unijet.smartphone.createGroupActivity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class UserChecklistSample implements Serializable {
     private final int mImageResource;
     private final String mText1;
     private final String mailText;
+
     private Boolean isChecked;
-    private final String uid;
+    private String uid;
 
 
     public UserChecklistSample(int imageResource, String text1, String text2, Boolean checkbox, String uid) {
@@ -17,6 +19,7 @@ public class UserChecklistSample implements Serializable {
         isChecked = checkbox;
         this.uid = uid;
     }
+
 
 
 
@@ -44,4 +47,6 @@ public class UserChecklistSample implements Serializable {
     public String getUid() {
         return uid;
     }
+
+
 }

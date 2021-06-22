@@ -257,14 +257,14 @@ public class ProjectsFragment extends Fragment {
                         if (user == null) {
                             final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
                             String name;
-                            String mail;
+                            ArrayList<String>  mail;
                             String namegroup;
                             ArrayList<String> namepass;
                             ArrayList<String> nameOwners;
-                            i.putExtra ("authorl", namegroup = mAdapter.returnMailA (position));
+                            i.putExtra ("authorMail", mail = mAdapter.returnMailA (position));
                             i.putExtra ("name", name = mAdapter.returnTitle (position));
                             i.putExtra ("nameless", namepass =mAdapter.returnReci (position));
-                            i.putExtra ("author", mail = mAdapter.returnGroup (position));
+                           // i.putExtra ("author", namegroup = mAdapter.returnGroup (position));
                             System.out.println(" le mail:"+mail);
                             Log.d (TAG, "onDataChange:d " + i);
                             i.putExtra ("nameowner", nameOwners =mAdapter.returnNameOwner (position));
@@ -332,6 +332,8 @@ public class ProjectsFragment extends Fragment {
                     final ArrayList<String>[] reci = new ArrayList[]{new ArrayList ()};
 
                     final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                    final ArrayList<String> finalMailsOWners = new ArrayList<> ();
+
                     final String[] autor  = new String[5];
                     db1.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -344,7 +346,7 @@ public class ProjectsFragment extends Fragment {
 
                                 System.out.println ("namegroup:"+namegroup);
                                 System.out.println ("nameGroups:"+nameGroups);
-                                if (nameGroups.equals (namegroup)) {
+                                if (nameGroups.equals (namegroup) && !group.getPrivate()) {
                                     System.out.println ("entrato");
                                     ArrayList<String> membri = group.getRecipients ();
 
@@ -377,7 +379,8 @@ public class ProjectsFragment extends Fragment {
                                 if (mailU[0].equals (autor[0])) {
                                     nameO[0] = user.getName () + ( " " ) + user.getSurname ();
                                     autor1[0] =user.getEmail();
-                                    finalNameOWners.add(nameO[0]+"\n"+autor1[0]);
+                                    finalNameOWners.add(nameO[0]);
+                                    finalMailsOWners.add( autor1[0]);
 
 
                                 }
@@ -394,7 +397,7 @@ public class ProjectsFragment extends Fragment {
                         }
 
                     });
-                    projectList.add (new ProjectSample (nameProjects, nameGroups, reci[0], autor[0],finalNameOWners));
+                    projectList.add (new ProjectSample (nameProjects, nameGroups, reci[0], finalMailsOWners,finalNameOWners));
                     System.out.println ("autore=" + autor[0]);
 
                     //System.out.println ("memgri" + reci[0]);
