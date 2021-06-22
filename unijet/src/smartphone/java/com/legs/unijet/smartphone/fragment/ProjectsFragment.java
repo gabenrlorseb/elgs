@@ -38,6 +38,7 @@ import com.legs.unijet.smartphone.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -256,17 +257,17 @@ public class ProjectsFragment extends Fragment {
                         if (user == null) {
                             final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
                             String name;
-                            String mail;
-                            String mailA;
+                            ArrayList<String>  mail;
+                            String namegroup;
                             ArrayList<String> namepass;
                             ArrayList<String> nameOwners;
-                            i.putExtra ("author", mailA = mAdapter.returnMailA (position));
-                            i.putExtra ("authorl", mail = mAdapter.returnGroup (position));
-                            Log.d (TAG, "onDataChange:d " + i);
+                            i.putExtra ("authorMail", mail = mAdapter.returnMailA (position));
                             i.putExtra ("name", name = mAdapter.returnTitle (position));
-                            System.out.println ("author1:" + mailA);
                             i.putExtra ("nameless", namepass =mAdapter.returnReci (position));
-                            i.putExtra ("nameowners", nameOwners =mAdapter.returnNameOwner (position));
+                           // i.putExtra ("author", namegroup = mAdapter.returnGroup (position));
+                            System.out.println(" le mail:"+mail);
+                            Log.d (TAG, "onDataChange:d " + i);
+                            i.putExtra ("nameowner", nameOwners =mAdapter.returnNameOwner (position));
 
                             System.out.println ("membri:" + namepass);
 
@@ -298,16 +299,12 @@ public class ProjectsFragment extends Fragment {
         }
     }
     public void ViewProject() {
+
         projectList = new ArrayList();
         mdb=FirebaseDatabase.getInstance ();
         db=mdb.getReference ("projects");
         db1=mdb.getReference ("groups");
         db2=mdb.getReference ("students");
-        final ArrayList<String> []autori=new ArrayList[]{new ArrayList ()};
-        final ArrayList<String>nameOwners=new ArrayList<> ();
-        final String[] autor = {""};
-        final String[] mailU = new String[1];
-        final String[] nameO = {""};
 
 
 
@@ -316,6 +313,14 @@ public class ProjectsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 projectList.clear();
                 List<String> projects=new ArrayList<> ();
+                final ArrayList<String>nameOwners=new ArrayList<> ();
+
+                final String[] mailU = new String[1];
+                final String[] nameO = new String[1];
+
+                final List<String> members=new ArrayList<> ();
+                final String[] autor1 = new String[1];
+
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     projects.add(childSnapshot.getKey ());
                     final Project project = childSnapshot.getValue (Project.class);
@@ -323,15 +328,16 @@ public class ProjectsFragment extends Fragment {
 
                     final String nameGroups = project.getGroup ();
 //System.out.println (""+mail);
-                    final List<String> members=new ArrayList<> ();
+
                     final ArrayList<String>[] reci = new ArrayList[]{new ArrayList ()};
 
-
                     final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                    final ArrayList<String> finalMailsOWners = new ArrayList<> ();
+
+                    final String[] autor  = new String[5];
                     db1.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                             for (DataSnapshot childSnapshot : snapshot.getChildren ()) {
                                 members.add(childSnapshot.getKey ());
                                 System.out.println ("members:"+members);
@@ -340,11 +346,11 @@ public class ProjectsFragment extends Fragment {
 
                                 System.out.println ("namegroup:"+namegroup);
                                 System.out.println ("nameGroups:"+nameGroups);
-                                if (nameGroups.equals (namegroup)) {
+                                if (nameGroups.equals (namegroup) && !group.getPrivate()) {
                                     System.out.println ("entrato");
                                     ArrayList<String> membri = group.getRecipients ();
-                                    autor[0]="";
-                                     autor[0] = group.getAuthor ();
+
+                                    autor[0] = group.getAuthor ();
                                     System.out.println ("autor[0]=" + autor[0]);
 
                                     reci[0].addAll (membri);
@@ -362,17 +368,25 @@ public class ProjectsFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+
                             for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                 nameOwners.add (childSnapshot.getKey ());
                                 User user = childSnapshot.getValue (User.class);
                                 mailU[0] =user.getEmail ();
 
+                                System.out.println ("mailU[0]:" + mailU[0]);
+
                                 if (mailU[0].equals (autor[0])) {
                                     nameO[0] = user.getName () + ( " " ) + user.getSurname ();
+                                    autor1[0] =user.getEmail();
                                     finalNameOWners.add(nameO[0]);
+                                    finalMailsOWners.add( autor1[0]);
+
 
                                 }
                                 System.out.println ("nameOwners:" + finalNameOWners);
+                                System.out.println ("il autor[0]:" +  autor[0]);
+
                             }
 
                         }
@@ -381,14 +395,15 @@ public class ProjectsFragment extends Fragment {
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
+
                     });
-                    projectList.add (new ProjectSample (nameProjects, nameGroups, reci[0],autor[0],finalNameOWners));
-                    System.out.println ("autor[0]=" + autor[0]);
+                    projectList.add (new ProjectSample (nameProjects, nameGroups, reci[0], finalMailsOWners,finalNameOWners));
+                    System.out.println ("autore=" + autor[0]);
 
                     //System.out.println ("memgri" + reci[0]);
 
 
-                   // System.out.println ("ProjectList:"+projectList);
+                    // System.out.println ("ProjectList:"+projectList);
                     buildRecyclerView();
 
                 }
@@ -410,4 +425,3 @@ public class ProjectsFragment extends Fragment {
 
 
 }
-

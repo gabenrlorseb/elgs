@@ -225,11 +225,11 @@ private void fragmentStudent(){
                         if (user == null) {
                             final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
                             String name;
-                            String mail;
+                            ArrayList<String> mail;
                             ArrayList<String> namepass;
                             ArrayList<String> nameowner;
 
-                            i.putExtra ("author", mail = mAdapter.returnProfessor (position));
+                            i.putExtra ("authorMail", mail = mAdapter.returnProfessor (position));
                             Log.d (TAG, "onDataChange:d " + i);
                             i.putExtra ("name", name = mAdapter.returnTitle (position));
 
@@ -285,7 +285,7 @@ private void fragmentStudent(){
 
                     String name = course.getName ();
 
-                    final String autor = course.getEmail ();
+                    final String[] autor = {course.getEmail()};
                     final String[] mailU = new String[1];
                     reci = course.getMembers ();
                     System.out.println ("::"+reci);
@@ -295,6 +295,7 @@ private void fragmentStudent(){
                     final String[] nameO = {""};
 
                     final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                    final ArrayList<String> finalMailsOWners = new ArrayList<> ();
                     db1.addValueEventListener (new ValueEventListener () {
 
                         @Override
@@ -305,9 +306,11 @@ private void fragmentStudent(){
                                 User user = childSnapshot.getValue (User.class);
                                 mailU[0] =user.getEmail ();
 
-                                if (mailU[0].equals (autor)) {
+                                if (mailU[0].equals (autor[0])) {
                                     nameO[0] = user.getName () + ( " " ) + user.getSurname ();
+                                    autor[0] =user.getEmail();
                                     finalNameOWners.add(nameO[0]);
+                                    finalMailsOWners.add(autor[0]);
 
                                 }
                                 System.out.println ("nameOwners:" + finalNameOWners);
@@ -321,7 +324,7 @@ private void fragmentStudent(){
                         }
                     });
 
-                    courseList.add (new CourseSample (name, autor, reci,finalNameOWners));
+                    courseList.add (new CourseSample (name, autor[0],finalMailsOWners, reci,finalNameOWners));
 
                     System.out.println ("-:"+courseList);
                     buildRecyclerView();

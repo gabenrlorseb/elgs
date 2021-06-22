@@ -123,8 +123,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public ArrayList<String> returnNameOwner (int position) {
         return groupsList.get(position).getText4();
     }
-    public String returnOwner (int position) {
-        return groupsList.get(position).getText2();
+    public  ArrayList<String> returnOwner (int position) {
+        return groupsList.get(position).getText5();
     }
 
     @Override

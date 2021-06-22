@@ -247,11 +247,11 @@ public class GroupsFragment extends Fragment {
                         if (user == null) {
                             final Intent i = new Intent (view.getContext (), MembersDetailsActivity.class);
                             String name;
-                            String mail;
+                            ArrayList<String> mail;
                             ArrayList<String> namepass;
                             ArrayList<String> nameowner;
 
-                            i.putExtra ("author", mail = mAdapter.returnOwner (position));
+                            i.putExtra ("authorMail", mail = mAdapter.returnOwner (position));
                             Log.d (TAG, "onDataChange:d " + i);
                             i.putExtra ("name", name = mAdapter.returnTitle (position));
 
@@ -311,7 +311,7 @@ public class GroupsFragment extends Fragment {
                     if(group.getPrivate ()==false&& group.getAuthor ().contains ("@studenti.uniba.it")) {
                         String name = group.getName ();
                         final String[] mailU = new String[1];
-                        final String autor = group.getAuthor ();
+                        final String[] autor = {group.getAuthor()};
 
                         reci = group.getRecipients ();
                         System.out.println ("::"+reci);
@@ -320,7 +320,8 @@ public class GroupsFragment extends Fragment {
 
                         final String[] nameO = {""};
 
-                       final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                        final ArrayList<String> finalNameOWners = new ArrayList<> ();
+                        final ArrayList<String> finalMailOWners = new ArrayList<> ();
                         db1.addValueEventListener (new ValueEventListener () {
 
                             @Override
@@ -331,12 +332,14 @@ public class GroupsFragment extends Fragment {
                                     User user = childSnapshot.getValue (User.class);
                                     mailU[0] =user.getEmail ();
 
-                                    if (mailU[0].equals (autor)) {
+                                    if (mailU[0].equals (autor[0])) {
                                         nameO[0] = user.getName () + ( " " ) + user.getSurname ();
+                                        autor[0] =user.getEmail();
                                         finalNameOWners.add(nameO[0]);
+                                        finalMailOWners.add( autor[0]);
 
                                     }
-                                            System.out.println ("nameOwners:" + finalNameOWners);
+                                    System.out.println ("nameOwners:" + finalNameOWners);
                                 }
 
                             }
@@ -349,7 +352,7 @@ public class GroupsFragment extends Fragment {
 
 
 
-                        fullSampleList.add (new CourseSample (name, autor,reci, finalNameOWners));
+                        fullSampleList.add (new CourseSample (name,  autor[0],finalMailOWners,reci, finalNameOWners));
                     }
                     System.out.println ("-:"+fullSampleList);
                     buildRecyclerView();
@@ -373,4 +376,3 @@ public class GroupsFragment extends Fragment {
 
 
 }
-

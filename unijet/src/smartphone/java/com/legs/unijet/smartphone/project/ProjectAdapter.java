@@ -132,7 +132,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     public String returnTitle (int position) {
         return projectList.get(position).getText1();
     }
-    public String returnMailA (int position) {
+    public ArrayList<String>  returnMailA (int position) {
         return projectList.get(position).getText5();
     }
 

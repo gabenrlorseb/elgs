@@ -36,10 +36,6 @@ public class MembersDetailsActivity extends AppCompatActivity {
     String authorMail;
 
 
-    @Override
-    public String toString() {
-        return "" + authorName ;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -56,7 +52,10 @@ public class MembersDetailsActivity extends AppCompatActivity {
             System.out.println ("passed_names:" + passed_names);
             System.out.println ("authorName" + authorName);
             System.out.println ("prova2");
-            authorMail = args.getString ("author");
+//            authorMail = getIntent ().getExtras ().getString ("author");
+            authorMail=String.valueOf (args.getStringArrayList ("authorMail"));
+            authorMail = authorMail.replaceAll("[\\[\\](){}]","");
+
             System.out.println ("authorMail:" + authorMail);
 
             authorName= String.valueOf (args.getStringArrayList ("nameowner"));
@@ -68,12 +67,11 @@ public class MembersDetailsActivity extends AppCompatActivity {
             System.out.println ("Print di nameowners::"+authorName);
 
                       //authorName = args.getString("nameowner");
-                      authorMail = args.getString("author");
+                      //authorMail = args.getString("author");
 
 
-
-
-
+            populateList2 ();
+            super.onCreate (savedInstance);
 
 
         } else {
@@ -91,12 +89,13 @@ public class MembersDetailsActivity extends AppCompatActivity {
             authorMail = args.getString("author");
         }
 
+            populateList ();
+            super.onCreate (savedInstance);
         }
 
 
 
-        populateList ();
-        super.onCreate (savedInstance);
+
 
     }
 
@@ -121,8 +120,10 @@ public class MembersDetailsActivity extends AppCompatActivity {
 
 
 
+
                 buildRecyclerView();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -130,8 +131,43 @@ public class MembersDetailsActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
+    private void populateList2() {
+        names = new ArrayList<>();
+        names.add(new UserChecklistSample(R.drawable.ic_people, authorName, authorMail, false, authorName));
+
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot childSnapshot:snapshot.getChildren()) {
+                    if (passed_names.contains(childSnapshot.child("email").getValue(String.class))){
+                        String namesString = childSnapshot.child("name").getValue(String.class) +
+                                " " +
+                                childSnapshot.child("surname").getValue(String.class);
+
+                        String mail = String.valueOf(childSnapshot.child ("email").getValue (String.class));
+                        names.add (new UserChecklistSample(R.drawable.ic_people,namesString, mail, false, childSnapshot.getKey()));
+                    }
+                }
+
+
+
+
+                buildRecyclerView();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
     private void buildRecyclerView() {
         mRecyclerView = findViewById(R.id.recyclerview_details);
         mRecyclerView.setHasFixedSize(true);
