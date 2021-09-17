@@ -29,7 +29,7 @@ import com.legs.unijet.tabletversion.utils.MainActivity;
 public class LoginActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword;
     TextView forgotTextLink;
-    Button btnLogin,register_button;
+    Button btnLogin,register_button, btnLoginGuest;
     ProgressDialog LoadingBar;
     FirebaseAuth auth;
     ProgressBar progressBar;
@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword = findViewById (R.id.set_password);
         btnLogin = findViewById (R.id.confirm_button);
         register_button=findViewById (R.id.register_button);
+        btnLoginGuest=findViewById (R.id.accessInAsGusest);
         //  forgotTextLink=findViewById (R.id.forgotPassword);
         // progressBar=findViewById (R.id.progressBar);
 
@@ -74,6 +75,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 startActivity (new Intent (LoginActivity.this, RegisterActivityStart.class));
 
+            }
+        });
+
+        btnLoginGuest.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                startActivity (new Intent (getApplicationContext (), Demo.class));
             }
         });
 

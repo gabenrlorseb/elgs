@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.tabletversion.feedback.Feedback;
-import com.legs.unijet.tabletversion.feedback.NewFeedbackActivity;
 
 import java.util.ArrayList;
 import java.util.UUID;

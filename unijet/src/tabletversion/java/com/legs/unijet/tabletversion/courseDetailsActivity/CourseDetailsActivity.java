@@ -40,9 +40,7 @@ import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -126,41 +124,44 @@ String professor = bundle.getString("professor");*/
 
         final ImageView profileAvatar = view.findViewById(R.id.member_icon);
 
+        if (user != null) {
 
-        final File localpropic = new File(view.getContext().getCacheDir(), "propic" + user.getUid() +".bmp");
-        StorageReference fileRef1 = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
-        if (!localpropic.exists()) {
-            fileRef1.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
-                }
-            });
-        } else {
-            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-        }
+            final File localpropic = new File(view.getContext().getCacheDir(), "propic" + user.getUid() + ".bmp");
+            StorageReference fileRef1 = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
+            if (!localpropic.exists()) {
+                fileRef1.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
+                    }
+                });
+            } else {
+                profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+            }
 
-        final File courseProPic = new File(view.getContext().getCacheDir(), "propic" + courseUID +".bmp");
-        StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(courseUID + ".jpg");
-        if (!courseProPic.exists()) {
-            fileRef2.getFile(courseProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    headerProPic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    headerProPic.setImageResource(R.drawable.ic_generic_group_avatar);
-                }
-            });
-        } else {
-            headerProPic.setImageBitmap(BitmapFactory.decodeFile(courseProPic.getAbsolutePath()));
+
+            final File courseProPic = new File(view.getContext().getCacheDir(), "propic" + courseUID + ".bmp");
+            StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(courseUID + ".jpg");
+            if (!courseProPic.exists()) {
+                fileRef2.getFile(courseProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        headerProPic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        headerProPic.setImageResource(R.drawable.ic_generic_group_avatar);
+                    }
+                });
+            } else {
+                headerProPic.setImageBitmap(BitmapFactory.decodeFile(courseProPic.getAbsolutePath()));
+            }
         }
 
         isAuthor = false;
@@ -174,11 +175,14 @@ String professor = bundle.getString("professor");*/
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                     course = postSnapshot.getValue(Course.class);
-                    if (user.getEmail().equals(course.getEmail())) {
-                        isAuthor = true;
-                    }
-
-                    else{
+                    if (user != null) {
+                        if (user.getEmail().equals(course.getEmail())) {
+                            isAuthor = true;
+                        } else {
+                            postLayout.setVisibility(View.GONE);
+                            postNow.setVisibility(View.GONE);
+                        }
+                    } else {
                         postLayout.setVisibility(View.GONE);
                         postNow.setVisibility(View.GONE);
                     }

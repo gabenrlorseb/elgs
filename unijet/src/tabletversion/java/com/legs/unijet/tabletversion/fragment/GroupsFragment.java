@@ -1,6 +1,5 @@
 package com.legs.unijet.tabletversion.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import java.lang.reflect.Array;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.tabletversion.group.Group;
@@ -37,7 +35,6 @@ import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GroupsFragment extends Fragment {
     ImageView item;
@@ -117,19 +114,21 @@ public class GroupsFragment extends Fragment {
                     String department = childSnapshot.child("department").getValue(String.class);
                     ArrayList<String> recipients = new ArrayList<>();
 
-                    if (isPrivate && !owner.equals(user.getEmail())) {
-                        for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
 
-                            Log.v("VALORE", users.getValue(String.class));
-                            if (users.getValue(String.class).equals(user.getEmail())) {
+                        if (user!= null && isPrivate && !owner.equals(user.getEmail())) {
+                            for (DataSnapshot users : childSnapshot.child("recipients").getChildren()) {
 
-                                groups.add(new Group(name, owner, members, department, true));
-                                break;
+                                Log.v("VALORE", users.getValue(String.class));
+                                if (users.getValue(String.class).equals(user.getEmail())) {
+
+                                    groups.add(new Group(name, owner, members, department, true));
+                                    break;
+                                }
                             }
+                        } else {
+                            groups.add(new Group(name, owner, members, department, isPrivate));
                         }
-                    } else {
-                        groups.add(new Group(name, owner, members, department, isPrivate));
-                    }
+
 
                 }
                 buildRecyclerView();
@@ -146,7 +145,9 @@ public class GroupsFragment extends Fragment {
             }
 
         });
-        if (user.getEmail().contains("@studenti.uniba.it")){
+        if (user == null) {
+            fragmentStudent();
+        }else         if (user.getEmail().contains("@studenti.uniba.it")){
             fragmentStudent();
         } else if (user.getEmail().contains("@uniba.it")){
             fragmentProfessor();
@@ -192,7 +193,15 @@ public class GroupsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 fullSampleList.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
+                    if (user == null) {
+                        for (Group group : groups) {
+                            String namesString = group.getName();
+                            //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
+                            String mail = group.getAuthor();
+
+                            fullSampleList.add(new CourseSample(namesString, mail));
+                        }
+                    } else if (user.getEmail().equals(childSnapshot.child("email").getValue(String.class))) {
                         for (Group group : groups) {
                             if (childSnapshot.child("department").getValue(String.class).equals(group.getDepartment())
                                     && group.getAuthor().contains("@studenti.uniba.it")) {
@@ -230,7 +239,7 @@ public class GroupsFragment extends Fragment {
 
                         Bundle bundle = new Bundle();
                         bundle.putString("GName", mAdapter.returnTitle(position));
-                        bundle.putString("owner", mAdapter.returnOwner(position));
+                        bundle.putString("owner", String.valueOf(mAdapter.returnOwner(position)));
 
                         if (isSinglePane) {
                             Fragment fragment;

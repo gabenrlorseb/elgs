@@ -6,19 +6,21 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,6 +57,8 @@ public class MyUnijetFragment extends Fragment {
     User userProfile;
     ImageView profileAvatar;
 
+    FloatingActionButton fab;
+
     ArrayList<PostSample> posts;
 
     RecyclerView mRecyclerView;
@@ -76,8 +80,15 @@ public class MyUnijetFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         final android.view.View view = inflater.inflate(R.layout.myunijet, container, false);
 
+        ConstraintLayout favouritesTab = view.findViewById(R.id.left_text_view);
+
+
+
+
         Button logout_button = view.findViewById (R.id.logout_button);
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
+
+        fab = getActivity().findViewById(R.id.fab);
 
 
 
@@ -87,49 +98,67 @@ public class MyUnijetFragment extends Fragment {
 
         if (savedInstanceState == null) {
             user = FirebaseAuth.getInstance().getCurrentUser();
-            assert user != null;
-            userId = user.getUid();
-            email = user.getEmail();
 
-            populateList(userId, view);
+            if (user==null){
+                userId = null;
+                email = null;
+                reference=null;
 
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    favouritesTab.setVisibility(View.INVISIBLE);
+                }
 
-            if (email.contains("@studenti.uniba.it")) {
-                reference = FirebaseDatabase.getInstance().getReference("students");
-                memberType = "student";
             } else {
-                reference = FirebaseDatabase.getInstance().getReference("teachers");
-                memberType = "professor";
+                userId = user.getUid();
+                email = user.getEmail();
+                populateList(userId, view);
+
+                if (email.contains("@studenti.uniba.it")) {
+                    reference = FirebaseDatabase.getInstance().getReference("students");
+                    memberType = "student";
+                } else {
+                    reference = FirebaseDatabase.getInstance().getReference("teachers");
+                    memberType = "professor";
+                }
+
             }
+
+
+
             text_name_surname = view.findViewById(R.id.text_name_surname);
             email_login_field = view.findViewById(R.id.email_logn_field);
 
-            reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            if (reference==null){
 
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userProfile = snapshot.getValue(User.class);
-                    if (userProfile != null) {
+            } else {
+                reference.child (userId).addListenerForSingleValueEvent (new ValueEventListener () {
 
-                        name = userProfile.getName();
-                        email = user.getEmail();
-                        surname = userProfile.getSurname();
-                        nameFull = name + " " + surname;
-                        text_name_surname.setText(nameFull.toUpperCase());
-                        email_login_field.setText(email);
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        userProfile = snapshot.getValue (User.class);
+                        if (userProfile != null) {
+
+                            name = userProfile.name;
+                            email = user.getEmail ();
+                            surname = userProfile.surname;
+                            nameFull = name + " " + surname;
+                            text_name_surname.setText (nameFull.toUpperCase ());
+                            email_login_field.setText (email);
+                        }
+
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+                    }
+                });
+            }
         } else {
-            text_name_surname = view.findViewById(R.id.text_name_surname);
-            email_login_field = view.findViewById(R.id.email_logn_field);
-            text_name_surname.setText(savedInstanceState.getString("USER_FULL_NAME"));
-            email_login_field.setText(savedInstanceState.getString("USER_EMAIL"));
+            if (user != null) {
+                text_name_surname.setText(savedInstanceState.getString("USER_FULL_NAME"));
+                email_login_field.setText(savedInstanceState.getString("USER_EMAIL"));
+            }
         }
 
         logout_button.setOnClickListener (new android.view.View.OnClickListener () {
@@ -138,18 +167,21 @@ public class MyUnijetFragment extends Fragment {
                 logout ();
             }
         });
-        editProfileButton.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View v) {
-                Intent i = new Intent(getActivity().getApplicationContext(), EditProfile.class);
-                Bundle b = new Bundle();
-                String personJsonString = GsonParser.getGsonParser().toJson(userProfile);
-                b.putString("PERSON_KEY", personJsonString);
-                i.putExtras(b);
-                i.putExtra("PERSON_TYPE", memberType);
-                startActivity(i);
-            }
-        });
+
+        if (user!=null) {
+            editProfileButton.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View v) {
+                    Intent i = new Intent(getActivity().getApplicationContext(), EditProfile.class);
+                    Bundle b = new Bundle();
+                    String personJsonString = GsonParser.getGsonParser().toJson(userProfile);
+                    b.putString("PERSON_KEY", personJsonString);
+                    i.putExtras(b);
+                    i.putExtra("PERSON_TYPE", memberType);
+                    startActivity(i);
+                }
+            });
+        }
 
 
 
@@ -174,22 +206,27 @@ public class MyUnijetFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        final File localpropic = new File(context.getCacheDir(), "propic" + user.getUid() +".bmp");
-        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
-        if (!localpropic.exists()) {
-            fileRef.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
-                }
-            });
+        if (user == null) {
+
         } else {
-            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+
+            final File localpropic = new File(context.getCacheDir(), "propic" + user.getUid() + ".bmp");
+            StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(user.getUid() + ".jpg");
+            if (!localpropic.exists()) {
+                fileRef.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
+                    }
+                });
+            } else {
+                profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+            }
         }
     }
 

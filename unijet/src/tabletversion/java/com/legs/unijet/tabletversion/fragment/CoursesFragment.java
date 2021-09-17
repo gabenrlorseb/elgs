@@ -1,8 +1,6 @@
 package com.legs.unijet.tabletversion.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,19 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,27 +31,33 @@ import com.legs.unijet.tabletversion.course.CourseAdapter;
 import com.legs.unijet.tabletversion.course.CourseSample;
 import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
-import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
-import com.legs.unijet.tabletversion.utils.MainActivity;
+import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ImageView item;
+    FirebaseDatabase mdb;
+    ArrayList<String> reci;
     EditText searchEditText;
-    FloatingActionButton fab;
     String userId;
-    Bundle bundle;
+    Course course;
+    FirebaseUser auth;
     Intent intent;
     DatabaseReference reference;
     private ArrayList<CourseSample> courseList;
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference db1 = FirebaseDatabase.getInstance ().getReference ();
+    TextView notFoundTextView;
+    RelativeLayout notFoundLayout;
     static boolean isSinglePane = true;
+
     RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
 
@@ -76,7 +77,8 @@ public class CoursesFragment extends Fragment {
         item = (ImageView) view.findViewById(R.id.courses_search_button);
 
         searchEditText = (EditText) view.findViewById(R.id.courses_search_edit_text);
-        fab = getActivity().findViewById(R.id.fab);
+        mRecyclerView = view.findViewById(R.id.courses_list);
+
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,12 +120,13 @@ public class CoursesFragment extends Fragment {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String name = childSnapshot.child("name").getValue(String.class);
                     String department = childSnapshot.child("department").getValue(String.class);
-                    String academicYear = childSnapshot.child("academicYear").getValue(String.class);
+                    String academicYear=  childSnapshot.child("academicYear").getValue(String.class);
                     String email = childSnapshot.child("email").getValue(String.class);
-                    courses.add(new Course(name, academicYear, department, email, members));
+                    courses.add(new Course (name, academicYear, department, email, members));
                     //courseList.add(new CourseSample(namesString, mail));
                 }
                 buildRecyclerView();
+
             }
 
             @Override
@@ -131,9 +134,12 @@ public class CoursesFragment extends Fragment {
 
             }
         });
-        if (user.getEmail().contains("@studenti.uniba.it")) {
+
+        if (user == null) {
+            fragmentDemo();
+        } else if (user.getEmail().contains("@studenti.uniba.it")) {
             fragmentStudent();
-        } else if (user.getEmail().contains("@uniba.it")) {
+        } else if (user.getEmail().contains("@uniba.it")){
             fragmentProfessor();
         }
 
@@ -141,7 +147,7 @@ public class CoursesFragment extends Fragment {
     }
 
 
-    private void fragmentProfessor() {
+    private void fragmentProfessor(){
         courseList = new ArrayList();
         db.child("teachers").addValueEventListener(new ValueEventListener() {
             @Override
@@ -154,7 +160,6 @@ public class CoursesFragment extends Fragment {
                             if (childSnapshot.child("department").getValue(String.class).equals(course.getDepartment())
                                     || user.getEmail().equals(course.getEmail())) {
                                 String namesString = course.getName();
-                                //TI ODIO + " " + childSnapshot.child("academicYear").getValue(String.class) ;
                                 String mail = course.getEmail();
 
                                 courseList.add(new CourseSample(namesString, mail));
@@ -165,15 +170,14 @@ public class CoursesFragment extends Fragment {
                     buildRecyclerView();
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled (@NonNull DatabaseError error){
 
             }
         });
     }
 
-    private void fragmentStudent() {
+    private void fragmentStudent(){
         courseList = new ArrayList();
         db.child("students").addValueEventListener(new ValueEventListener() {
             @Override
@@ -196,9 +200,8 @@ public class CoursesFragment extends Fragment {
                     buildRecyclerView();
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled (@NonNull DatabaseError error){
 
             }
         });
@@ -207,7 +210,6 @@ public class CoursesFragment extends Fragment {
 
 
     private void buildRecyclerView() {
-        mRecyclerView = getView().findViewById(R.id.courses_list);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new CourseAdapter(courseList);
@@ -219,26 +221,29 @@ public class CoursesFragment extends Fragment {
                     public void onItemClick(View view, int position) {
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("CName", mAdapter.returnTitle(position));
-                        bundle.putString("professor", mAdapter.returnProfessor(position));
 
-                        if (isSinglePane) {
-                            Fragment fragment;
-                            fragment = new CourseDetailsActivity();
-                            fragment.setArguments(bundle);
-                            if (searchEditText.getVisibility() == View.VISIBLE) {
-                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
-                                        getContext().INPUT_METHOD_SERVICE);
-                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            bundle.putString("CName", mAdapter.returnTitle(position));
+                            bundle.putString("professor", mAdapter.returnProfessor(position));
+
+                            if (isSinglePane) {
+                                Fragment fragment;
+                                fragment = new CourseDetailsActivity();
+                                fragment.setArguments(bundle);
+                                if (searchEditText.getVisibility() == View.VISIBLE) {
+                                    InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                            getContext().INPUT_METHOD_SERVICE);
+                                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                            InputMethodManager.HIDE_NOT_ALWAYS);
+                                }
+                                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fragment_container, fragment);
+                                transaction.commit();
+                            } else {
+                                getChildFragmentManager().findFragmentById(R.id.fragment_container);
                             }
-                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                            transaction.replace(R.id.fragment_container, fragment);
-                            transaction.commit();
-                        } else {
-                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
+
+
                         }
-                    }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
@@ -250,6 +255,28 @@ public class CoursesFragment extends Fragment {
 
         );
 
+
+    }
+
+    private void fragmentDemo(){
+        courseList = new ArrayList();
+        db.child("students").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                courseList.clear();
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        for (Course course : courses) {
+                                courseList.add(new CourseSample(course.getName(), course.getEmail()));
+                            }
+
+                        }
+                    buildRecyclerView();
+            }
+            @Override
+            public void onCancelled (@NonNull DatabaseError error){
+
+            }
+        });
 
     }
 

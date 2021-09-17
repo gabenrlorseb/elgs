@@ -2,7 +2,6 @@ package com.legs.unijet.tabletversion.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;

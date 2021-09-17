@@ -1,22 +1,7 @@
 package com.legs.unijet.tabletversion.courseDetailsActivity;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.legs.unijet.tabletversion.createGroupActivity.MemberCheckListAdapter;
 import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +36,6 @@ public class AuthorCourseManageAdapter extends RecyclerView.Adapter<AuthorCourse
             mTextView1 = itemView.findViewById(R.id.member_name);
             mTextView2 = itemView.findViewById(R.id.post_text);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
-        }
-
-        public interface ClickInterface {
-            public void recyclerviewOnItemClick(int position);
         }
 
     }

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.legs.unijet.tabletversion.courseDetailsActivity.AuthorCourseManageAdapter;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.createGroupActivity.UserChecklistSample;
 
@@ -35,10 +34,6 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
             mTextView1 = itemView.findViewById(R.id.member_name);
             mTextView2 = itemView.findViewById(R.id.post_text);
             mCheckBox1 = itemView.findViewById(R.id.member_checkbox);
-        }
-
-        public interface ClickInterface {
-            public void recyclerviewOnItemClick(int position);
         }
 
     }

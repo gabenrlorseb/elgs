@@ -2,7 +2,6 @@ package com.legs.unijet.tabletversion.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,9 +19,6 @@ import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.tabletversion.feedback.Feedback;
 import com.legs.unijet.tabletversion.feedback.FeedbackAdapter;
 import com.legs.unijet.tabletversion.feedback.FeedbackSample;
-import com.legs.unijet.tabletversion.post.Post;
-import com.legs.unijet.tabletversion.post.PostAdapter;
-import com.legs.unijet.tabletversion.post.PostSample;
 import com.legs.unijet.tabletversion.profile.User;
 
 import java.util.ArrayList;

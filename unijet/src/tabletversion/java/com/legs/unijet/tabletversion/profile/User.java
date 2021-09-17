@@ -3,7 +3,7 @@ package com.legs.unijet.tabletversion.profile;
 import java.util.Objects;
 
 public class User   {
-    String name,surname,ID,department,universityCampus,gender,dateBorn,email;
+    public String name,surname,id,department,universityCampus,gender,dateBorn,email;
 
     //User sb;
 
@@ -22,11 +22,11 @@ public class User   {
         this.email = email;
     }
 
-    public User(String name, String surname, String ID, String department, String universityCampus, String gender, String dateBorn, String email) {
+    public User(String name, String surname, String id, String department, String universityCampus, String gender, String dateBorn, String email) {
         // sb();
         this.name = name;
         this.surname = surname;
-        this.ID = ID;
+        this.id = id;
         this.department = department;
         this.universityCampus = universityCampus;
         this.gender = gender;
@@ -48,11 +48,14 @@ public class User   {
     }
 
 
+    public String getid() {
+        return id;
+    }
 
+    public void setid(String id) {
+        this.id = id;
+    }
 
-    public String getID() { return ID; }
-
-    public void setID(String ID) { this.ID = ID; }
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
@@ -82,11 +85,11 @@ public class User   {
         if (this == o) return true;
         if (o == null || getClass () != o.getClass ()) return false;
         User that = (User) o;
-        return ID.equals (that.ID);
+        return id.equals (that.id);
     }
     @Override
     public int hashCode() {
-        return Objects.hash (ID);
+        return Objects.hash (id);
     }
 
 

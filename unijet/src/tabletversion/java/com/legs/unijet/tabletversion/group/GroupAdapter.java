@@ -21,7 +21,7 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> implements Filterable {
 
 
-    private ArrayList<CourseSample> groupsList;
+    private final ArrayList<CourseSample> groupsList;
 
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +53,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<CourseSample> filteredList = new ArrayList<>();
@@ -88,14 +88,13 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
 
     @Override
-    public com.legs.unijet.tabletversion.group.GroupAdapter.GroupViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public GroupAdapter.GroupViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.courses_sample, viewGroup, false);
-        com.legs.unijet.tabletversion.group.GroupAdapter.GroupViewHolder cvh = new com.legs.unijet.tabletversion.group.GroupAdapter.GroupViewHolder (v);
-        return cvh;
+        return new GroupViewHolder (v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final com.legs.unijet.tabletversion.group.GroupAdapter.GroupViewHolder groupViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final GroupAdapter.GroupViewHolder groupViewHolder, int i) {
         final CourseSample currentItem = groupsList.get(i);
         groupViewHolder.mGroups.setText(groupsList.get(i).getText1());
         groupViewHolder.mOwners.setText(groupsList.get(i).getText2());
@@ -117,9 +116,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public String returnTitle (int position) {
         return groupsList.get(position).getText1();
     }
-
-    public String returnOwner (int position) {
-        return groupsList.get(position).getText2();
+    public ArrayList<String> returnReci (int position) {
+        return groupsList.get(position).getText3();
+    }
+    public ArrayList<String> returnNameOwner (int position) {
+        return groupsList.get(position).getText4();
+    }
+    public  ArrayList<String> returnOwner (int position) {
+        return groupsList.get(position).getText5();
     }
 
     @Override
@@ -129,6 +133,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
 
 }
+
 
 
 

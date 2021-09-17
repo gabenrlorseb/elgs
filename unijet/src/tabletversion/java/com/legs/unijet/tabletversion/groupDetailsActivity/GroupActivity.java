@@ -4,7 +4,6 @@
  import android.app.ProgressDialog;
  import android.content.ActivityNotFoundException;
  import android.content.Context;
- import android.content.DialogInterface;
  import android.content.Intent;
  import android.graphics.Bitmap;
  import android.graphics.BitmapFactory;
@@ -22,14 +21,11 @@
  import android.widget.EditText;
  import android.widget.ImageView;
  import android.widget.PopupMenu;
- import android.widget.ProgressBar;
  import android.widget.RelativeLayout;
  import android.widget.TextView;
  import android.widget.Toast;
 
  import androidx.annotation.NonNull;
- import androidx.annotation.Nullable;
- import androidx.appcompat.app.AppCompatActivity;
  import androidx.fragment.app.Fragment;
  import androidx.recyclerview.widget.LinearLayoutManager;
  import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +36,6 @@
  import com.google.android.material.floatingactionbutton.FloatingActionButton;
  import com.google.firebase.auth.FirebaseAuth;
  import com.google.firebase.auth.FirebaseUser;
- import com.google.firebase.database.ChildEventListener;
  import com.google.firebase.database.DataSnapshot;
  import com.google.firebase.database.DatabaseError;
  import com.google.firebase.database.DatabaseReference;
@@ -50,15 +45,11 @@
  import com.google.firebase.storage.FirebaseStorage;
  import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
- import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
  import com.legs.unijet.tabletversion.feedback.FeedbackActivity;
- import com.legs.unijet.tabletversion.fragment.GroupsFragment;
  import com.legs.unijet.tabletversion.group.Group;
  import com.legs.unijet.tabletversion.post.NewPostActivity;
- import com.legs.unijet.tabletversion.post.Post;
  import com.legs.unijet.tabletversion.post.PostAdapter;
  import com.legs.unijet.tabletversion.post.PostSample;
- import com.legs.unijet.tabletversion.utils.MainActivity;
  import com.legs.unijet.smartphone.R;
  import com.legs.unijet.tabletversion.profile.User;
  import com.legs.unijet.tabletversion.utils.BachecaUtils;
@@ -72,7 +63,6 @@
  import java.io.FileOutputStream;
  import java.io.IOException;
  import java.util.ArrayList;
- import java.util.Objects;
 
  public class GroupActivity extends Fragment {
 

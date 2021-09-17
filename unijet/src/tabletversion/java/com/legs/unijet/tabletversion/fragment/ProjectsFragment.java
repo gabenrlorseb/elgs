@@ -1,6 +1,5 @@
 package com.legs.unijet.tabletversion.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,7 +36,6 @@ import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class ProjectsFragment extends Fragment {
     ImageView item;
@@ -127,7 +125,47 @@ public class ProjectsFragment extends Fragment {
             }
         });
 
-        if (user.getEmail().contains("@studenti.uniba.it")) {
+        if (user == null) {
+            projectList = new ArrayList();
+            db.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+
+                public void onDataChange(@NonNull DataSnapshot snapshot){
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        final Group group = childSnapshot.getValue(Group.class);
+                        db2.child("students").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+                                        for (Project project : projects) {
+                                            {
+                                                String namesString = project.getName();
+                                                String mail = project.getGroup();
+                                                projectList.add(new ProjectSample(namesString, mail));
+
+
+                                            }
+                                        }
+                                    buildRecyclerView();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                }
+                @Override
+                public void onCancelled (@NonNull DatabaseError error){
+
+                }
+            });
+        } else if (user.getEmail().contains("@studenti.uniba.it")) {
             projectList = new ArrayList();
             db.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

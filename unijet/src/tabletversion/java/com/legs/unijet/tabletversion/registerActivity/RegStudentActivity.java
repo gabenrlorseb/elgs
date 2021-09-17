@@ -29,10 +29,7 @@ import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.MainActivity;
 
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class RegStudentActivity  extends RegisterActivityStart {
 

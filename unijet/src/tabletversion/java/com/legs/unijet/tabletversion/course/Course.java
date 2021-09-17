@@ -1,8 +1,6 @@
 package com.legs.unijet.tabletversion.course;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Course{
     String name;

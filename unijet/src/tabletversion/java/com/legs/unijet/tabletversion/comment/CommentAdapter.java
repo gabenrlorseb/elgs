@@ -5,43 +5,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.tabletversion.feedback.FeedbackAdapter;
-import com.legs.unijet.tabletversion.feedback.FeedbackSample;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
-private final ArrayList<CommentSample> sampleList;
-public static class CommentViewHolder extends  RecyclerView.ViewHolder{
+    private final ArrayList<CommentSample> sampleList;
+    public static class CommentViewHolder extends  RecyclerView.ViewHolder{
 
-    public ImageView author_propic;
-    public TextView author_name;
-    public TextView post_content;
-    public TextView date_time;
-    public TextView number_of_likes;
-    public boolean liked;
-    public ImageView like;
+        public ImageView author_propic;
+        public TextView author_name;
+        public TextView post_content;
+        public TextView date_time;
+        public TextView number_of_likes;
+        public boolean liked;
+        public ImageView like;
 
 
-    public CommentViewHolder(@NonNull View itemView) {
-        super(itemView);
-        author_propic = itemView.findViewById(R.id.member_icon);
-        author_name = itemView.findViewById(R.id.member_name);
-        post_content = itemView.findViewById(R.id.post_text);
-        date_time = itemView.findViewById(R.id.date_time);
-        number_of_likes = itemView.findViewById(R.id.likes_number);
-        like = itemView.findViewById(R.id.like_button);
+        public CommentViewHolder(@NonNull View itemView) {
+            super(itemView);
+            author_propic = itemView.findViewById(R.id.member_icon);
+            author_name = itemView.findViewById(R.id.member_name);
+            post_content = itemView.findViewById(R.id.post_text);
+            date_time = itemView.findViewById(R.id.date_time);
+            number_of_likes = itemView.findViewById(R.id.likes_number);
+            like = itemView.findViewById(R.id.like_button);
 
+        }
     }
-}
 
     public CommentAdapter(ArrayList<CommentSample> exampleList) {
         this.sampleList = exampleList;

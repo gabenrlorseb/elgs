@@ -1,4 +1,4 @@
-package com.legs.unijet.tabletversion.utils;
+package com.legs.unijet.tabletversion;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.course.CreateCourse;
 import com.legs.unijet.tabletversion.createGroupActivity.CreateGroupStart;
@@ -30,12 +28,12 @@ import com.legs.unijet.tabletversion.fragment.CoursesFragment;
 import com.legs.unijet.tabletversion.fragment.GroupsFragment;
 import com.legs.unijet.tabletversion.fragment.MyUnijetFragment;
 import com.legs.unijet.tabletversion.fragment.ProjectsFragment;
-import com.legs.unijet.tabletversion.project.CreateProject;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class Demo extends AppCompatActivity {
 
     BottomSheetDialog bottomSheetDialog;
-    DatabaseReference reference;
     String email;
     OrientationEventListener m_sensorEventListener;
 
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         bottomSheetDialog = new BottomSheetDialog(
-                MainActivity.this, R.style.BottomSheetDialogTheme
+                Demo.this, R.style.BottomSheetDialogTheme
         );
 
         View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_create,
@@ -75,28 +73,12 @@ public class MainActivity extends AppCompatActivity {
 
         String userId;
         FirebaseUser user;
-        user = FirebaseAuth.getInstance().getCurrentUser ();
-        userId=user.getUid ();
-        email=user.getEmail();
-
-        if(email.contains("@studenti.uniba.it")) {
-            reference = FirebaseDatabase.getInstance ().getReference ("students");
-            bottomSheetDialog.setContentView(bottomSheetView);
-            setBottomButtonsStudent(bottomSheetView);
-        }
-        else if(email.contains("@uniba.it")){
-            reference = FirebaseDatabase.getInstance ().getReference ("teachers");
-            bottomSheetDialog.setContentView(bottomSheetViewProfessor);
-            setBottomButtonsProfessor(bottomSheetViewProfessor);
-        }
 
 
-
-        final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        final BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadFragment(new MyUnijetFragment (), "myunijet", false);
-        navigation.setSelectedItemId(R.id.myunijet_tab);
+
 
 
         m_sensorEventListener = new OrientationEventListener(getApplicationContext()) {
@@ -112,7 +94,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = Demo.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
+    }
+
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -166,49 +160,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void setBottomButtonsStudent (View view){
-
-        LinearLayout firstButton = view.findViewById(R.id.first_button);
-        firstButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent (MainActivity.this,CreateGroupStart.class));
-            }
-        });
-
-        LinearLayout secondButton = view.findViewById(R.id.second_button);
-        secondButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent (MainActivity.this, CreateProject.class));
-            }
-        });
-
-    }
-
-    private void setBottomButtonsProfessor(View view) {
-        LinearLayout firstButton = view.findViewById(R.id.first_button);
-        firstButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent (MainActivity.this, CreateGroupStart.class));
-            }
-        });
-
-        LinearLayout secondButton = view.findViewById(R.id.second_button);
-        secondButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (MainActivity.this, CreateCourse.class);
-                intent.putExtra ("email", email);
-                startActivity (intent);
-            }
-        });
-
-
-    }
 
     @Override
     public void onBackPressed() {

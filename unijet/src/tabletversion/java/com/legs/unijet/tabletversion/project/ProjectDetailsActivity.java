@@ -28,11 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.legs.unijet.tabletversion.feedback.FeedbackActivity;
-import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.groupDetailsActivity.MembersDetailsActivity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,7 +65,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ProjectDetailsActivity extends Fragment {
 
@@ -121,271 +118,272 @@ public class ProjectDetailsActivity extends Fragment {
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         final ImageView profileAvatar = view.findViewById(R.id.member_icon);
 
+        if (CurrentUser != null) {
 
-        final File localpropic = new File(view.getContext().getCacheDir(), "propic" + CurrentUser.getUid() +".bmp");
-        StorageReference fileRef1 = FirebaseStorage.getInstance().getReference().child(CurrentUser.getUid() + ".jpg");
-        if (!localpropic.exists()) {
-            fileRef1.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+
+            final File localpropic = new File(view.getContext().getCacheDir(), "propic" + CurrentUser.getUid() + ".bmp");
+            StorageReference fileRef1 = FirebaseStorage.getInstance().getReference().child(CurrentUser.getUid() + ".jpg");
+            if (!localpropic.exists()) {
+                fileRef1.getFile(localpropic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
+                    }
+                });
+            } else {
+                profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+            }
+
+            final File projectProPic = new File(view.getContext().getCacheDir(), "propic" + projectUID + ".bmp");
+            StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(projectUID + ".jpg");
+            if (!projectProPic.exists()) {
+                fileRef2.getFile(projectProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        headerProPic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        headerProPic.setImageResource(R.drawable.ic_generic_group_avatar);
+                    }
+                });
+            } else {
+                headerProPic.setImageBitmap(BitmapFactory.decodeFile(projectProPic.getAbsolutePath()));
+            }
+
+            isAuthor = false;
+
+            storageReference = FirebaseStorage.getInstance().getReference();
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+
+
+            database.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    profileAvatar.setImageResource(R.drawable.ic_generic_user_avatar);
-                }
-            });
-        } else {
-            profileAvatar.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-        }
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        project = postSnapshot.getValue(Project.class);
 
-        final File projectProPic = new File(view.getContext().getCacheDir(), "propic" + projectUID +".bmp");
-        StorageReference fileRef2 = FirebaseStorage.getInstance().getReference().child(projectUID + ".jpg");
-        if (!projectProPic.exists()) {
-            fileRef2.getFile(projectProPic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    headerProPic.setImageBitmap(BitmapFactory.decodeFile(localpropic.getAbsolutePath()));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    headerProPic.setImageResource(R.drawable.ic_generic_group_avatar);
-                }
-            });
-        } else {
-            headerProPic.setImageBitmap(BitmapFactory.decodeFile(projectProPic.getAbsolutePath()));
-        }
-
-        isAuthor = false;
-
-        storageReference = FirebaseStorage.getInstance().getReference();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+                        projectUID = postSnapshot.getKey();
+                        postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getActivity());
+                        postFetcher.run();
+                        String group = project.getGroup();
 
 
-        database.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    project = postSnapshot.getValue(Project.class);
+                        final String[] groupName = new String[1];
 
-                    projectUID = postSnapshot.getKey();
-                    postFetcher = new BachecaUtils(projectUID, recyclerViewBacheca, getActivity());
-                    postFetcher.run();
-                    String group = project.getGroup();
+                        DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
+                        database2.child("groups").orderByChild("name").equalTo(project.getGroup()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot2) {
 
-
-
-                    final String[] groupName = new String[1];
-
-                    DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
-                    database2.child("groups").orderByChild("name").equalTo(project.getGroup()).addValueEventListener (new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
-
-                            for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
-                                final Group group;
-                                group = childSnapshot.getValue(Group.class);
-                                if (user.getEmail().equals(group.getAuthor())) {
-                                    isAuthor = true;
-                                }
-                                groupUID = snapshot2.getKey();
-
-                                groupName[0] = group.getName();
-                                final String[] groupAuthorName = new String[1];
-                                DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                                database3.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener (new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                        for (DataSnapshot childSnapshot:snapshot2.getChildren()) {
-                                            User user;
-                                            user = childSnapshot.getValue(User.class);
-                                            groupAuthorName[0] = user.getName() + " " + user.getSurname();
-                                            TextView groupIndication = (TextView) view.findViewById(R.id.toolbar_subtitle);
-                                            groupIndication.setText(groupName[0]);
-                                            groupIndication.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    Bundle b = new Bundle();
-                                                    b.putSerializable("groupRecipients", group.getRecipients());
-
-                                                    Intent intent = new Intent(getActivity(), MembersDetailsActivity.class);
-                                                    intent.putExtras(b);
-                                                    if (!isAuthor) {
-                                                        intent.putExtra("author", group.getAuthor());
-                                                        intent.putExtra("author_name", groupAuthorName[0]);
-                                                    } else {
-                                                        intent.putExtra("author", getString(R.string.you));
-                                                        intent.putExtra("author_name", "you");
-                                                    }
-                                                    intent.putExtra("name", group.getName());
-                                                    startActivity(intent);
-                                                }
-                                            });
-                                        }
+                                for (DataSnapshot childSnapshot : snapshot2.getChildren()) {
+                                    final Group group;
+                                    group = childSnapshot.getValue(Group.class);
+                                    if (user.getEmail().equals(group.getAuthor())) {
+                                        isAuthor = true;
                                     }
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                    groupUID = snapshot2.getKey();
 
-                                    }
-                                });
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
-                    CollapsingToolbarLayout collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
-                    collapsingToolbar.setTitle(project.getName());
-                    final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
-                    database3.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
-                        final FloatingActionButton fab = view.findViewById(R.id.common_fab);
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                project = postSnapshot.getValue(Project.class);
-                                projectUID = postSnapshot.getKey();
-                                database4.child("groups").orderByChild("name").equalTo(project.getGroup()).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                        for (final DataSnapshot postSnapshot : snapshot2.getChildren()) {
-                                            Group group;
-                                            group = postSnapshot.getValue(Group.class);
-                                            ArrayList<String> groupMembers = group.getRecipients();
-                                            if (groupMembers.contains(user.getEmail()) || user.getEmail().equals(group.getAuthor())){
-                                                Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
-                                                fab.setImageDrawable(myDrawable);
-                                                fab.setOnClickListener(new View.OnClickListener() {
+                                    groupName[0] = group.getName();
+                                    final String[] groupAuthorName = new String[1];
+                                    DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                                    database3.child("students").orderByChild("email").equalTo(group.getAuthor()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                            for (DataSnapshot childSnapshot : snapshot2.getChildren()) {
+                                                User user;
+                                                user = childSnapshot.getValue(User.class);
+                                                groupAuthorName[0] = user.getName() + " " + user.getSurname();
+                                                TextView groupIndication = (TextView) view.findViewById(R.id.toolbar_subtitle);
+                                                groupIndication.setText(groupName[0]);
+                                                groupIndication.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        final PopupMenu authorMenu;
-                                                        authorMenu = new PopupMenu(getActivity(), fab);
-                                                        MenuInflater inflater = authorMenu.getMenuInflater();
-                                                        inflater.inflate(R.menu.project_author_menu, authorMenu.getMenu());
-                                                        authorMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                                            @Override
-                                                            public boolean onMenuItemClick(MenuItem item) {
-                                                                switch (item.getItemId()) {
-                                                                    case R.id.change_pic_tab:
-                                                                        Intent intent = new Intent();
-                                                                        intent.setType("image/*");
-                                                                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                                                                        startActivityForResult(Intent.createChooser(intent,
-                                                                                "Select Picture"), SELECT_PICTURE);
-                                                                        return true;
-                                                                    case R.id.remove_project_tab:
-                                                                        Intent intent3 = new Intent(getActivity(), MainActivity.class);
-                                                                        //String courseUID = postSnapshot.getKey();
-                                                                        database3.child("projects").child(projectUID).removeValue();
-                                                                        startActivity(intent3);
-                                                                    default:
-                                                                        return false;
-                                                                }
-                                                            }
-                                                        });
-                                                        authorMenu.show();
+                                                        Bundle b = new Bundle();
+                                                        b.putSerializable("groupRecipients", group.getRecipients());
+
+                                                        Intent intent = new Intent(getActivity(), MembersDetailsActivity.class);
+                                                        intent.putExtras(b);
+                                                        if (!isAuthor) {
+                                                            intent.putExtra("author", group.getAuthor());
+                                                            intent.putExtra("author_name", groupAuthorName[0]);
+                                                        } else {
+                                                            intent.putExtra("author", getString(R.string.you));
+                                                            intent.putExtra("author_name", "you");
+                                                        }
+                                                        intent.putExtra("name", group.getName());
+                                                        startActivity(intent);
                                                     }
                                                 });
                                             }
                                         }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+                        CollapsingToolbarLayout collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
+                        collapsingToolbar.setTitle(project.getName());
+                        final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
+                        database3.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            final FloatingActionButton fab = view.findViewById(R.id.common_fab);
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                    project = postSnapshot.getValue(Project.class);
+                                    projectUID = postSnapshot.getKey();
+                                    database4.child("groups").orderByChild("name").equalTo(project.getGroup()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                            for (final DataSnapshot postSnapshot : snapshot2.getChildren()) {
+                                                Group group;
+                                                group = postSnapshot.getValue(Group.class);
+                                                ArrayList<String> groupMembers = group.getRecipients();
+                                                if (groupMembers.contains(user.getEmail()) || user.getEmail().equals(group.getAuthor())) {
+                                                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_settings);
+                                                    fab.setImageDrawable(myDrawable);
+                                                    fab.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            final PopupMenu authorMenu;
+                                                            authorMenu = new PopupMenu(getActivity(), fab);
+                                                            MenuInflater inflater = authorMenu.getMenuInflater();
+                                                            inflater.inflate(R.menu.project_author_menu, authorMenu.getMenu());
+                                                            authorMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                                @Override
+                                                                public boolean onMenuItemClick(MenuItem item) {
+                                                                    switch (item.getItemId()) {
+                                                                        case R.id.change_pic_tab:
+                                                                            Intent intent = new Intent();
+                                                                            intent.setType("image/*");
+                                                                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                                                                            startActivityForResult(Intent.createChooser(intent,
+                                                                                    "Select Picture"), SELECT_PICTURE);
+                                                                            return true;
+                                                                        case R.id.remove_project_tab:
+                                                                            Intent intent3 = new Intent(getActivity(), MainActivity.class);
+                                                                            //String courseUID = postSnapshot.getKey();
+                                                                            database3.child("projects").child(projectUID).removeValue();
+                                                                            startActivity(intent3);
+                                                                        default:
+                                                                            return false;
+                                                                    }
+                                                                }
+                                                            });
+                                                            authorMenu.show();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+
+                                database.child("feedbacks").child(projectUID).addValueEventListener(new ValueEventListener() {
+
+
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        float total = 0;
+                                        float count = 0;
+                                        float average;
+                                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                            float rating = postSnapshot.child("rating").getValue(Float.class);
+                                            total += rating;
+                                            count++;
+                                        }
+                                        average = total / count;
+                                        if (total == 0 && count == 0) {
+                                            average = 0;
+                                        }
+                                        rating.setText(String.valueOf(average));
                                     }
+
 
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
 
                                     }
                                 });
+
                             }
 
-                            database.child("feedbacks").child(projectUID).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
 
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    float total = 0;
-                                    float count = 0;
-                                    float average;
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        float rating = postSnapshot.child("rating").getValue(Float.class);
-                                        total += rating;
-                                        count++;
-                                    }
-                                    average = total / count;
-                                    if (total == 0 && count == 0){
-                                        average = 0;
-                                    }
-                                    rating.setText(String.valueOf(average));
-                                }
-
-
-
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
-
+                    }
                 }
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("ERRORE", "loadPost:onCancelled", error.toException());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("ERRORE", "loadPost:onCancelled", error.toException());
+                }
+            });
 
-        RelativeLayout postLayout = view.findViewById(R.id.area_post);
-        postLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent (getActivity(), NewPostActivity.class);
-                i.putExtra("key", projectUID);
-                startActivity(i);
-            }
-        });
+            RelativeLayout postLayout = view.findViewById(R.id.area_post);
+            postLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), NewPostActivity.class);
+                    i.putExtra("key", projectUID);
+                    startActivity(i);
+                }
+            });
 
-        EditText postNow = view.findViewById(R.id.post_update_editText);
-        postNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent (getActivity(), NewPostActivity.class);
-                i.putExtra("key", projectUID);
-                startActivity(i);
-            }
-        });
-        TextView rating = view.findViewById(R.id.toolbar_additional_infos);
-        rating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent (getActivity(), FeedbackActivity.class);
-                i.putExtra("key", projectUID);
-                i.putExtra("reference", reference);
-                i.putExtra("Name", args.getString("PName"));
-                startActivity(i);
-            }
-        });
+            EditText postNow = view.findViewById(R.id.post_update_editText);
+            postNow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), NewPostActivity.class);
+                    i.putExtra("key", projectUID);
+                    startActivity(i);
+                }
+            });
+            TextView rating = view.findViewById(R.id.toolbar_additional_infos);
+            rating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), FeedbackActivity.class);
+                    i.putExtra("key", projectUID);
+                    i.putExtra("reference", reference);
+                    i.putExtra("Name", args.getString("PName"));
+                    startActivity(i);
+                }
+            });
+        }
 
         final StorageReference fileRef = storageReference.child(projectUID + ".jpg");
 
