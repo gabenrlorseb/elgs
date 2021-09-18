@@ -99,12 +99,12 @@ public class MyUnijetFragment extends Fragment {
                 reference = null;
             }
 
-            else if (email.contains("@studenti.uniba.it")) {
+            else if (MailUtils.checkDomainStudents(email)) {
                 reference = FirebaseDatabase.getInstance().getReference("students");
                 memberType = "student";
             } else {
                 reference = FirebaseDatabase.getInstance().getReference("teachers");
-                memberType = "professor";
+                memberType = "subtitle";
             }
 
             text_name_surname = view.findViewById(R.id.text_name_surname);

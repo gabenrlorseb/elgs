@@ -88,7 +88,7 @@ public class BachecaUtils implements Runnable {
                     final String[] authorKey = new String[1];
 
 
-                    if (newPost.getAuthor().contains("@studenti.uniba.it")) {
+                    if (MailUtils.checkDomainStudents(newPost.getAuthor())) {
                         usertype = "students";
                     } else {
                         usertype = "teachers";

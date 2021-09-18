@@ -158,7 +158,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -232,7 +232,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                     collapsingToolbar.setTitle(course.getName());
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                     final FloatingActionButton fab = findViewById(R.id.common_fab);
@@ -438,7 +438,7 @@ public class  CourseDetailsActivity extends AppCompatActivity implements Bacheca
                 Intent i = new Intent (CourseDetailsActivity.this, FeedbackActivity.class);
                 i.putExtra("key", courseUID);
                 i.putExtra("reference",reference);
-                i.putExtra("Name", args.getString("CName"));
+                i.putExtra("Name", args.getString("titleName"));
                 startActivity(i);
             }
         });

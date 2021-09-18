@@ -114,8 +114,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), CourseDetailsActivity.class);
-                i.putExtra("CName", courseViewHolder.mCourses.getText());
-                i.putExtra("professor", courseViewHolder.mProfessors.getText());
+                i.putExtra("titleName", courseViewHolder.mCourses.getText());
+                i.putExtra("subtitle", courseViewHolder.mProfessors.getText());
                 view.getContext().startActivity(i);
             }
         });

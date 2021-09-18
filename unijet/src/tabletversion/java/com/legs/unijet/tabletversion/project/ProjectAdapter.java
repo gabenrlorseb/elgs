@@ -110,7 +110,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             public void onClick(View v) {
 
                         Intent i = new Intent (v.getContext(), ProjectDetailsActivity.class);
-                        i.putExtra("PName", projectViewHolder.mNameProjects.getText());
+                        i.putExtra("titleName", projectViewHolder.mNameProjects.getText());
                         i.putExtra("group", projectViewHolder.mTitle.getText());
                         v.getContext().startActivity(i);
 

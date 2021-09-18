@@ -161,7 +161,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
 
 
-        database.child(reference).orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -252,7 +252,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
 
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child(reference).orderByChild("name").equalTo(args.getString("GName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                         final FloatingActionButton fab = findViewById(R.id.common_fab);
@@ -459,7 +459,7 @@ rating = findViewById(R.id.toolbar_additional_infos);
                 Intent i = new Intent (GroupActivity.this, FeedbackActivity.class);
                 i.putExtra("key", groupUID);
                 i.putExtra("reference",reference);
-                i.putExtra("Name", args.getString("GName"));
+                i.putExtra("Name", args.getString("titleName"));
                 startActivity(i);
             }
         });

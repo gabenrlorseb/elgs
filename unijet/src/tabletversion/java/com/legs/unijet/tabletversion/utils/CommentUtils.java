@@ -96,7 +96,7 @@ public class CommentUtils {
                     final String[] authorKey = new String[1];
 
 
-                    if (newComment.getAuthor().contains("@studenti.uniba.it")) {
+                    if (MailUtils.checkDomainStudents(newComment.getAuthor())) {
                         usertype = "students";
                     } else {
                         usertype = "teachers";

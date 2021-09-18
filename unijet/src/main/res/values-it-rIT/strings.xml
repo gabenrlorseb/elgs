@@ -166,5 +166,7 @@
     <string name="old_password">Vecchia password</string>
     <string name="generic_error">Qualcosa è andato storto, riprovare</string>
     <string name="wait">Attendere prego</string>
+    <string name="demo_mode_is_active">Puoi vedere il contenuto solamente se hai effettuato l\'accesso.</string>
+    <string name="warning_deletion">Sei sicuro di voler eliminare? Tutti i contenuti saranno persi e non saranno più visibili</string>
 
 </resources>

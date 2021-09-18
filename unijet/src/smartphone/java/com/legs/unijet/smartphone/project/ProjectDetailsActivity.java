@@ -151,7 +151,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -232,7 +232,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                     collapsingToolbar.setTitle(project.getName());
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
-                    database3.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
                         final FloatingActionButton fab = findViewById(R.id.common_fab);
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -366,7 +366,7 @@ public class ProjectDetailsActivity extends AppCompatActivity implements Bacheca
                 Intent i = new Intent (ProjectDetailsActivity.this, FeedbackActivity.class);
                 i.putExtra("key", projectUID);
                 i.putExtra("reference",reference);
-                i.putExtra("Name", args.getString("PName"));
+                i.putExtra("Name", args.getString("titleName"));
                 startActivity(i);
             }
         });

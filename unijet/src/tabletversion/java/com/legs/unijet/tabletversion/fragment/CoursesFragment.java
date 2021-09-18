@@ -31,12 +31,10 @@ import com.legs.unijet.tabletversion.course.CourseAdapter;
 import com.legs.unijet.tabletversion.course.CourseSample;
 import com.legs.unijet.tabletversion.course.Course;
 import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
-import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.RecyclerItemClickListener;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -222,22 +220,38 @@ public class CoursesFragment extends Fragment {
 
                         Bundle bundle = new Bundle();
 
-                            bundle.putString("CName", mAdapter.returnTitle(position));
-                            bundle.putString("professor", mAdapter.returnProfessor(position));
+                            bundle.putString("titleName", mAdapter.returnTitle(position));
+                            bundle.putString("subtitle", mAdapter.returnProfessor(position));
+                            bundle.putString("type", getString(R.string.coursesdb));
 
                             if (isSinglePane) {
+
                                 Fragment fragment;
-                                fragment = new CourseDetailsActivity();
-                                fragment.setArguments(bundle);
-                                if (searchEditText.getVisibility() == View.VISIBLE) {
-                                    InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
-                                            getContext().INPUT_METHOD_SERVICE);
-                                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                            InputMethodManager.HIDE_NOT_ALWAYS);
+                                if (user != null) {
+                                    fragment = new CourseDetailsActivity();
+                                    fragment.setArguments(bundle);
+                                    if (searchEditText.getVisibility() == View.VISIBLE) {
+                                        InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                                getContext().INPUT_METHOD_SERVICE);
+                                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                                InputMethodManager.HIDE_NOT_ALWAYS);
+                                    }
+                                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                    transaction.replace(R.id.fragment_container, fragment);
+                                    transaction.commit();
+                                } else {
+                                    fragment = new DemoCourseFragment();
+                                    fragment.setArguments(bundle);
+                                    if (searchEditText.getVisibility() == View.VISIBLE) {
+                                        InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                                getContext().INPUT_METHOD_SERVICE);
+                                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                                InputMethodManager.HIDE_NOT_ALWAYS);
+                                    }
+                                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                    transaction.replace(R.id.fragment_container, fragment);
+                                    transaction.commit();
                                 }
-                                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                                transaction.replace(R.id.fragment_container, fragment);
-                                transaction.commit();
                             } else {
                                 getChildFragmentManager().findFragmentById(R.id.fragment_container);
                             }

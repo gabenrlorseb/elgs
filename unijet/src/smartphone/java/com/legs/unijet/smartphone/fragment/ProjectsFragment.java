@@ -277,7 +277,7 @@ public class ProjectsFragment extends Fragment {
 
                         }else {
                             Intent i = new Intent (view.getContext (), ProjectDetailsActivity.class);
-                            i.putExtra ("PName", mAdapter.returnTitle (position));
+                            i.putExtra ("titleName", mAdapter.returnTitle (position));
                             i.putExtra ("group", mAdapter.returnGroup (position));
                             view.getContext ().startActivity (i);
                         }

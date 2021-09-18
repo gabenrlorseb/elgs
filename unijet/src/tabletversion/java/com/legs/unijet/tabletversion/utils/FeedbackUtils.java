@@ -121,7 +121,7 @@ public class FeedbackUtils {
                         }
                     });
 
-                    if (newFeedback.getAuthor().contains("@studenti.uniba.it")) {
+                    if (MailUtils.checkDomainStudents(newFeedback.getAuthor())) {
                         usertype = "students";
                     } else {
                         usertype = "teachers";

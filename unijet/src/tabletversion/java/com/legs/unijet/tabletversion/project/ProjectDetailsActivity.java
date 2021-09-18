@@ -101,8 +101,8 @@ public class ProjectDetailsActivity extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.collapsing_toolbar_layout_sample, container, false);
         final Bundle args = this.getArguments();
         if (args != null) {
-            String name = args.getString("CName");
-            String professor = args.getString("professor");
+            String name = args.getString("titleName");
+            String professor = args.getString("subtitle");
         }
 
         headerProPic = view.findViewById(R.id.header);
@@ -165,7 +165,7 @@ public class ProjectDetailsActivity extends Fragment {
             final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
 
 
-            database.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+            database.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -247,7 +247,7 @@ public class ProjectDetailsActivity extends Fragment {
                         collapsingToolbar.setTitle(project.getName());
                         final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
                         final DatabaseReference database4 = FirebaseDatabase.getInstance().getReference();
-                        database3.child(reference).orderByChild("name").equalTo(args.getString("PName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
                             final FloatingActionButton fab = view.findViewById(R.id.common_fab);
 
                             @Override
@@ -379,7 +379,7 @@ public class ProjectDetailsActivity extends Fragment {
                     Intent i = new Intent(getActivity(), FeedbackActivity.class);
                     i.putExtra("key", projectUID);
                     i.putExtra("reference", reference);
-                    i.putExtra("Name", args.getString("PName"));
+                    i.putExtra("Name", args.getString("titleName"));
                     startActivity(i);
                 }
             });

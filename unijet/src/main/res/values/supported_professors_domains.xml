@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="uniba_student">"@studenti.uniba.it"</string>
+    <string-array name="teaching_domains" translatable="false">
+        <item>"@uniba.it"</item>
+    </string-array>
 </resources>

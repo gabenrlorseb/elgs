@@ -266,7 +266,7 @@ public class GroupsFragment extends Fragment {
                         }
                         else {
                             Intent i = new Intent (view.getContext (), GroupActivity.class);
-                            i.putExtra ("GName", mAdapter.returnTitle (position));
+                            i.putExtra ("titleName", mAdapter.returnTitle (position));
                             i.putExtra ("owner", mAdapter.returnOwner (position));
                             view.getContext().startActivity(i);
                         }

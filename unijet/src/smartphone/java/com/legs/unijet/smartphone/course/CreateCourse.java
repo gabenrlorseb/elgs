@@ -119,42 +119,6 @@ public class CreateCourse extends AppCompatActivity {
 
 
     }
-    /*void checkCrededentials() {
-        String name = inputNameCourse.getText ().toString ();
-        String department = inputDepartment.getSelectedItem ().toString ();
-        String academicYear = inputAcademicYear.getSelectedItem ().toString ();
-        if (name.isEmpty () || !name.contains ("")) {
-            showError (inputNameCourse, getString(R.string.error_name_course));
-        } else if (department.isEmpty ()) {
-            showError2 (inputDepartment, getString(R.string.error_department));
-        } else if (academicYear.isEmpty ()) {
-            showError3 (inputAcademicYear, getString(R.string.error_academic_year));
-        }
-          else {
-            db = FirebaseDatabase.getInstance ().getReference ("courses").child (FirebaseAuth.getInstance ().getCurrentUser ().getUid ());
-            intent = getIntent ();
-            bundle = intent.getExtras ();
-
-            String email = bundle.getString ("email");
-            Course course = new Course (name, academicYear, department, email);
-            if (course == null) {
-                Log.d ("TAG", "checkCrededentials: nullo");
-            } else {
-                Log.d ("TAG", "checkCrededentials: " + course.getName ());
-            }
-            Toast.makeText (this, "success", Toast.LENGTH_SHORT).show ();
-            db.child(course.getAcademicYear()).child(course.getDepartment()).
-                    child(course.getName()).setValue (course);
-         
-
-            LoadingBar.setTitle (getString (R.string.course_creation));
-            LoadingBar.setMessage (getString(R.string.check_credentials));
-            LoadingBar.setCanceledOnTouchOutside (false);
-
-        }
-
-
-    }*/
 
 
     private void showError(EditText input, String s) {

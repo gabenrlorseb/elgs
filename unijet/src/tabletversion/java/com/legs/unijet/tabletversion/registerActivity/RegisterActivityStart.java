@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.LoginActivity;
+import com.legs.unijet.tabletversion.utils.MailUtils;
 
 public class RegisterActivityStart extends AppCompatActivity {
     TextView btn;
@@ -72,8 +73,12 @@ public class RegisterActivityStart extends AppCompatActivity {
         final String password = inputPassword.getText ().toString ();
         String confirmPassword = inputConfirmPassword.getText ().toString ();
 
+        MailUtils mu = new MailUtils(getApplicationContext());
 
-        if (email.isEmpty () && (!email.contains ("@studenti.uniba.it") || !email.contains ("@uniba.it"))) {
+
+
+
+        if (email.isEmpty () &&         MailUtils.checkDomainStudents(email) ||         MailUtils.checkDomainTeachers(email)) {
             showError (inputEmail, getString(R.string.error_email));
         }/*else if (auth.){
 
@@ -84,7 +89,7 @@ public class RegisterActivityStart extends AppCompatActivity {
             showError (inputConfirmPassword, getString(R.string.error_confirm_password));
         } else {
 
-            if(email.contains("@studenti.uniba.it")){
+            if(MailUtils.checkDomainStudents(email)){
                 Toast.makeText (RegisterActivityStart.this, "", Toast.LENGTH_SHORT).show ();
                 Intent intent=new Intent (RegisterActivityStart.this,RegStudentActivity.class);
                 intent.putExtra ("email", email);

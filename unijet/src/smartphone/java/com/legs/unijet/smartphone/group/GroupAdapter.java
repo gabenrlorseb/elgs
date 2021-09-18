@@ -104,7 +104,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), GroupActivity.class);
-                i.putExtra("GName", groupViewHolder.mGroups.getText());
+                i.putExtra("titleName", groupViewHolder.mGroups.getText());
                 i.putExtra("owner", groupViewHolder.mOwners.getText());
                 view.getContext().startActivity(i);
             }

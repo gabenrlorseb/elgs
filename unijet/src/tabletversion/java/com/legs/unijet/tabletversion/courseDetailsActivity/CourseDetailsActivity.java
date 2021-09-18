@@ -97,8 +97,8 @@ public class  CourseDetailsActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstance) {
 /*Bundle bundle= getArguments();
-String name = bundle.getString("CName");
-String professor = bundle.getString("professor");*/
+String name = bundle.getString("titleName");
+String professor = bundle.getString("subtitle");*/
         super.onCreate(savedInstance);
 
     }
@@ -108,8 +108,8 @@ String professor = bundle.getString("professor");*/
         final android.view.View view = inflater.inflate(R.layout.collapsing_toolbar_layout_sample, container, false);
         final Bundle args = this.getArguments();
         if (args != null) {
-            String name = args.getString("CName");
-            String professor = args.getString("professor");
+            String name = args.getString("titleName");
+            String professor = args.getString("subtitle");
         }
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -170,7 +170,7 @@ String professor = bundle.getString("professor");*/
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
 
-        database.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -245,7 +245,7 @@ String professor = bundle.getString("professor");*/
                     collapsingToolbar.setTitle(course.getName());
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
-                    database3.child(reference).orderByChild("name").equalTo(args.getString("CName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
                         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.common_fab);
@@ -442,7 +442,7 @@ String professor = bundle.getString("professor");*/
                 Intent i = new Intent (getActivity(), FeedbackActivity.class);
                 i.putExtra("key", courseUID);
                 i.putExtra("reference", reference);
-                i.putExtra("Name", args.getString("CName"));
+                i.putExtra("Name", args.getString("titleName"));
                 startActivity(i);
             }
         });

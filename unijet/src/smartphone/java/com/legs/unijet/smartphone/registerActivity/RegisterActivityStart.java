@@ -89,7 +89,7 @@ public class RegisterActivityStart extends AppCompatActivity {
             showError (inputConfirmPassword, getString(R.string.error_confirm_password));
         } else {
 
-            if(email.contains("@studenti.uniba.it")){
+            if(MailUtils.checkDomainStudents(email)){
                 Toast.makeText (RegisterActivityStart.this, "", Toast.LENGTH_SHORT).show ();
                 Intent intent=new Intent (RegisterActivityStart.this,RegStudentActivity.class);
                 intent.putExtra ("email", email);

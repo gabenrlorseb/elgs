@@ -40,6 +40,7 @@ import com.legs.unijet.tabletversion.profile.EditProfile;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.GsonParser;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.tabletversion.utils.MailUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -113,12 +114,12 @@ public class MyUnijetFragment extends Fragment {
                 email = user.getEmail();
                 populateList(userId, view);
 
-                if (email.contains("@studenti.uniba.it")) {
+                if (MailUtils.checkDomainStudents(email)) {
                     reference = FirebaseDatabase.getInstance().getReference("students");
                     memberType = "student";
                 } else {
                     reference = FirebaseDatabase.getInstance().getReference("teachers");
-                    memberType = "professor";
+                    memberType = "subtitle";
                 }
 
             }

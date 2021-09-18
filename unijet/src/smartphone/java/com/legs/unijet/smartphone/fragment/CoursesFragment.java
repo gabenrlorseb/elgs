@@ -243,8 +243,8 @@ private void fragmentStudent(){
 
                         }else {
                             Intent i = new Intent (view.getContext (), CourseDetailsActivity.class);
-                            i.putExtra ("CName", mAdapter.returnTitle (position));
-                            i.putExtra ("professor", mAdapter.returnProfessor (position));
+                            i.putExtra ("titleName", mAdapter.returnTitle (position));
+                            i.putExtra ("subtitle", mAdapter.returnProfessor (position));
                             view.getContext ().startActivity (i);
                         }
                     }

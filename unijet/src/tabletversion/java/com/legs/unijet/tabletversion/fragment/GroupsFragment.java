@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.legs.unijet.tabletversion.courseDetailsActivity.CourseDetailsActivity;
 import com.legs.unijet.tabletversion.group.Group;
 import com.legs.unijet.tabletversion.group.GroupAdapter;
 import com.legs.unijet.smartphone.R;
@@ -238,25 +239,39 @@ public class GroupsFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("GName", mAdapter.returnTitle(position));
+                        bundle.putString("titleName", mAdapter.returnTitle(position));
                         bundle.putString("owner", String.valueOf(mAdapter.returnOwner(position)));
 
                         if (isSinglePane) {
+
                             Fragment fragment;
-                            fragment = new GroupActivity();
-                            fragment.setArguments(bundle);
-                            if (searchEditText.getVisibility() == View.VISIBLE) {
-                                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
-                                        getContext().INPUT_METHOD_SERVICE);
-                                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            if (user != null) {
+                                fragment = new GroupActivity();
+                                fragment.setArguments(bundle);
+                                if (searchEditText.getVisibility() == View.VISIBLE) {
+                                    InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                            getContext().INPUT_METHOD_SERVICE);
+                                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                            InputMethodManager.HIDE_NOT_ALWAYS);
+                                }
+                                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fragment_container, fragment);
+                                transaction.commit();
+                            } else {
+                                fragment = new DemoGroupFragment();
+                                fragment.setArguments(bundle);
+                                if (searchEditText.getVisibility() == View.VISIBLE) {
+                                    InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                            getContext().INPUT_METHOD_SERVICE);
+                                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                            InputMethodManager.HIDE_NOT_ALWAYS);
+                                }
+                                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fragment_container, fragment);
+                                transaction.commit();
                             }
-                            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                            transaction.replace(R.id.fragment_container, fragment);
-                            transaction.commit();
                         } else {
                             getChildFragmentManager().findFragmentById(R.id.fragment_container);
-
                         }
                     }
 
