@@ -30,7 +30,6 @@ import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.utils.MainActivity;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class RegStudentActivity  extends RegisterActivityStart {
 

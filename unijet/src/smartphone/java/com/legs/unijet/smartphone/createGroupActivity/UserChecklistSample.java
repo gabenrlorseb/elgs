@@ -1,7 +1,6 @@
 package com.legs.unijet.smartphone.createGroupActivity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class UserChecklistSample implements Serializable {
     private final int mImageResource;

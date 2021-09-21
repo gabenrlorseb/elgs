@@ -28,12 +28,12 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.legs.unijet.smartphone.LoginActivity;
-import com.legs.unijet.smartphone.profile.EditProfile;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.profile.EditProfile;
 import com.legs.unijet.smartphone.profile.Favourites;
 import com.legs.unijet.smartphone.profile.User;
 import com.legs.unijet.smartphone.utils.GsonParser;
-import com.legs.unijet.smartphone.utils.MainActivity;
+import com.legs.unijet.smartphone.utils.MailUtils;
 
 import java.io.File;
 
@@ -85,6 +85,8 @@ public class MyUnijetFragment extends Fragment {
         if (savedInstanceState == null) {
             user = FirebaseAuth.getInstance().getCurrentUser();
 
+            MailUtils mu = new MailUtils(getContext());
+
             if (user==null){
                 userId = null;
                 email = null;
@@ -98,6 +100,7 @@ public class MyUnijetFragment extends Fragment {
             if(email==null){
                 reference = null;
             }
+
 
             else if (mu.checkDomainStudents(email)) {
                 reference = FirebaseDatabase.getInstance().getReference("students");
@@ -148,16 +151,24 @@ public class MyUnijetFragment extends Fragment {
                 logout ();
             }
         });
+
         if (user==null) {
             editProfileButton.setVisibility(View.GONE);
             toFavourites.setVisibility (View.GONE);
-            name = "User";
-            email = "prova@prova.it";
+            name = savedInstanceState.getString(String.valueOf(R.string.demo_user));
+            email = savedInstanceState.getString(String.valueOf(R.string.demo_user_subtitle));
             surname = "name";
             nameFull = name + surname;
             text_name_surname.setText (nameFull.toUpperCase ());
+            text_name_surname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
             email_login_field.setText (email);
         }
+
         else {
             editProfileButton.setOnClickListener (new android.view.View.OnClickListener () {
                 @Override

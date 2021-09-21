@@ -1,6 +1,5 @@
 package com.legs.unijet.smartphone.registerActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,16 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.legs.unijet.smartphone.LoginActivity;
 import com.legs.unijet.smartphone.R;
+import com.legs.unijet.smartphone.utils.MailUtils;
 
 public class RegisterActivityStart extends AppCompatActivity {
     TextView btn;
@@ -88,6 +84,8 @@ public class RegisterActivityStart extends AppCompatActivity {
         } else if (confirmPassword.isEmpty () || !confirmPassword.equals (password)) {
             showError (inputConfirmPassword, getString(R.string.error_confirm_password));
         } else {
+
+            MailUtils mu = new MailUtils(getApplicationContext());
 
             if(mu.checkDomainStudents(email)){
                 Toast.makeText (RegisterActivityStart.this, "", Toast.LENGTH_SHORT).show ();

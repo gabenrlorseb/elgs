@@ -3,7 +3,6 @@ package com.legs.unijet.smartphone.utils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
@@ -81,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser ();
         userId=user.getUid ();
         email=user.getEmail();
+
+        MailUtils mu = new MailUtils(getApplicationContext());
 
         if(mu.checkDomainStudents(email)) {
             reference = FirebaseDatabase.getInstance ().getReference ("students");

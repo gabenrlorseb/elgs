@@ -1,6 +1,5 @@
 package com.legs.unijet.smartphone;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.legs.unijet.smartphone.R;
 import com.legs.unijet.smartphone.course.CreateCourse;
 import com.legs.unijet.smartphone.createGroupActivity.CreateGroupStart;
