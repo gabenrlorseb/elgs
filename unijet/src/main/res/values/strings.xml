@@ -182,5 +182,6 @@
     <string name="generic_error">Something went wrong, please try again</string>
     <string name="wait">Please wait</string>
     <string name="demo_mode_is_active">Sorry, you can see the content only if you are logged in.</string>
-
+    <string name="demo_user">Guest User</string>
+    <string name="demo_user_subtitle">Click here to login</string>
 </resources>
