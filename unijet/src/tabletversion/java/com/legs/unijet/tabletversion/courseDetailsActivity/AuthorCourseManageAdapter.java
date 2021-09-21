@@ -21,8 +21,8 @@ import java.util.List;
 
 
 public class AuthorCourseManageAdapter extends RecyclerView.Adapter<AuthorCourseManageAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<UserChecklistSample> sampleList;
-    private ArrayList<UserChecklistSample> fullSampleList;
+    private final ArrayList<UserChecklistSample> sampleList;
+    private final ArrayList<UserChecklistSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -56,7 +56,7 @@ public class AuthorCourseManageAdapter extends RecyclerView.Adapter<AuthorCourse
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserChecklistSample> filteredList = new ArrayList<>();

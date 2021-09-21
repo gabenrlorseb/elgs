@@ -2,8 +2,8 @@ package com.legs.unijet.tabletversion.project;
 
 public class ProjectSample {
 
-    private String mText1;
-    private String mText2;
+    private final String mText1;
+    private final String mText2;
 
     public ProjectSample(String text1, String text2) {
         this.mText1 = text1;

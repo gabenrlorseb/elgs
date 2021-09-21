@@ -95,8 +95,10 @@ public class CommentUtils {
                     final String[] authorName = new String[1];
                     final String[] authorKey = new String[1];
 
+                    MailUtils mu = new MailUtils(context.getApplicationContext());
 
-                    if (MailUtils.checkDomainStudents(newComment.getAuthor())) {
+
+                    if (mu.checkDomainStudents(newComment.getAuthor())) {
                         usertype = "students";
                     } else {
                         usertype = "teachers";

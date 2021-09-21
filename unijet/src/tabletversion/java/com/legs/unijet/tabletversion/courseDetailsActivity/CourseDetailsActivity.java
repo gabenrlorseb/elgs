@@ -84,13 +84,13 @@ public class  CourseDetailsActivity extends Fragment {
     RelativeLayout postLayout;
     EditText postNow;
 
-    private PostAdapter postAdapter;
+    // --Commented out by Inspection (21/09/2021 18:51):private PostAdapter postAdapter;
 
-    private ArrayList<PostSample> fetchedPosts;
+    // --Commented out by Inspection (21/09/2021 18:51):private ArrayList<PostSample> fetchedPosts;
 
     BachecaUtils postFetcher;
 
-    ProgressDialog dialog;
+    // --Commented out by Inspection (21/09/2021 18:51):ProgressDialog dialog;
 
 
 
@@ -115,7 +115,7 @@ String professor = bundle.getString("subtitle");*/
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
-        rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
+        rating  = view.findViewById(R.id.toolbar_additional_infos);
         postLayout = view.findViewById(R.id.area_post);
         postNow = view.findViewById(R.id.post_update_editText);
         final int[] NumberOfMembers = new int[1];
@@ -206,7 +206,7 @@ String professor = bundle.getString("subtitle");*/
                                 final User userd;
                                 userd = childSnapshot.getValue(User.class);
                                 courseAuthorName[0] = userd.getName() + " " + userd.getSurname();
-                                TextView memberIndication = (TextView) view.findViewById(R.id.toolbar_subtitle);
+                                TextView memberIndication = view.findViewById(R.id.toolbar_subtitle);
                                 memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -241,14 +241,14 @@ String professor = bundle.getString("subtitle");*/
                     });
 
 
-                    CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+                    CollapsingToolbarLayout collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
                     collapsingToolbar.setTitle(course.getName());
 
                     final DatabaseReference database3 = FirebaseDatabase.getInstance().getReference();
                     database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
-                        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.common_fab);
+                        final FloatingActionButton fab = view.findViewById(R.id.common_fab);
 
                         public void onDataChange(@NonNull final DataSnapshot snapshot) {
                             for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -449,7 +449,7 @@ String professor = bundle.getString("subtitle");*/
 
         final StorageReference fileRef = storageReference.child(courseUID + ".jpg");
 
-        File cachedProPic = (File) getActivity().getBaseContext().getFilesDir();
+        File cachedProPic = getActivity().getBaseContext().getFilesDir();
         final File f = new File(cachedProPic, courseUID + ".jpg");
         FileInputStream fis = null;
         try {
@@ -558,7 +558,7 @@ String professor = bundle.getString("subtitle");*/
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(getContext(), getString(R.string.propic_change_success), Toast.LENGTH_SHORT).show();
-                    headerProPic = (ImageView) getActivity().findViewById(R.id.header);
+                    headerProPic = getActivity().findViewById(R.id.header);
                     headerProPic.setImageBitmap(bitmap);
                     final File f = new File(getActivity().getBaseContext().getFilesDir(), courseUID + "jpg");
                     FileOutputStream fos;

@@ -31,16 +31,18 @@ import java.util.UUID;
 
 public class NewCommentActivity extends AppCompatActivity {
 
-    StorageReference storageReference;
-    int postID;
+    // --Commented out by Inspection (21/09/2021 18:52):StorageReference storageReference;
+    // --Commented ou// --Commented out by Inspection (21/09/2021 18:52):t by Inspection (21/09/2021 18:52):int postID;
 
     private static final int SELECT_PICTURE = 1;
-    private static final int FILE_SELECT_CODE = 2;
-
-    Comment comment;
-
-    LinearLayout addedImagesThumbnails;
-    LinearLayout addedDocumentsName;
+    // --Commented out by Inspection (21/09/2021 18:52):private static final int FILE_SELECT_CODE = 2;
+// --Commented out by Inspection START (21/09/2021 18:52):
+//
+//    Comment comment;
+//
+//    // --Commented out by Insp// --Commented out by Inspect// --Commented out by Inspection (21/09/2021 18:52):ion (21/09// --Commented out by Inspection (21/09/2021 18:52):/2021 18:52):ection (21/09/2021 18:52):LinearLayout addedImagesThumbnails;
+// --Commented out by Inspection STOP (21/09/2021 18:52)
+    // --Commented out by Inspection (21/09/2021 18:52):LinearLayout addedDocumentsName;
 
     TextView indicationAttachedImages;
     TextView indicationDocumentsAttached;
@@ -53,7 +55,7 @@ public class NewCommentActivity extends AppCompatActivity {
         setContentView(R.layout.new_comment);
         final Bundle args = getIntent().getExtras();
 
-        storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String reference = "comments/" + args.getString("key") + "/";
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference(reference);
@@ -133,7 +135,7 @@ public class NewCommentActivity extends AppCompatActivity {
 
                 long ut2 = System.currentTimeMillis() / 1000L;
 
-                comment = new Comment(user.getEmail(), false,  new ArrayList<String>(), ut2, uniqueId ,postContent.getText().toString());
+                Comment comment = new Comment(user.getEmail(), false,  new ArrayList<String>(), ut2, uniqueId ,postContent.getText().toString());
                 final DatabaseReference database1 = FirebaseDatabase.getInstance().getReference("likes/");
 
 

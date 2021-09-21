@@ -79,9 +79,9 @@
      RecyclerView recyclerViewBacheca;
      private PostAdapter postAdapter;
 
-     private ArrayList<PostSample> fetchedPosts;
+     // --Commented out by Inspection (21/09/2021 18:52):private ArrayList<PostSample> fetchedPosts;
      BachecaUtils postFetcher;
-     ProgressDialog dialog;
+     // --Commented out by Inspection (21/09/2021 18:52):P// --Commented out by Inspection (21/09/2021 18:52):rogressDialog dialog;
      TextView rating;
      RelativeLayout postLayout;
      EditText postNow;
@@ -108,12 +108,12 @@
          }
 
          recyclerViewBacheca = view.findViewById(R.id.recyclerview_posts);
-         rating  = (TextView) view.findViewById(R.id.toolbar_additional_infos);
+         rating  = view.findViewById(R.id.toolbar_additional_infos);
 
          postLayout = view.findViewById(R.id.area_post);
          postNow = view.findViewById(R.id.post_update_editText);
 
-        final ImageView groupPic = (ImageView) view.findViewById(R.id.header);
+        final ImageView groupPic = view.findViewById(R.id.header);
 
         final int[] NumberOfMembers = new int[1];
 
@@ -208,7 +208,7 @@
                                     User user;
                                     user = childSnapshot.getValue(User.class);
                                     groupAuthorName[0] = user.getName() + " " + user.getSurname();
-                                TextView memberIndication = (TextView) view.findViewById(R.id.toolbar_subtitle);
+                                TextView memberIndication = view.findViewById(R.id.toolbar_subtitle);
                                 memberIndication.setText(getResources().getQuantityString(R.plurals.members, NumberOfMembers[0], NumberOfMembers[0]));
                                 memberIndication.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -247,7 +247,7 @@
                     database3.child(reference).orderByChild("name").equalTo(args.getString("titleName")).addListenerForSingleValueEvent(new ValueEventListener() {
 
 
-                        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.common_fab);
+                        final FloatingActionButton fab = view.findViewById(R.id.common_fab);
                         public void onDataChange(@NonNull final DataSnapshot snapshot) {
                             for (final DataSnapshot postSnapshot : snapshot.getChildren()) {
                                 final Group group;
@@ -319,9 +319,7 @@
                                                             Intent intent = new Intent (getActivity(), MainActivity.class);
                                                             String groupUID = postSnapshot.getKey();
                                                             ArrayList<String> courseSubscribers = group.getRecipients();
-                                                            if(courseSubscribers.contains(user.getEmail())){
                                                             courseSubscribers.remove(user.getEmail());
-                                                            }
                                                             database3.child("groups").child(groupUID).child("recipients").setValue(courseSubscribers);
                                                             startActivity(intent);
                                                             return true;
@@ -505,7 +503,7 @@
 
 
 
-        FloatingActionButton setProPicFab = (FloatingActionButton) view.findViewById(R.id.common_fab);
+        FloatingActionButton setProPicFab = view.findViewById(R.id.common_fab);
         setProPicFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -520,14 +518,16 @@
 
     }
 
-    protected void buildBacheca () {
-        recyclerViewBacheca = getActivity().findViewById(R.id.recyclerview_posts);
-        recyclerViewBacheca.setHasFixedSize(false);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        postAdapter = new PostAdapter(fetchedPosts);
-        recyclerViewBacheca.setLayoutManager(mLayoutManager);
-        recyclerViewBacheca.setAdapter(postAdapter);
-    }
+// --Commented out by Inspection START (21/09/2021 18:52):
+//    protected void buildBacheca () {
+//        recyclerViewBacheca = getActivity().findViewById(R.id.recyclerview_posts);
+//        recyclerViewBacheca.setHasFixedSize(false);
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+//        postAdapter = new PostAdapter(fetchedPosts);
+//        recyclerViewBacheca.setLayoutManager(mLayoutManager);
+//        recyclerViewBacheca.setAdapter(postAdapter);
+//    }
+// --Commented out by Inspection STOP (21/09/2021 18:52)
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

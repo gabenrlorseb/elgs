@@ -99,7 +99,7 @@ public class MyUnijetFragment extends Fragment {
                 reference = null;
             }
 
-            else if (MailUtils.checkDomainStudents(email)) {
+            else if (mu.checkDomainStudents(email)) {
                 reference = FirebaseDatabase.getInstance().getReference("students");
                 memberType = "student";
             } else {

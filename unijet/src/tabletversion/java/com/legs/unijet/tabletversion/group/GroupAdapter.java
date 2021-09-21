@@ -116,12 +116,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public String returnTitle (int position) {
         return groupsList.get(position).getText1();
     }
-    public ArrayList<String> returnReci (int position) {
-        return groupsList.get(position).getText3();
-    }
-    public ArrayList<String> returnNameOwner (int position) {
-        return groupsList.get(position).getText4();
-    }
+// --Commented out by Inspection START (21/09/2021 18:52):
+//    public ArrayList<String> returnReci (int position) {
+//        return groupsList.get(position).getText3();
+//    }
+// --Commented out by Inspection STOP (21/09/2021 18:52)
+// --Commented out by Inspection START (21/09/2021 18:52):
+//    public ArrayList<String> returnNameOwner (int position) {
+//        return groupsList.get(position).getText4();
+//    }
+// --Commented out by Inspection STOP (21/09/2021 18:52)
     public  ArrayList<String> returnOwner (int position) {
         return groupsList.get(position).getText5();
     }

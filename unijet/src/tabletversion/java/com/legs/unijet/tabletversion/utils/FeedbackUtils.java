@@ -121,7 +121,9 @@ public class FeedbackUtils {
                         }
                     });
 
-                    if (MailUtils.checkDomainStudents(newFeedback.getAuthor())) {
+                    MailUtils mu = new MailUtils(context.getApplicationContext());
+
+                    if (mu.checkDomainStudents(newFeedback.getAuthor())) {
                         usertype = "students";
                     } else {
                         usertype = "teachers";

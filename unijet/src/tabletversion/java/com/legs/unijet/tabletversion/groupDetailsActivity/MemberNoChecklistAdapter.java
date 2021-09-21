@@ -27,8 +27,8 @@ import java.util.List;
 
 
 public class MemberNoChecklistAdapter extends RecyclerView.Adapter<MemberNoChecklistAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<UserChecklistSample> sampleList;
-    private ArrayList<UserChecklistSample> fullSampleList;
+    private final ArrayList<UserChecklistSample> sampleList;
+    private final ArrayList<UserChecklistSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -62,7 +62,7 @@ public class MemberNoChecklistAdapter extends RecyclerView.Adapter<MemberNoCheck
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserChecklistSample> filteredList = new ArrayList<>();

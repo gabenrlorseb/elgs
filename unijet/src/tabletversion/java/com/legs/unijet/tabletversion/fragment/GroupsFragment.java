@@ -236,7 +236,7 @@ public class GroupsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                    @Override public void onItemClick( int position) {
 
                         Bundle bundle = new Bundle();
                         bundle.putString("titleName", mAdapter.returnTitle(position));
@@ -276,8 +276,8 @@ public class GroupsFragment extends Fragment {
                     }
 
                     @Override
-                    public void onLongItemClick(View view, int position) {
-                        //non c'è bisogno
+                    public void onLongItemClick() {
+
                     }
 
                 })

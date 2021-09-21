@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SplashScreenAdapter extends RecyclerView.Adapter<SplashScreenAdapter.SplashScreenViewHolder> {
 
-    private List<SplashScreenItem> splashScreenItems;
+    private final List<SplashScreenItem> splashScreenItems;
 
     public SplashScreenAdapter(List<SplashScreenItem> splashScreenItems) {
         this.splashScreenItems = splashScreenItems;
@@ -44,9 +44,9 @@ public class SplashScreenAdapter extends RecyclerView.Adapter<SplashScreenAdapte
 
     class SplashScreenViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textTitle;
-        private TextView textDescription;
-        private ImageView itemSplashImage;
+        private final TextView textTitle;
+        private final TextView textDescription;
+        private final ImageView itemSplashImage;
 
         SplashScreenViewHolder(@NonNull View itemView) {
             super(itemView);

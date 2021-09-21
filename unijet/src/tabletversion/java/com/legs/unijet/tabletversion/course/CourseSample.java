@@ -15,13 +15,15 @@ public class CourseSample {
         this.mText2 = mail;
 
     }
-    public CourseSample(String text1,String mail, ArrayList<String> text5,ArrayList<String> text3,ArrayList<String> finalNameOWners) {
-        this.mText1 = text1;
-        this.mText2=mail;
-        this.mText5 = text5;
-        this.mText3=text3;
-        this.mText4=finalNameOWners;
-    }
+// --Commented out by Inspection START (21/09/2021 18:51):
+//    public CourseSample(String text1,String mail, ArrayList<String> text5,ArrayList<String> text3,ArrayList<String> finalNameOWners) {
+//        this.mText1 = text1;
+//        this.mText2=mail;
+//        this.mText5 = text5;
+//        this.mText3=text3;
+//        this.mText4=finalNameOWners;
+//    }
+// --Commented out by Inspection STOP (21/09/2021 18:51)
 
 
 

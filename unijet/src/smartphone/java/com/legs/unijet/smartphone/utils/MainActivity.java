@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         userId=user.getUid ();
         email=user.getEmail();
 
-        if(MailUtils.checkDomainStudents(email)) {
+        if(mu.checkDomainStudents(email)) {
             reference = FirebaseDatabase.getInstance ().getReference ("students");
             bottomSheetDialog.setContentView(bottomSheetView);
             setBottomButtonsStudent(bottomSheetView);

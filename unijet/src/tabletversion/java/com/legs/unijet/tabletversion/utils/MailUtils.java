@@ -13,7 +13,7 @@ public class MailUtils {
         MailUtils.context = context;
     }
 
-    public static boolean checkDomainStudents (String url){
+    public boolean checkDomainStudents(String url){
         String[] domains_array = context.getResources().getStringArray(R.array.students_domains);
         for(String site : domains_array){
             if(url.contains(site)) {
@@ -23,7 +23,7 @@ public class MailUtils {
         return false;
     }
 
-    public static boolean checkDomainTeachers (String url){
+    public boolean checkDomainTeachers(String url){
         String[] domains_array = context.getResources().getStringArray(R.array.teaching_domains);
         for(String site : domains_array){
             if(url.contains(site)) {

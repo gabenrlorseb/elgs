@@ -39,21 +39,15 @@ import java.util.ArrayList;
 public class CoursesFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ImageView item;
-    FirebaseDatabase mdb;
-    ArrayList<String> reci;
+
     EditText searchEditText;
-    String userId;
-    Course course;
-    FirebaseUser auth;
-    Intent intent;
-    DatabaseReference reference;
+
     private ArrayList<CourseSample> courseList;
     private ArrayList<Course> courses;
     private ArrayList<String> members;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference db1 = FirebaseDatabase.getInstance ().getReference ();
-    TextView notFoundTextView;
-    RelativeLayout notFoundLayout;
+
+
     static boolean isSinglePane = true;
 
     RecyclerView mRecyclerView;
@@ -216,53 +210,51 @@ public class CoursesFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
-
+                    public void onItemClick(int position) {
                         Bundle bundle = new Bundle();
 
-                            bundle.putString("titleName", mAdapter.returnTitle(position));
-                            bundle.putString("subtitle", mAdapter.returnProfessor(position));
-                            bundle.putString("type", getString(R.string.coursesdb));
+                        bundle.putString("titleName", mAdapter.returnTitle(position));
+                        bundle.putString("subtitle", mAdapter.returnProfessor(position));
+                        bundle.putString("type", getString(R.string.coursesdb));
 
-                            if (isSinglePane) {
+                        if (isSinglePane) {
 
-                                Fragment fragment;
-                                if (user != null) {
-                                    fragment = new CourseDetailsActivity();
-                                    fragment.setArguments(bundle);
-                                    if (searchEditText.getVisibility() == View.VISIBLE) {
-                                        InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
-                                                getContext().INPUT_METHOD_SERVICE);
-                                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                                InputMethodManager.HIDE_NOT_ALWAYS);
-                                    }
-                                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.fragment_container, fragment);
-                                    transaction.commit();
-                                } else {
-                                    fragment = new DemoCourseFragment();
-                                    fragment.setArguments(bundle);
-                                    if (searchEditText.getVisibility() == View.VISIBLE) {
-                                        InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
-                                                getContext().INPUT_METHOD_SERVICE);
-                                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                                                InputMethodManager.HIDE_NOT_ALWAYS);
-                                    }
-                                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.fragment_container, fragment);
-                                    transaction.commit();
+                            Fragment fragment;
+                            if (user != null) {
+                                fragment = new CourseDetailsActivity();
+                                fragment.setArguments(bundle);
+                                if (searchEditText.getVisibility() == View.VISIBLE) {
+                                    InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                            getContext().INPUT_METHOD_SERVICE);
+                                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                            InputMethodManager.HIDE_NOT_ALWAYS);
                                 }
+                                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fragment_container, fragment);
+                                transaction.commit();
                             } else {
-                                getChildFragmentManager().findFragmentById(R.id.fragment_container);
+                                fragment = new DemoCourseFragment();
+                                fragment.setArguments(bundle);
+                                if (searchEditText.getVisibility() == View.VISIBLE) {
+                                    InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(
+                                            getContext().INPUT_METHOD_SERVICE);
+                                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                            InputMethodManager.HIDE_NOT_ALWAYS);
+                                }
+                                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fragment_container, fragment);
+                                transaction.commit();
                             }
-
-
+                        } else {
+                            getChildFragmentManager().findFragmentById(R.id.fragment_container);
                         }
+                    }
 
                     @Override
-                    public void onLongItemClick(View view, int position) {
-                        //non c'è bisogno
+                    public void onLongItemClick() {
+
                     }
+
 
                 })
 

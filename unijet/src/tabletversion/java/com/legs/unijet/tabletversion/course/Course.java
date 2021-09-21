@@ -23,15 +23,19 @@ public Course (){
         this.members = members;
     }
 
-    public void setName(String name) { this.name = name; }
+    // --Commented out by Inspection (21/09/2021 18:51):public void setName(String name) { this.name = name; }
 
     public String getName() { return name; }
 
-    public void setAcademicYear(String academicYear) { this.academicYear = academicYear; }
+    // --Commented out by Inspection (21/09/2021 18:51):public void setAcademicYear(String academicYear) { this.academicYear = academicYear; }
 
-    public String getAcademicYear() { return academicYear; }
-
-    public void setDepartment(String department) { this.department = department; }
+// --Commented out by Inspection START (21/09/2021 18:51):
+//    // --Comme// --Commented out by Inspection (21/09/2021 18:51):nted out by Inspection (21/09/2021 18:51):public String getAcademicYear() { return academicYear; }
+//
+// --Commented out by Inspection START (21/09/2021 18:51):
+////    public void setDepartment(String department) { this.department = department; }
+//// --Commented out by Inspection STOP (21/09/2021 18:51)
+// --Commented out by Inspection STOP (21/09/2021 18:51)
 
     public String getDepartment() { return department; }
 

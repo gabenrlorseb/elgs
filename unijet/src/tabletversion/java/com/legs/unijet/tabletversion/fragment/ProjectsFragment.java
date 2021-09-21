@@ -27,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.tabletversion.group.Group;
 import com.legs.unijet.tabletversion.course.Course;
-import com.legs.unijet.tabletversion.groupDetailsActivity.GroupActivity;
 import com.legs.unijet.tabletversion.project.Project;
 import com.legs.unijet.tabletversion.project.ProjectAdapter;
 import com.legs.unijet.tabletversion.project.ProjectDetailsActivity;
@@ -66,9 +65,9 @@ public class ProjectsFragment extends Fragment {
         final android.view.View view = inflater.inflate (R.layout.projects_page, container, false);
         populateList ();
 
-        item = (ImageView) view.findViewById(R.id.projects_search_button);
+        item = view.findViewById(R.id.projects_search_button);
 
-        searchEditText = (EditText) view.findViewById(R.id.projects_search_edit_text);
+        searchEditText = view.findViewById(R.id.projects_search_edit_text);
 
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,14 +258,6 @@ public class ProjectsFragment extends Fragment {
 
     }
 
-    private void fragmentStudent(){
-
-    }
-
-    private void fragmentProfessor(){
-
-    }
-
     private void buildRecyclerView() {
         mRecyclerView = getView().findViewById(R.id.projects_list);
         mRecyclerView.setHasFixedSize(true);
@@ -277,7 +268,7 @@ public class ProjectsFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
+                    public void onItemClick(int position) {
                         Bundle bundle = new Bundle();
                         bundle.putString("titleName", mAdapter.returnTitle(position));
                         bundle.putString("group", mAdapter.returnGroup(position));
@@ -317,7 +308,7 @@ public class ProjectsFragment extends Fragment {
                     }
 
                     @Override
-                    public void onLongItemClick(View view, int position) {
+                    public void onLongItemClick() {
                         //non c'è bisogno
                     }
 

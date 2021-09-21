@@ -24,7 +24,7 @@
 
      private ArrayList<UserChecklistSample> names;
      private ArrayList<String> passed_names;
-     private ArrayList<String> nameowner;
+     // --Commented out by Inspection (21/09/20// --Commented out by Inspection (21/09/2021 18:52):21 18:52):private ArrayList<String> nameowner;
      private String passed_names1;
      RecyclerView mRecyclerView;
      DatabaseReference db = FirebaseDatabase.getInstance ().getReference ();

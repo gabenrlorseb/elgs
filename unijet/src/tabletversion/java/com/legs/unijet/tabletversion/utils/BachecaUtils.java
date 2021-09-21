@@ -54,7 +54,6 @@ public class BachecaUtils implements Runnable {
     @Override
     public void run() {
         setRunning(true);
-        storageReference = FirebaseStorage.getInstance().getReference();
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference database2 = FirebaseDatabase.getInstance().getReference("posts");
 
@@ -87,8 +86,10 @@ public class BachecaUtils implements Runnable {
                     final String[] authorName = new String[1];
                     final String[] authorKey = new String[1];
 
+                    MailUtils mu = new MailUtils(context.getApplicationContext());
 
-                    if (MailUtils.checkDomainStudents(newPost.getAuthor())) {
+
+                    if (mu.checkDomainStudents(newPost.getAuthor())) {
                         usertype = "students";
                     } else {
                         usertype = "teachers";

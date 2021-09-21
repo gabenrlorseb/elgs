@@ -58,7 +58,7 @@ import static com.legs.unijet.smartphone.R.menu.post_menu;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder>  {
     private final ArrayList<PostSample> sampleList;
-    private Context context;
+    // --Commented out by Inspection (21/09/2021 18:52):private Context context;
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         public ImageView author_propic;

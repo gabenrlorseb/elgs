@@ -36,7 +36,7 @@ public class CreateGroupStart extends AppCompatActivity  {
     DatabaseReference db= FirebaseDatabase.getInstance ().getReference ();
 
     private ArrayList<UserChecklistSample> names;
-    private ArrayList<Course> courses;
+    // --Commented out by Inspection (21/09/2021 18:51):private ArrayList<Course> courses;
 
 
     RecyclerView mRecyclerView;

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupManageAdapter.ExampleViewHolder> implements Filterable {
-    private ArrayList<UserChecklistSample> sampleList;
-    private ArrayList<UserChecklistSample> fullSampleList;
+    private final ArrayList<UserChecklistSample> sampleList;
+    private final ArrayList<UserChecklistSample> fullSampleList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
@@ -54,7 +54,7 @@ public class AuthorGroupManageAdapter extends RecyclerView.Adapter<AuthorGroupMa
         return mFilter;
     }
 
-    private Filter mFilter = new Filter() {
+    private final Filter mFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<UserChecklistSample> filteredList = new ArrayList<>();

@@ -31,15 +31,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-
+import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.tabletversion.post.PostAdapter;
 import com.legs.unijet.tabletversion.post.PostSample;
 import com.legs.unijet.tabletversion.profile.EditProfile;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.GsonParser;
-import com.legs.unijet.smartphone.R;
 import com.legs.unijet.tabletversion.utils.MailUtils;
 
 import java.io.File;
@@ -58,7 +56,7 @@ public class MyUnijetFragment extends Fragment {
     User userProfile;
     ImageView profileAvatar;
 
-    FloatingActionButton fab;
+    // --Commented out by Inspection (21/09/2021 18:51):FloatingActionButton fab;
 
     ArrayList<PostSample> posts;
 
@@ -89,8 +87,6 @@ public class MyUnijetFragment extends Fragment {
         Button logout_button = view.findViewById (R.id.logout_button);
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
 
-        fab = getActivity().findViewById(R.id.fab);
-
 
 
         profileAvatar = view.findViewById(R.id.member_icon);
@@ -114,7 +110,9 @@ public class MyUnijetFragment extends Fragment {
                 email = user.getEmail();
                 populateList(userId, view);
 
-                if (MailUtils.checkDomainStudents(email)) {
+                MailUtils mu = new MailUtils(getContext());
+
+                if (mu.checkDomainStudents(email)) {
                     reference = FirebaseDatabase.getInstance().getReference("students");
                     memberType = "student";
                 } else {

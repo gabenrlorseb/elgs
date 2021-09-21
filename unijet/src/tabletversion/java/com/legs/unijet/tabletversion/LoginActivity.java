@@ -1,6 +1,5 @@
 package com.legs.unijet.tabletversion;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,12 +26,12 @@ import com.legs.unijet.tabletversion.utils.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword;
-    TextView forgotTextLink;
-    Button btnLogin,register_button, btnLoginGuest;
-    ProgressDialog LoadingBar;
+    // --Commented out by Inspection (21/09/2021 18:52):TextView forgotTextLink;
+    // --Commented out by Inspection (21/09/2021 18:52):Bu// --Commented out by Inspection (21/09/2021 18:52):tton btnLogin,register_button, btnLoginGuest;
+ // --Commented out by Inspection (21/09/2021 18:52):   ProgressDialog LoadingBar;
     FirebaseAuth auth;
     ProgressBar progressBar;
-    TextView btn;
+    // --Commented out by Inspection (21/09/2021 18:52):TextView btn;
     PackageManager packageManager;
 
 
@@ -58,9 +56,9 @@ public class LoginActivity extends AppCompatActivity {
 
         inputEmail = findViewById (R.id.set_email);
         inputPassword = findViewById (R.id.set_password);
-        btnLogin = findViewById (R.id.confirm_button);
-        register_button=findViewById (R.id.register_button);
-        btnLoginGuest=findViewById (R.id.accessInAsGusest);
+        Button btnLogin = findViewById (R.id.confirm_button);
+        Button register_button=findViewById (R.id.register_button);
+        Button btnLoginGuest=findViewById (R.id.accessInAsGusest);
         //  forgotTextLink=findViewById (R.id.forgotPassword);
         // progressBar=findViewById (R.id.progressBar);
 

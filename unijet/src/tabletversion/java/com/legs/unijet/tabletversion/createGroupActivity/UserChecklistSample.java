@@ -7,7 +7,7 @@ public class UserChecklistSample implements Serializable {
     private final String mText1;
     private final String mailText;
     private Boolean isChecked;
-    private String uid;
+    private final String uid;
 
     public UserChecklistSample(int imageResource, String text1, String text2, Boolean checkbox, String uid) {
         mImageResource = imageResource;
