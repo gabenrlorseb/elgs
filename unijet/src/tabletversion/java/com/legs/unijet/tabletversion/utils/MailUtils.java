@@ -10,7 +10,7 @@ public class MailUtils {
 
 
     public MailUtils(Context context) {
-        MailUtils.context = context;
+        this.context = context;
     }
 
     public boolean checkDomainStudents(String url){

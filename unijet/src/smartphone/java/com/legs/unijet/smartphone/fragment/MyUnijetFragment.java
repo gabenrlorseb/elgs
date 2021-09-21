@@ -66,6 +66,8 @@ public class MyUnijetFragment extends Fragment {
         final android.view.View view = inflater.inflate(R.layout.myunijet, container, false);
 
         Button logout_button = view.findViewById (R.id.logout_button);
+
+
         Button editProfileButton=view.findViewById(R.id.profile_edit_button);
         LinearLayout toFavourites = view.findViewById(R.id.favourites_button);
 
@@ -152,21 +154,31 @@ public class MyUnijetFragment extends Fragment {
             }
         });
 
+
         if (user==null) {
             editProfileButton.setVisibility(View.GONE);
             toFavourites.setVisibility (View.GONE);
-            name = savedInstanceState.getString(String.valueOf(R.string.demo_user));
-            email = savedInstanceState.getString(String.valueOf(R.string.demo_user_subtitle));
-            surname = "name";
-            nameFull = name + surname;
-            text_name_surname.setText (nameFull.toUpperCase ());
+            text_name_surname.setText (R.string.demo_user);
             text_name_surname.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     logout();
                 }
             });
-            email_login_field.setText (email);
+            text_name_surname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
+            email_login_field.setText (R.string.demo_user_subtitle);
+            email_login_field.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
+            logout_button.setVisibility(View.GONE);
         }
 
         else {

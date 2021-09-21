@@ -6,10 +6,12 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ import com.legs.unijet.tabletversion.LoginActivity;
 import com.legs.unijet.tabletversion.post.PostAdapter;
 import com.legs.unijet.tabletversion.post.PostSample;
 import com.legs.unijet.tabletversion.profile.EditProfile;
+import com.legs.unijet.tabletversion.profile.Favourites;
 import com.legs.unijet.tabletversion.profile.User;
 import com.legs.unijet.tabletversion.utils.GsonParser;
 import com.legs.unijet.tabletversion.utils.MailUtils;
@@ -166,6 +169,53 @@ public class MyUnijetFragment extends Fragment {
                 logout ();
             }
         });
+
+        if (user==null) {
+
+            OrientationEventListener m_sensorEventListener = new OrientationEventListener(getContext()) {
+                @Override
+                public void onOrientationChanged(int orientation) {
+                    LinearLayout toFavourites = view.findViewById(R.id.favourites_button);
+
+                    if (user != null) {
+
+                        toFavourites.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(getContext(), Favourites.class));
+                            }
+                        });
+                    } else {
+                        toFavourites.setVisibility(View.GONE);
+                    }
+                }
+
+            };
+            m_sensorEventListener.enable();
+
+            editProfileButton.setVisibility(View.GONE);
+            text_name_surname.setText (R.string.demo_user);
+            text_name_surname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
+            text_name_surname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
+            email_login_field.setText (R.string.demo_user_subtitle);
+            email_login_field.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
+            logout_button.setVisibility(View.GONE);
+        }
 
         if (user!=null) {
             editProfileButton.setOnClickListener(new android.view.View.OnClickListener() {

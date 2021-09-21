@@ -1,4 +1,4 @@
-package com.legs.unijet.smartphone.profile;
+package com.legs.unijet.tabletversion.profile;
 
 
 import android.os.Bundle;
@@ -17,10 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.legs.unijet.smartphone.R;
-import com.legs.unijet.smartphone.createGroupActivity.UserChecklistSample;
-import com.legs.unijet.smartphone.groupDetailsActivity.MemberNoChecklistAdapter;
-import com.legs.unijet.smartphone.post.PostAdapter;
-import com.legs.unijet.smartphone.post.PostSample;
+import com.legs.unijet.tabletversion.post.PostAdapter;
+import com.legs.unijet.tabletversion.post.PostSample;
 
 import java.util.ArrayList;
 

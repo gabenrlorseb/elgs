@@ -168,5 +168,7 @@
     <string name="wait">Attendere prego</string>
     <string name="demo_mode_is_active">Puoi vedere il contenuto solamente se hai effettuato l\'accesso.</string>
     <string name="warning_deletion">Sei sicuro di voler eliminare? Tutti i contenuti saranno persi e non saranno più visibili</string>
+    <string name="demo_user_subtitle">Clicca qui per eseguire il login</string>
+    <string name="demo_user">Utente Ospite</string>
 
 </resources>
